@@ -142,7 +142,7 @@ var myScroll=false,yy={
 		}else{
 			if(agentlx==0){
 				var o=$(o1),w=1/json.menu.length*100;
-				var s='<div id="'+sid+'" style="position:fixed;z-index:5;left:'+(o.offset().left)+'px;bottom:50px; background:white;width:'+w+'%" class="menulist r-border-r r-border-l">';
+				var s='<div id="'+sid+'" style="position:fixed;z-index:5;left:'+(o.offset().left)+'px;bottom:50px; background:white;width:'+w+'%;max-height: 400px;overflow: auto" class="menulist r-border-r r-border-l">';
 				for(i=0;i<slen;i++){
 					a1=a.submenu[i];
 					s+='<div onclick="yy.clickmenua('+oi+','+i+')" class="r-border-t" style="color:'+a1.color+';">'+a1.name+'</div>';
