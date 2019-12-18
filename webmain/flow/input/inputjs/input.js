@@ -693,8 +693,12 @@ var c={
 					nasa=nas.split('_');
 					nle = nasa.length;
 					nna= nasa[0];
-					if(nle>2)nna+='_'+nasa[1]+'';
-					if(nle>3)nna+='_'+nasa[2]+'';
+					//if(nle>2)nna+='_'+nasa[1]+'';
+					//if(nle>3)nna+='_'+nasa[2]+'';
+					//不再限制下划线个数，原本只能最多3个
+					for(var k=1;k<nle-1;k++){
+						nna+='_'+nasa[k]+'';
+					}
 					fname.push(nna.substr(0,nna.length-1));
 				}
 				this.subtablefields[i]=fname;
