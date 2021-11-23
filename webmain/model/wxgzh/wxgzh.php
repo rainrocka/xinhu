@@ -48,7 +48,7 @@ class wxgzhModel extends Model
 		if($this->appid!='')return $this->appid;
 		$this->appid 	= $this->option->getval('wxgzh_appid');
 		$this->secret	= $this->option->getval('wxgzh_secret');
-		$this->corpid	= $this->option->getval('weixin_corpid');
+		$this->corpid	= $this->option->getval('weixinqy_corpid');
 		return $this->appid;
 	}
 	

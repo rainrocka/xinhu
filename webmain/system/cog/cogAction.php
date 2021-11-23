@@ -245,6 +245,23 @@ return array(
 		return $s;
 	}
 	
+	public function logintokenbefore($table)
+	{
+		$key = $this->post('key');
+		$s   = '';
+		if($key != ''){
+			$s = "and (`name` like '%$key%' or `cfrom` like '%$key%' or `web` like '%$key%')";
+		}
+		return $s;
+	}
+	
+	public function delloginAjax()
+	{
+		$id = $this->post('id');
+		m('logintoken')->delete('id in('.$id.')');
+		backmsg();
+	}
+	
 	public function dellogAjax()
 	{
 		$id = $this->post('id');
@@ -326,5 +343,68 @@ return array(
 		$val = $this->option->getval($key);
 		$sql = "update ".$base.".`[Q]option` set `value`='$val',`optdt`='{$this->now}' where `num`='$key'";
 		$this->db->query($sql, false);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	*	更多保存设置
+	*/
+	public function savemoresetAjax()
+	{
+		if(getconfig('systype')=='demo')return '演示不要改';
+		$stype = (int)$this->post('stype','0');
+		$msg  = 'ok';
+		if($stype==0)$msg = $this->saveconfig('title,imgcompress');
+	
+		return $msg;
+	}
+	private function saveconfig($cont)
+	{
+		$path = ''.P.'/'.P.'Config.php';
+		
+		$neir = file_get_contents($path);
+		$zdar = explode(',', $cont);
+		$neira= explode("\n", $neir);
+		
+		$strs = '';
+		$szida= array();
+		foreach($neira as $line){
+			if($line==');')break;
+			$bo = false;
+			foreach($zdar as $fid){
+				if(contain($line,"'".$fid."'")){
+					$val = $this->post($fid);
+					if(contain($val,'*****')){
+						$strs.="".$line."\n";
+					}else{
+						$strs.="	'".$fid."'	=> '".$val."',\n";
+					}
+					$bo = true;
+					$szida[]=$fid;
+				}
+			}
+			if(!$bo)$strs.="".$line."\n";
+		}
+		
+		foreach($zdar as $fid){
+			if(!in_array($fid, $szida)){
+				$val = $this->post($fid);
+				$strs.="	'".$fid."'	=> '".$val."',\n";
+			}
+		}
+		
+		$strs.=');';
+		$bo = @file_put_contents($path,$strs);
+		if(!$bo)return '无权限写入：'.$path.'';
+		return 'ok';
 	}
 }

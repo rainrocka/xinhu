@@ -36,11 +36,14 @@ class weixinClassAction extends apiAction{
 	public function addlocationAction()
 	{
 		$fileid 			= (int)$this->post('fileid','0');
+		$ispz 				= (int)$this->post('ispz','0');
 		$imgpath			= m('file')->getmou('filepath', $fileid);
 		$now 				= $this->rock->now;
 		$uid				= $this->adminid;
 		$comid				= m('admin')->getcompanyid($uid);
 		$type 				= (int)$this->post('type');
+		if($type==1 && $ispz==1 && isempt($imgpath))return returnerror('请先拍照才能打卡');
+		
 		$arr['location_x']	= $this->post('location_x');
 		$arr['location_y']	= $this->post('location_y');
 		$arr['scale']		= (int)$this->post('scale');

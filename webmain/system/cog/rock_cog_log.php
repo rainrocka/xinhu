@@ -71,6 +71,9 @@ $(document).ready(function(){
 				js.msgok('已清空');
 				a.reload();
 			});
+		},
+		loginji:function(){
+			addtabs({name:'登录记录',num:'loginjl',url:'system,cog,login',icons:'legal'});
 		}
 	};
 	js.initbtn(c);
@@ -95,6 +98,7 @@ $(document).ready(function(){
 	<td width="80%"></td>
 	<td align="right" nowrap>
 	
+		<button class="btn btn-default" click="loginji" type="button">查看登录记录</button>&nbsp;
 		<button class="btn btn-default" click="qingkong,1" type="button">仅清空异步队列</button>&nbsp;
 		<button class="btn btn-default" click="qingkong,0" type="button">清空全部</button>&nbsp;
 		<button class="btn btn-danger" id="del_{rand}" click="delss" type="button"><i class="icon-trash"></i> 删除</button>

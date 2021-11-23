@@ -14,8 +14,9 @@ var reim={
 	timeloads:0,
 	ruloadtime:5*60, //5分钟
 	init:function(){
-		js.ajaxwurbo   = true;
-		js.xpbodysplit = 0;
+		js.ajaxwurbo   	 = true;
+		this.centlistobj = $('#centlist');
+		js.xpbodysplit 	 = 0;
 		date = js.now('Y-m-d');
 		nwjs.init();
 		bodyunload=function(){
@@ -45,7 +46,7 @@ var reim={
 			});
 		}catch(e){}
 		this.initload();
-		$('#centlist').perfectScrollbar();
+		this.centlistobj.perfectScrollbar();
 		
 		
 		uploadobj = $.rockupload({
@@ -68,7 +69,7 @@ var reim={
 			}
 		});
 		strformat.upobj = uploadobj;
-		
+		js.setoption('kefulist', '');
 		
 		$('body').keydown(function(e){
 			return reim.bodykeydown(e);
@@ -124,7 +125,7 @@ var reim={
 	resize:function(){
 		viewheight = winHb(); //可操作高度
 		$('#mindivshow').css('height',''+(viewheight)+'px');
-		$('#centlist').css('height',''+(viewheight-60)+'px');
+		if(reim.centlistobj)reim.centlistobj.css('height',''+(viewheight-60)+'px');
 		$('#viewzhulist').css('height',''+viewheight+'px');
 		var obj = $('div[resizeh]'),o,hei;
 		for(var i=0;i<obj.length;i++){
@@ -197,9 +198,13 @@ var reim={
 			this.hideagent();
 			$('#maincenter').show();
 		}
+		this.centlistobj.scrollTop(0);
+		this.centlistobj.find('.ps-scrollbar-y-rail').hide();
+		this.showbadge('chat');
 	},
 	getapiurl:function(m,a,lx){
 		if(lx=='gout')return this.outgroup.geturl(a);
+		if(lx=='zixun' || lx=='wait')m='rockkefu';
 		var dzs = 'api.php?m='+m+'&a='+a+'&cfrom=reim';
 		if(companynum)dzs+='&dwnum='+companynum+'';
 		return dzs;
@@ -209,6 +214,7 @@ var reim={
 		if(!lx)lx='get';
 		if(!fun)fun=function(){}
 		if(!efun)efun=function(){}
+		js.ajaxbool = false;
 		js.ajax(url,cans,function(ret){
 			if(ret.code==200){
 				fun(ret);
@@ -266,6 +272,7 @@ var reim={
 		this.outgroupopen   = ret.outgroupopen;
 		this.showhistory(this.maindata.harr);
 		this.outgroup.loaddata(ret.outunum,0);
+		if(this.kefu)this.kefu.loaddata();
 		if(ret.editpass==0)this.editpass('请先修改密码后在使用','none');
 	},
 	//搜索联系人/会话/应用
@@ -578,22 +585,30 @@ var reim={
 			reim.showhistory(data);
 		});
 	},
+	sortpaxh:function(d1,d2){
+		if(d1.optdt > d2.optdt){
+			return -1;
+		}else if(d1.optdt < d2.optdt){
+			return 1;
+		}else{
+			return 0;
+		}
+	},
 	showhistory:function(a){
 		var outstr = js.getoption('outgrouplist0'),i,outa,ds=[];
 		for(i=0;i<a.length;i++)ds.push(a[i]);
 		if(outstr && this.outgroupopen=='open'){
 			outa = JSON.parse(outstr);
 			for(i=0;i<outa.length;i++)ds.push(outa[i]);
-			ds.sort(function(d1, d2){
-				if(d1.optdt > d2.optdt){
-					return -1;
-				}else if(d1.optdt < d2.optdt){
-					return 1;
-				}else{
-					return 0;
-				}
-			});
+			ds.sort(this.sortpaxh);
 		}
+		outstr = js.getoption('kefulist');
+		if(outstr){
+			outa = JSON.parse(outstr);
+			for(i=0;i<outa.length;i++)ds.push(outa[i]);
+			ds.sort(this.sortpaxh);
+		}
+		
 		var len=ds.length;
 		$('#historylist').html('');
 		$('#historylist_tems').show();
@@ -605,15 +620,17 @@ var reim={
 	grouptype:function(did, lx){
 		var s = '';
 		if(lx=='gout')did='-1';
+		if(lx=='zixun')did='-2';
 		if(isempt(did) || (lx && lx=='user'))return s;
 		if(did=='1')s=' <span class="reimlabel">全员</span>';
 		if(did=='-1')s=' <span class="reimlabel2">外部</span>';
+		if(did=='-2')s=' <span class="reimlabel3">咨询</span>';
 		if(did>1)s=' <span class="reimlabel1">部门</span>';
 		return s;
 	},
 	showhistorydata:{},
-	showhistorys:function(d,pad, lex){
-		var s,ty,o=$('#historylist'),d1,st,attr;
+	showhistorys:function(d,pad, lex, glx){
+		var s,ty,o=$('#historylist'),d1,st,nas=d.names,qz=d.qian;
 		var num = ''+d.type+'_'+d.receid+'';
 		this.showhistorydata[num]=d;
 		$('#history_'+num+'').remove();
@@ -629,14 +646,17 @@ var reim={
 			var d2 = grouparr[d.receid];
 			if(d2)d.deptid = d2.deptid;
 		}
+		if(!nas)nas='';
+		if(!qz)qz='chat';
 		var s1 = this.grouptype(d.deptid,d.type);
 		s	= '<div class="lists'+cls+'" rtype="hist" oncontextmenu="reim.historyright(this,event,\''+num+'\')" tsaid="'+d.receid+'" tsaype="'+d.type+'"  temp="hist" id="history_'+num+'" onclick="reim.openchat(\''+ty+'\',\''+d.receid+'\',\''+d.name+'\',\''+d.face+'\')">';
 		s+='<table cellpadding="0" border="0" width="100%"><tr>';
 		s+='<td style="padding-right:8px"><div style="height:30px;overflow:hidden"><img src="'+d.face+'"></div></td>';
-		s+='<td align="left" width="100%"><div title="'+na+'" class="name">'+na+''+s1+'</div><div class="huicont">'+jm.base64decode(d.cont)+'</div></td>';
-		s+='<td align="right" nowrap><span id="chat_stotal_'+num+'" class="badge red">'+st+'</span><br><span style="color:#aaaaaa;font-size:10px">'+ops+'</span></td>';
+		s+='<td align="left" width="100%"><div title="'+na+'" id="lname_'+num+'" class="name">'+na+''+nas+''+s1+'</div><div class="huicont">'+jm.base64decode(d.cont)+'</div></td>';
+		s+='<td align="right" nowrap><span id="'+qz+'_stotal_'+num+'" class="badge red">'+st+'</span><br><span style="color:#aaaaaa;font-size:10px">'+ops+'</span></td>';
 		s+='</tr></table>';
 		s+='</div>';
+		if(glx)return s;
 		if(!pad){o.append(s);}else{o.prepend(s)}
 		$('#historylist_tems').hide();
 		this.showbadge('chat');
@@ -665,6 +685,7 @@ var reim={
 		if(lx==2){
 			o1.remove();
 			var tst=$('#historylist').text();if(tst=='')$('#historylist_tems').show();
+			tst=$('#kefulistwait').text();if(tst=='')$('#kefulist_tems').show();
 			js.ajax(this.getapiurl('reim','delhistory',tsayp),{type:tsayp,gid:tsaid},false,'get');
 			if(tsayp=='gout' || tsayp=='uout')this.outgroup.dellist(tsayp, tsaid);
 			this.showbadge('chat');
@@ -672,6 +693,7 @@ var reim={
 		if(lx==1){
 			var num = ''+tsayp+'_'+tsaid+'';
 			$('#chat_stotal_'+num+'').html('');
+			$('#wait_stotal_'+num+'').html('');
 			var d=this.showhistorydata[num];
 			if(d)d.stotal='0';
 			this.showbadge('chat');
@@ -741,6 +763,10 @@ var reim={
 				this.biaoyd('agent',reid);
 				js.open(url,760,500);
 			}
+			return;
+		}
+		if(type=='wait'){
+			this.kefu.openwait(this.showhistorydata[num]);
 			return;
 		}
 		var s = '<div>';
@@ -838,6 +864,7 @@ var reim={
 		if(lx=='gout'){
 			name = d.title;
 		}
+	
 		num = d.type+'_'+gid;
 		var showtx = true;
 		if(this.isopentabs(num)){
@@ -847,7 +874,8 @@ var reim={
 			}
 		}
 		
-		if(windowfocus && this.nowtabs==num)showtx=false;
+		//if(windowfocus && this.nowtabs==num)showtx=false;
+		if(windowfocus)showtx=false;
 		if(d.nottixi)showtx=false; 
 		
 		if(d.atid)showtx = (d.atid==d.zijiid)//不是@我就不要提醒
@@ -859,7 +887,7 @@ var reim={
 			stotal = parseInt(so)+1;
 		}
 		if(d.ismysend)stotal = 0;
-		this.showhistorys({
+		if(lx != 'zixun')this.showhistorys({
 			'cont' : s1+d.cont,
 			'name' : name,
 			'face' : face,
@@ -870,25 +898,38 @@ var reim={
 		}, true, this.nowtabs==num);
 		
 		if(d.ismysend)return;//自己发的
+		
 		var nr = jm.base64decode(d.cont);
+		var title = '会话消息';
+		msg  = '人员['+d.sendname+']，发来一条信息';
+		if(lx == 'group'){
+			msg += '，来自['+name+']';
+		}
+		if(lx == 'gout'){
+			title = name;
+			msg = nr;
+		}
+		if(lx == 'zixun'){
+			title = '咨询消息';
+			msg = nr;
+		}
+		var cans = {
+			icon:face,sound:d.sound,type:lx,gid:gid,name:name,title:title,rand:num,
+			click:function(b){if(b.gid)reim.openchat(b.type, b.gid,b.name,b.icon);}
+		}
 		if(showtx || nr.indexOf('@'+adminname+'')>-1){
-			var title = '会话消息';
-			msg  = '人员['+d.sendname+']，发来一条信息';
-			if(lx == 'group'){
-				msg += '，来自['+name+']';
-			}
-			if(lx == 'gout'){
-				title = name;
-				msg = nr;
-			}
 			if(this.getzhuom()){
-				notifyobj.showpopup(msg,{icon:face,type:lx,gid:gid,name:name,title:title,rand:num,click:function(b){
-					reim.openchat(b.type, b.gid,b.name,b.icon);
-				}});
+				notifyobj.showpopup(msg, cans);
 			}else{
 				if(notifyobj.getsound())notifyobj.playsound();
 			}
 			nwjs.jumpicon();
+			showtx = true;
+		}
+		if(!showtx && windowfocus && this.nowtabs!=num){
+			js.msg('success','<div id="idngmsg" class="cursor" align="left"><b>'+title+'</b><br>'+msg+'</div>');
+			if(cans.gid)$('#idngmsg').click(function(){reim.openchat(cans.type, cans.gid,cans.name,cans.icon);});
+			if(notifyobj.getsound())notifyobj.playsound();
 		}
 	},
 	addtabs:function(num, s){
@@ -916,7 +957,7 @@ var reim={
 	closenowtabss:function(){
 		var nun = this.nowtabs;
 		if(!nun)return;
-		if(nun.indexOf('user_')==0 || nun.indexOf('group_')==0 || nun.indexOf('gout_')==0 || nun.indexOf('userinfo_')==0)this.closenowtabs();
+		if(nun.indexOf('user_')==0 || nun.indexOf('group_')==0 || nun.indexOf('gout_')==0 || nun.indexOf('zixun_')==0 || nun.indexOf('userinfo_')==0)this.closenowtabs();
 	},
 	isopentabs:function(num){
 		return get('tabs_'+num+'');
@@ -1024,7 +1065,11 @@ var reim={
 		so = $('#chat_stotal').html();
 		if(!so)so = 0;
 		zoi+=parseInt(so);
+		so = $('#wait_stotal').html();
+		if(!so)so = 0;
+		zoi+=parseInt(so);
 		nwjs.changeicon(zoi);
+		if(lx=='chat')this.showbadge('wait');
 	},
 	clickcog:function(o1){
 		if(!this.cogmenu)this.cogmenu =$.rockmenu({
@@ -1079,7 +1124,7 @@ var reim={
 			if(lx=='yes'){
 				if(!v){js.msg('msg','没有输入会话名称');return false;}
 				js.msg('wait','创建中...');
-				reim.ajax(reim.getapiurl('reim','createlun'),{val:jm.base64encode(v)}, function(da){
+				reim.ajax(reim.getapiurl('reim','createlun'),{val:jm.base64encode(strreplace(v))}, function(da){
 					js.msg('success','创建成功，请打开会话窗口邀请人员加入');
 					reim.changetabs(1);
 					reim.initload(true);
@@ -1219,7 +1264,8 @@ function chatcreate(cans){
 	this._init = function(){
 		this.minid 	  = 999999999;
 		this.dktype   = false;
-		this.showobj  = $('#viewcontent_'+this.num+'');
+		this.showoba  = get('viewcontent_'+this.num+'');
+		this.showobj  = $(this.showoba);
 		this.inputobj = $('#input_content_'+this.num+'');
 		this.sendbtn  = $('#chatsendbtn_'+this.num+'');
 		this.listdata = {};
@@ -1234,7 +1280,6 @@ function chatcreate(cans){
 		this.objstr	  = 'reim.chatobj[\''+this.num+'\']';
 		var nstr	  = js.getoption('receinfo_'+this.num+'');  
 		if(nstr)this.setreceinfor(js.decode(nstr));
-		
 		this.sendbtn.click(function(){
 			me.sendcont();
 		});
@@ -1297,6 +1342,10 @@ function chatcreate(cans){
 			}
 			s+='<td title="会话里的人员" id="tuiuserlist_'+this.num+'" class="chattitbtn" nowrap><div style="width:30px"><i class="icon-group"></i></div></td>';
 		}
+		if(this.type=='zixun'){
+			s+='<td title="转给其他客服" id="sharebtn_'+this.num+'" class="chattitbtn" nowrap><div style="width:30px"><i class="icon-share-alt"></i></div></td>';
+			s+='<td title="咨询人员信息" id="zixunbtn_'+this.num+'" class="chattitbtn" nowrap><div style="width:30px"><i class="icon-user"></i></div></td>';
+		}
 		s+='</tr></table>';
 		o.html(s);
 		$('#yaoqingchat_'+this.num+'').click(function(){
@@ -1308,8 +1357,15 @@ function chatcreate(cans){
 		$('#tuiuserlist_'+this.num+'').click(function(){
 			me.showhuilist();
 		});
+		$('#zixunbtn_'+this.num+'').click(function(){
+			reim.kefu.showuser(me.gid);
+		});
+		$('#sharebtn_'+this.num+'').click(function(){
+			reim.kefu.shareuser(me.gid);
+		});
 	};
 	this.getapiurl=function(m1,a1){
+		if(this.type=='zixun')m1='rockkefu';
 		if(this.type=='gout'){
 			return reim.outgroup.geturl(a1);
 		}else{
@@ -1340,7 +1396,6 @@ function chatcreate(cans){
 		if(iref)minid=this.minid;
 		if(o1)$(o1).html('<img src="images/loadings.gif" height="14" width="15" align="absmiddle"> 加载中...');
 		this.boolload 	= true;
-		this.isshangla 	= false;
 		reim.ajax(this.getapiurl('reim','getrecord'),{type:this.type,gid:this.gid,minid:minid,loadci:this.loadci,laiyuan:'not',soulx:this.soulx,soukey:jm.base64encode(this.soukey)},function(ret){
 			js.unloading();
 			if(o1)$(o1).html('');
@@ -1371,10 +1426,12 @@ function chatcreate(cans){
 		this.loaddatashow(da, iref);
 	};
 	this.loaddatashow=function(ret,isbf, isls){
+		if(!get('viewcontent_'+this.num+''))return;
 		var a 		= ret.rows;
 		this.lastdt = ret.nowdt;
 		var i,len 	= a.length,cont,lex,nas,fase,nr,d,na=[],rnd,sid,frs,nfr1;
 		if(!isls)$('#loadmored_'+this.num+'').remove();
+		var seseid  = -100;
 		if(isbf){
 			if(len>0)this.showobj.prepend('<div class="showblanks">---------↑以上是新加载---------</div>');
 			na = a;
@@ -1386,6 +1443,7 @@ function chatcreate(cans){
 			this.showdownjd()
 			budnr = true;
 		}
+		this.isshangla = false;
 		for(i= 0; i<len; i++){
 			d   = na[i];
 			sid = parseFloat(d.id);
@@ -1411,6 +1469,7 @@ function chatcreate(cans){
 				this.addcont(cont, isbf, budnr);
 			}else{
 				this.showobj.prepend(cont);
+				seseid+=$('#ltcont_'+rnd+'').height();
 			}
 			this.listdata[rnd]=d;
 			$('#qipaocont_'+rnd+'').contextmenu(function(e){
@@ -1435,10 +1494,12 @@ function chatcreate(cans){
 			s+='</div>';
 			if(!isbf)this.addcont(s);
 		}
+		if(seseid>0)this.showobj.scrollTop(seseid);
 	};
 	this.isscrollbottom=function(){
-		var o1  = get('viewcontent_'+me.num+'');
+		var o1  = this.showoba;
 		var jg  = o1.scrollHeight - o1.scrollTop - o1.offsetHeight;
+		this.bodyscrollTop = o1.scrollTop;
 		return jg<20;
 	};
 	this.showdownjd=function(){
@@ -1578,7 +1639,7 @@ function chatcreate(cans){
 	};
 	this.onsscrolls=function(){
 		var sid = 'downjd_'+this.num+'';
-		if(get(sid) && this.isscrollbottom()){
+		if(this.isscrollbottom() && get(sid)){
 			$('#'+sid+'').hide();
 		}
 	};
@@ -1673,6 +1734,7 @@ function chatcreate(cans){
 			'receid' : this.gid,
 			'stotal' : 0
 		}, true, true);
+		if(this.type=='zixun')reim.kefu.showonline(this.type,this.gid);
 	};
 	this.senderror=function(nuid, ds){
 		get(nuid).src='images/error.png';
@@ -1699,6 +1761,7 @@ function chatcreate(cans){
 		var bo = false;
 		d.messid=d.id;
 		d.face  = this.sendinfo.face;
+		if(d.showmsg)this.addmsg(d.showmsg);
 		if(this.type=='group')d.gface=this.receinfo.face;
 		if(d.fileid)d.filers = this.nowfilers;
 		this.listdata[nuid]=d;
@@ -1971,7 +2034,7 @@ function chatcreate(cans){
 	};
 	this.rebianji=function(o1,rnd){
 		var d  = this.listdata[rnd],
-			nstr = jm.base64decode(d.ocont);
+			nstr = jm.base64decode(d.ocont);	
 		$('body').append('<div id="addcstre" style="display:none">'+nstr+'</div>');	
 		this.inputobj.val($('#addcstre').text());
 		$('#addcstre').remove();
@@ -1982,12 +2045,16 @@ function chatcreate(cans){
 		var s = '<div id="showstarlist" class="qipao" style="height:300px;overflow:hidden;position:relative"><div align="center" style="padding:10px;"><img src="images/mloading.gif" align="absmiddle">&nbsp;加载...</div></div>';
 		js.tanbody('sysshowstar','收藏的消息',370,100,{html:s,btn:[{text:'管理'}]});
 		if(!reim.starlistarr){
-			reim.ajax(reim.getapiurl('reim','getstar'),{},function(ret){
-				me.showstarshow(ret.data);
-			},'get');
+			this.showstarshu();
 		}else{
 			this.showstarshow(reim.starlistarr);
 		}
+	};
+	this.showstarshu=function(o1){
+		if(o1)o1.innerHTML=js.getmsg('刷新中...');
+		reim.ajax(reim.getapiurl('reim','getstar'),{},function(ret){
+			me.showstarshow(ret.data);
+		},'get');
 	};
 	this.showstarshow=function(a){
 		reim.starlistarr = a;
@@ -2000,10 +2067,13 @@ function chatcreate(cans){
 			s1= jm.base64decode(d1.cont);
 			if(d1.fileid>0){
 				if(this.type=='gout' || this.type=='uout'){
-					if(d1.type=='user' || d1.type=='group')continue
+					if(d1.type=='user' || d1.type=='group')continue;
 				}
 				if(this.type=='user' || this.type=='group'){
-					if(d1.type=='gout' || d1.type=='uout')continue
+					if(d1.type=='gout' || d1.type=='uout')continue;
+				}
+				if(this.type=='zixun' || d1.type=='zixun'){
+					if(d1.type != this.type)continue;
 				}
 			}
 			if(d1.imgurl){
@@ -2022,6 +2092,7 @@ function chatcreate(cans){
 		if(s2)s2='<div style="display:inline-block;border-bottom:1px #eeeeee solid;width:100%">'+s2+'</div>';
 		$('#showstarlist').html(s2+s);
 		$('#showstarlist').perfectScrollbar();
+		$('#msgview_sysshowstar').html('<a onclick="'+this.objstr+'.showstarshu(this)" href="javascript:;">刷新</a>');
 		this.starisguan = false;
 		$('#sysshowstar_btn0').click(function(){
 			if(!me.starisguan){
@@ -2092,6 +2163,7 @@ function chatcreate(cans){
 			if(nnud)da.filenum = nnud;
 		}
 		var kev = ''+d.id+'';if(this.type=='gout' || this.type=='uout')kev='out_'+d.id+'';
+		if(this.type=='zixun')kev='zixun_'+d.id+'';
 		reim.ajax(reim.getapiurl('reim','savestar'),{kev:kev,content:jm.base64encode(JSON.stringify(da))}, function(ret){
 			reim.starlistarr=false;
 			js.msgok('收藏成功');
@@ -2177,7 +2249,8 @@ strformat.openurl=function(dz){
 	if(!nwjsgui){
 		window.open(dz);
 	}else{
-		js.open(dz,1000,600);
+		nwjs.openurl(dz);
+		//js.open(dz,1000,600);
 	}
 }
 
@@ -2197,7 +2270,7 @@ strformat.clickimg=function(o1){
 		fileid:fid,
 		ismobile:false,
 		onloadsuccess:function(img){
-			if(img.width<430 && img.height<430 && img.src.substr(-3)=='gif'){
+			if(img.src.substr(-3)=='gif'){
 				o1.src = img.src;
 				js.setoption('filesrc_'+this.fileid+'', img.src);
 			}
@@ -2266,7 +2339,7 @@ reim.outgroup={
 		js.setoption('outgrouplist0', JSON.stringify(hlist));
 		reim.outgrouplist = da.alist;
 		var myinfo = da.myinfo;
-		reim.showhistory(reim.maindata.harr)
+		reim.showhistory(reim.maindata.harr);
 		if(!this.socketob && da.wsconfig)this.linkwebsocket(da.wsconfig,0);
 	},
 	linkwebsocket:function(conf,lx){

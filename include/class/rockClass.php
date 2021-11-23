@@ -124,7 +124,7 @@ final class rockClass
 	}
 	
 	//get和post参数处理$lx=1:rockjm，6:basejm, 3:判断是否rockjm
-	public function jmuncode($s, $lx=0, $na)
+	public function jmuncode($s, $lx=0, $na='')
 	{
 		$jmbo = false;
 		if($lx==3)$jmbo = $this->isjm($s);

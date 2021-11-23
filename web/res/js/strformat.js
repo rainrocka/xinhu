@@ -257,7 +257,7 @@ var strformat = {
 		if(js.isimg(d.fileext)){
 			sttr='';
 			if(d.thumbpath){
-				s='<img src="'+d.thumbpath+'" onclick="strformat.clickimg(this)" fid="'+d.fileid+'">';
+				s='<img src="'+d.thumbpath+'" style="max-width:250px" onclick="strformat.clickimg(this)" fid="'+d.fileid+'">';
 			}else{
 				if(d.width){
 					if(d.width>150)sttr='width="150"';

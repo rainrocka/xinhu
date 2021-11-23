@@ -194,7 +194,7 @@ if($showheader==1)echo '<div id="header_title" style="padding-top:'.$cenghei.'px
 <script>
 firstrs=<?=json_encode($firstrs)?>;
 </script>
-<script type="text/javascript" src="<?=$da['p']?>/flow/input/inputjs/mode_<?=$da['moders']['num']?>.js?<?=$da['logintime']?>"></script>
+<script type="text/javascript" src="<?=$da['p']?>/flow/input/inputjs/mode_<?=$da['moders']['num']?>.js?<?=time()?>"></script>
 <?php 
 if($otherfile)include_once($otherfile);
 if($da['showtype']=='view')echo '<script src="webmain/main/flowview/flowview_input.js?'.time().'"></script>';

@@ -5,10 +5,10 @@ function initbodys(){
 			txt = this.options[this.selectedIndex].text;
 		}
 		form('custname').value=txt;
-		form('saleid').value = '';
+		if(form('saleid'))form('saleid').value = '';
 	});
 	
-	$(form('saleid')).change(function(){
+	if(form('saleid'))$(form('saleid')).change(function(){
 		salechange(this.value);
 	});
 	

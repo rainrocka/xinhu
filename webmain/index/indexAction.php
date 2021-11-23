@@ -300,4 +300,10 @@ class indexClassAction extends Action{
 		//header("HTTP/1.1 500 Not Found");
 		echo $this->get('abc');
 	}
+	
+	public function getxings($str)
+	{
+		if(!isempt($str))$str = substr($str,0,5).'*****'.substr($str,-5);
+		return $str;
+	}
 }

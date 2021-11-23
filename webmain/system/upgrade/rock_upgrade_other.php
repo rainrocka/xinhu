@@ -91,13 +91,13 @@ $(document).ready(function(){
 <div>
 	<table width="100%"><tr>
 	<td nowrap>
-		<h4>此列表模块插件来自信呼开发平台，<a href="<?=URLY?>view_anbao.html"target="_blank">进去看看</a><h4>
+		<h4>此列表模块插件来自信呼开发团队，<a href="<?=URLY?>view_anbao.html"target="_blank">进去看看</a><h4>
 	</td>
 	<td nowrap>
 		
 	</td>
 	<td align="right">
-		<button class="btn btn-default" id="upbtnd{rand}" click="huliesss,0"  type="button">本地上传安装</button>&nbsp; 
+		<button class="btn btn-default" id="upbtnd{rand}" click="huliesss,0" style="<?php if(!getconfig('rockinzip'))echo 'display:none;'; ?>" type="button">本地上传安装</button>&nbsp; 
 		<button class="btn btn-default" click="delreload" disabled id="resede_{rand}" type="button">删除重新安装</button>
 	</td>
 	</tr>

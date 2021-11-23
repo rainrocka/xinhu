@@ -94,6 +94,8 @@ input.checkbox,input.radio{ border:none;padding:0;margin-right:5px; width:16px; 
 .reimlabel{background:#93cdf2;color:white;padding:1px 2px;font-size:12px;border-radius:2px}
 .reimlabel1{background:#f9af7e;color:white;padding:1px 2px;font-size:12px;border-radius:2px}
 .reimlabel2{background:#99CCCC;color:white;padding:1px 2px;font-size:12px;border-radius:2px}
+.reimlabel3{background:#CC99CC;color:white;padding:1px 2px;font-size:12px;border-radius:2px}
+.reimlabelonline{background:#99CC99;color:white;padding:1px 2px;font-size:12px;border-radius:2px}
 
 @keyframes mymove{0%{width:140px;}100%{width:170px;}} 
 .msousou{ background-color:rgba(0,0,0,0.1);height:26px;border:0px;border-radius:15px;margin-right:15px;padding:0px 20px;color:#eeeeee;width:140px;}

@@ -15,6 +15,7 @@ class agentModel extends Model
 	public $agentrs;
 	public $moders;
 	public $flow		= null;
+	public $tongmode	= true;
 	
 	public function getdatas($uid, $lx, $p){}
 	
@@ -54,9 +55,11 @@ class agentModel extends Model
 	
 	public function getdata($uid, $num, $lx, $page)
 	{
+		$this->tongmode = true;
 		if(!isempt($lx)){
 			$lxa = explode('|', $lx);
 			if(isset($lxa[1]) && !isempt($lxa[1])){
+				if($lxa[1] != $num)$this->tongmode = false;
 				$num = $lxa[1];
 				$lx  = $lxa[0];
 			}
@@ -151,7 +154,12 @@ class agentModel extends Model
 				$jarr[$f] 	= $str;
 			}
 			$rows[$k] 	= $rs;
-			$row[]  	= $this->flow->flowrsreplace_we($jarr, $rs);
+			$ors 		= $this->flow->flowrsreplace_we($jarr, $rs);
+			if(!$this->tongmode){
+				if(!isset($ors['modenum']))$ors['modenum'] 	 = $this->moders['num'];
+				if(!isset($ors['modename']))$ors['modename'] = $this->moders['name'];
+			}
+			$row[]  	= $ors;
 		}
 		$arr['rows'] 	= $row;
 		$arr['rowd'] 	= $rows;

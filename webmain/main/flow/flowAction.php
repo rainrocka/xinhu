@@ -1293,6 +1293,7 @@ class mode_'.$modenum.'ClassAction extends inputAction{
 	public function loadmodeinfoAjax()
 	{
 		if(getconfig('systype')=='demo')return returnerror('演示不要操作');
+		if(!getconfig('rockinzip'))return returnerror('系统未开启此功能');
 		$sid = $this->get('sid');
 		$rows = m('flow_set')->getall('`id` in('.$sid.')','*','sort asc');
 		$ids  = '';
@@ -1326,6 +1327,7 @@ class mode_'.$modenum.'ClassAction extends inputAction{
 	public function loadoteinAjax()
 	{
 		if(getconfig('systype')=='demo')return returnerror('演示不要操作');
+		if(!getconfig('rockinzip'))return returnerror('系统未开启此功能');
 		$lx  = $this->post('lx');
 		$sid = $this->post('sid');
 		$barr = array();
@@ -1388,6 +1390,8 @@ class mode_'.$modenum.'ClassAction extends inputAction{
 	public function createinstseAjax()
 	{
 		if(!class_exists('ZipArchive'))return returnerror('没有zip扩展无法使用');
+		if(getconfig('systype')=='demo')return returnerror('演示不要操作');
+		if(!getconfig('rockinzip'))return returnerror('系统未开启此功能');
 		$name = $this->post('name');
 		if(!$name)$name=TITLE.'_生成包';
 		$signstr = '';

@@ -261,11 +261,34 @@ class imageChajian extends Chajian
 	}
 	
 	/**
+	*	压缩图片
+	*/
+	public function compress($w,$h)
+	{
+		if(!$this->bool)return '';
+		$bili = 1;
+		$nh	  = $h;
+		$nw	  = $w;
+		if($w < $this->w){
+			$bili = $w / $this->w;
+			$nh	  = $bili * $this->h;
+		}
+		if($h>0 && $nh > $h){
+			$bili = $h / $this->h;
+			$nh   = $h;
+			$nw	  = $bili * $this->w;
+		}
+		if($bili==1)return '';
+		$yspath = str_replace('.'.$this->ext.'', 'y.'.$this->ext.'', $this->path);
+		return $this->thumbnail($nw, $nh, 0, $yspath);
+	}
+	
+	/**
 		图片缩略图
 		@param	$w 宽
 		@param	$h 高
 	*/
-	public function thumbnail($w,$h,$lx=0)
+	public function thumbnail($w,$h,$lx=0, $sapath='')
 	{
 		if(!$this->bool)return '';
 		list($mw, $mh, $bili) = $this->imgwh($w,$h);
@@ -301,7 +324,7 @@ class imageChajian extends Chajian
 		//imagecopyresized
 		imagecopyresampled($tmpimg, $this->img, $tx,$ty, $sx,$sy, $mw,$mh,$this->w,$this->h);//生成缩略图
 		//$sapath	= str_replace('.'.$this->ext.'', '_thumb'.$w.'x'.$h.'.'.$this->ext.'', $this->path);
-		$sapath	= str_replace('.'.$this->ext.'', '_s.'.$this->ext.'', $this->path);
+		if($sapath=='')$sapath	= str_replace('.'.$this->ext.'', '_s.'.$this->ext.'', $this->path);
 		$this->saveass($this->mime ,$tmpimg, $sapath);//保存图片
 		return $sapath;
 	}

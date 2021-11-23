@@ -246,7 +246,7 @@ $(document).ready(function(){
 		
 	</td>
 	<td align="right" nowrap>
-		<button class="btn btn-default" click="shengsheng" type="button">生成安装包</button>&nbsp; 
+		<button class="btn btn-default" click="shengsheng" type="button" style="<?php if(!getconfig('rockinzip'))echo 'display:none;'; ?>">生成安装包</button>&nbsp; 
 		<button class="btn btn-default" id="copy_{rand}" click="copy,1" disabled type="button">复制</button>&nbsp; 
 		<button class="btn btn-info" id="edit_{rand}" click="clickwin,1" disabled type="button"><i class="icon-edit"></i> 编辑 </button>&nbsp; 
 		<button class="btn btn-danger" click="del" disabled id="del_{rand}" type="button"><i class="icon-trash"></i> 删除</button>

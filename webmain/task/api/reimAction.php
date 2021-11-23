@@ -298,4 +298,14 @@ class reimClassAction extends apiAction
 		$this->option->delete('`id`='.$id.' and `optid`='.$this->adminid.'');
 		return returnsuccess();
 	}
+	
+	public function rockkefuAction()
+	{
+		$barr = c('rockkefu')->getdata('openkefu','exists', array(
+			'user' => $this->userrs['user']
+		));
+		$msg  = 'err';
+		if($barr['success'])$msg='ok';
+		return returnsuccess($msg);
+	}
 }

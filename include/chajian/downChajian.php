@@ -117,6 +117,8 @@ class downChajian extends Chajian{
 		$data 		= array();
 		if(is_array($upses)){
 			$noasyn = $this->rock->get('noasyn'); //=yes就不同步到文件平台
+			$noyaso = $this->rock->get('noyaso'); //=yes就不压缩
+			$fileext= substr($upses['fileext'],0,10);
 			$arrs	= array(
 				'adddt'	=> $this->rock->now,
 				'valid'	=> 1,
@@ -125,7 +127,7 @@ class downChajian extends Chajian{
 				'ip'		=> $this->rock->ip,
 				'mknum'		=> $this->rock->get('sysmodenum'),
 				//'mid'		=> $this->rock->get('sysmid','0'),
-				'fileext'	=> substr($upses['fileext'],0,10),
+				'fileext'	=> $fileext,
 				'filesize'	=> (int)$this->rock->get('filesize', $upses['filesize']),
 				'filesizecn'=> $upses['filesizecn'],
 				'filepath'	=> str_replace('../','',$upses['allfilename']),
@@ -133,11 +135,32 @@ class downChajian extends Chajian{
 				'optname'	=> $this->adminname,
 				'comid'		=> m('admin')->getcompanyid(),
 			);
-			$arrs['filetype'] = m('file')->getmime($arrs['fileext']);
+			$arrs['filetype'] = m('file')->getmime($fileext);
 			$thumbpath	= $arrs['filepath'];
 			$sttua		= explode('x', $thumbnail);
 			$lw 		= (int)$sttua[0];
 			$lh 		= (int)$sttua[1];
+			
+			//判断是不是需要压缩jpg和jpeg
+			$compress	= getconfig('imgcompress');
+			if($compress && $noyaso!='yes' && ($fileext=='jpg' || $fileext=='jpeg') && $upses['picw']>0 && $upses['pich']>0){
+				$sttuc	= explode('x', $compress);
+				$yw 	= (int)$sttuc[0];
+				$yh 	= (int)arrvalue($sttuc, 1, 0);
+				if($upses['picw'] > $yw || $upses['pich'] > $yh){
+					$imgac	= c('image', true);
+					$imgac->createimg($thumbpath);
+					$yspaht = $imgac->compress($yw, $yh);
+					if($yspaht){
+						if($thumbpath != $yspaht)unlink($thumbpath);
+						$thumbpath = $yspaht;
+						$arrs['filepath'] = $yspaht;
+						$arrs['filesize'] = filesize($yspaht);
+						$arrs['filesizecn'] = $this->upobj->formatsize($arrs['filesize']);
+					}
+				}
+			}
+			
 			if($upses['picw']>$lw || $upses['pich']>$lh){
 				$imgaa	= c('image', true);
 				$imgaa->createimg($thumbpath);
@@ -181,10 +204,8 @@ class downChajian extends Chajian{
 	{
 		$s 			= strtolower($str);
 		$s2			= $s.'';
-		$lvlaraa  	= explode(',','user(),found_rows,(),select*from,select*,%20');
-		$lvlarab	= array();
-		foreach($lvlaraa as $_i)$lvlarab[]='';
-		$s = str_replace($lvlaraa, $lvlarab, $s);
+		$lvlaraa  	= explode(',','user(),found_rows,(),select*from,select*,%20,<,>');
+		$s = str_replace($lvlaraa, '', $s);
 		if($s!=$s2)$str = $s;
 		return $str;
 	}

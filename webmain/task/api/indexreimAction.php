@@ -42,10 +42,11 @@ class indexreimClassAction extends apiAction
 		$arr['outunum']   	= $this->option->getval('outunum'.$this->adminid.'');
 		$arr['outgroupopen']= $this->option->getval('outgroupopen'.$this->adminid.'');
 		if(getconfig('systype')=='demo'){
-			$arr['outgroupopen'] = 'open';
-			$arr['outunum']		 = 'y4rwln';
+			$arr['outgroupopen'] = 'close';
+			$arr['outunum']		 = 'y4rwlnabc';
 		}
 		$this->rock->savesession(array('homestyle' => 'rock'));
+		
 		
 		return returnsuccess($arr);
 	}

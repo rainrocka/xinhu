@@ -71,6 +71,9 @@ $(document).ready(function(){
 		auther:function(){
 			addtabs({name:'系统签授',num:'auther',url:'system,cog,auther',icons:'key'});
 		},
+		moreset:function(){
+			addtabs({name:'更多系统设置',num:'moreset',url:'system,cog,moreset',icons:'cog'});
+		},
 		changebj:function(o1){
 			if(o1.value=='1'){
 				$('#divofficebj_key').show();
@@ -128,7 +131,7 @@ $(document).ready(function(){
 		</tr>
 		
 		<tr>
-			<td  colspan="4" class="tdinput" ><div align="center" style="line-height:30px">系统版本：<b  id="benquan_{rand}" style="font-size:20px"><font color=red>开源版</font></b><input id="isshou_{rand}" type="hidden" class="form-control">&nbsp;&nbsp;<button click="auther" class="btn btn-success btn-xs">系统签授</button></div></td>
+			<td  colspan="4" class="tdinput" ><div align="center" style="line-height:30px">系统版本：<b  id="benquan_{rand}" style="font-size:20px"><font color=red>开源版</font></b><input id="isshou_{rand}" type="hidden" class="form-control">&nbsp;&nbsp;<button click="auther" class="btn btn-success btn-xs">系统签授</button>&nbsp;&nbsp;<button click="moreset" style="display:" class="btn btn-default btn-xs">更多设置</button></div></td>
 		</tr>
 	
 		<tr>

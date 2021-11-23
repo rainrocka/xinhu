@@ -187,7 +187,8 @@ function addkaoqin(o1, lbos){
 function adddk(ts, lx){
 	var o1 = get('dkbtn');
 	$(o1).html(''+ts+'中...');
-	var data = {location_x:latitude,type:lx,location_y:longitude,scale:12,fileid:upfileid,precision:accuracy,label:jm.base64encode(label),sm:jm.base64encode(explain)};
+	var ispz = (kqrs) ? kqrs.ispz : '0';
+	var data = {location_x:latitude,type:lx,location_y:longitude,scale:12,fileid:upfileid,precision:accuracy,label:jm.base64encode(label),sm:jm.base64encode(explain),ispz:ispz};
 	addkaoqinbool = true;
 	js.ajax('weixin','addlocation',data,function(ret){
 		js.wx.unload();

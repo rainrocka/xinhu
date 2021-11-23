@@ -196,8 +196,7 @@ js.dw = {
 			msg="未知错误。"
 			break;
 		}
-		//var url = 'http://www.rockoa.com/view_wxgzh.html';
-		//js.wx.alert('无法定位？请看<a href="'+url+'">[帮助设置]</a>');
+		if(NOWURL.substr(0,5)!='https')msg+='必须使用https访问';
 		js.msg('msg', msg);
 		js.dw.ondwerr(msg);
 	},

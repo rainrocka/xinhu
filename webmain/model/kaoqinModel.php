@@ -272,7 +272,7 @@ class kaoqinClassModel extends Model
 	/**
 	*	数组匹配人员对应哪个记录
 	*/
-	public function getpipeimid($uid=0, $garrs, $esfi='mid', $momid=1, $dt='')
+	public function getpipeimid($uid=0, $garrs=array(), $esfi='mid', $momid=1, $dt='')
 	{
 		$mid 	= $momid;
 		if($uid==0)return $mid;

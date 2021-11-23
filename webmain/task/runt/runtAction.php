@@ -48,6 +48,12 @@ class runtAction extends ActionNot
 		}
 	}
 	
+	//判断模块是否存在开启
+	public function moderock($num)
+	{
+		$to = m('flow_set')->rows("`num`='$num' and `status`=1");
+		return ($to>0);
+	}
 	
 	/**
 	*	运行完成后判断运行状态

@@ -9,7 +9,7 @@ function initbodys(){
 		changetotal();
 	});
 	
-	$(form('jiatype')).change(function(){
+	if(form('jiatype'))$(form('jiatype')).change(function(){
 		changetype(true);
 	});
 	
@@ -32,6 +32,7 @@ function loadinstyrs(){
 }
 
 function changetype(bo){
+	if(!form('jiatype'))return;
 	var v = form('jiatype').value;
 	var o = $('#div_jiafee').parent().parent();
 	if(v=='1'){
@@ -67,10 +68,12 @@ function changetotal(){
 		//js.setmsg('不允许跨日申请');
 		//return;
 	}
-	js.ajax(geturlact('total'),{stime:st,etime:et,jiatype:form('jiatype').value}, function(da){
+	var jty = 0;
+	if(form('jiatype'))jty = form('jiatype').value;
+	js.ajax(geturlact('total'),{stime:st,etime:et,jiatype:jty}, function(da){
 		var a= js.decode(da);
 		form('totals').value=a[0];
-		form('jiafee').value=a[2];
+		if(form('jiafee'))form('jiafee').value=a[2];
 		js.setmsg(a[1]);
 	},'post');
 }

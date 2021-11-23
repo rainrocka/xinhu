@@ -96,6 +96,11 @@ function winfocus(){
 					<span id="agenh_stotal" class="badge"></span>
 				</div>
 			</div>
+			
+			<div class="cursor lefticons" style="display:none" id="changetabs3" onclick="reim.changetabs(3)" title="客服">
+				<i class="icon-headphones"></i>
+				<span id="wait_stotal" class="badge"></span>
+			</div>
 		</div>
 	</td>
 	<td width="220px" id="maincenter" bgcolor="#ebebeb" style="border-right:1px #dddddd solid">
@@ -114,6 +119,14 @@ function winfocus(){
 				<div id="showgroup"></div>
 				<div align="center" style="padding:10px;"><a onclick="reim.initload(true)" style="font-size:12px;color:#bbbbbb" href="javascript:;"><i class="icon-refresh"></i> 刷新</a></div>
 			</div>
+			<?php if(getconfig('rockkefu_url')){?>
+			<div id="centshow3" style="display:none">
+				<div id="kefulistwait"></div>
+				<div id="kefulist_tems" style="padding-top:150px;text-align:center;color:#dddddd">
+				<span style="font-size:40px"><i class="icon-headphones"></i></span><br>暂无咨询消息
+				</div>
+			</div>
+			<?php }?>
 		</div>
 	</td>
 	<td>
@@ -126,5 +139,11 @@ function winfocus(){
 	</tr>
 	</table>	
 </div>
+<?php 
+if(getconfig('rockkefu_url')){
+	$_path = 'js/reim_xina_kefu.js';
+	if(file_exists($_path))echo '<script src="'.$_path.'?'.time().'"></script>';
+}
+?>
 </body>
 </html>

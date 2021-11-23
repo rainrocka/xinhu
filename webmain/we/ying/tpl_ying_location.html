@@ -146,8 +146,9 @@ function adddkjl(lx,ss,sm, uobo){
 	}
 	if(!sm)sm='';
 	scale	 = map.getZoom();
+	var ispz = (kqrs) ? kqrs.ispz : '0';
 	js.setoption('latlongedu',''+latitude+','+longitude+','+scale+'');
-	var data = {location_x:latitude,type:lx,location_y:longitude,fileid:upfileid,scale:scale,precision:accuracy,label:jm.base64encode(label),sm:jm.base64encode(sm)};
+	var data = {location_x:latitude,type:lx,location_y:longitude,fileid:upfileid,scale:scale,precision:accuracy,label:jm.base64encode(label),sm:jm.base64encode(sm),ispz:ispz};
 	js.ajax('weixin','addlocation',data,function(ret){
 		js.msg('success',''+ss+'成功:'+ret.now+'');
 		$('#dwdiv').after('<div>刚'+ss+'.'+ret.now.substr(10)+'('+label+')</div>');
