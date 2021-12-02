@@ -60,6 +60,7 @@ class flowClassAction extends Action
 	{
 		$tab = $cans['table'];
 		$tabs= trim($cans['tables']);
+		$names= trim($cans['names']);
 		$name= $this->rock->xssrepstr($cans['name']);
 		$num = strtolower($cans['num']);
 		$cobj= c('check');
@@ -75,8 +76,10 @@ class flowClassAction extends Action
 		if(!isempt($tabs)){
 			if($cobj->isincn($tabs))return '多行子表名不能包含中文';
 			$tabsa 		= explode(',', $tabs);
-			foreach($tabsa as $tabsas){
+			$namea 		= explode(',', $names);
+			foreach($tabsa as $k1=>$tabsas){
 				if(isempt($tabsas))return '多行子表名('.$tabs.')不规范';
+				if(isempt(arrvalue($namea, $k1)))return '第'.($k1+1).'个多行子表名称必须填写';
 			}
 		}
 		$rows['tables']= $tabs;

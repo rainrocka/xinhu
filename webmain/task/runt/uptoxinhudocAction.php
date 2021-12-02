@@ -5,6 +5,10 @@
 */
 class uptoxinhudocClassAction extends runtAction
 {
+	public function initAction()
+	{
+		exit('此文件已经不需要');
+	}
 
 	/**
 	*	发送上传文件

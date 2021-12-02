@@ -13,6 +13,8 @@ class qcloudCosClassAction extends runtAction
 	*/
 	public function runAction()
 	{
+		if(!getconfig('qcloudCos_SecretKey'))return '未配置腾讯云存储';
+		
 		$fileid = (int)$this->getparams('fileid','0'); //文件ID
 		if($fileid<=0)return 'error fileid';
 		$frs 	= m('file')->getone($fileid);
@@ -20,7 +22,7 @@ class qcloudCosClassAction extends runtAction
 		
 		$filepath 	= $frs['filepath'];
 		if(substr($filepath, 0, 4)=='http')return 'filepath is httppath';
-		
+		$nfilepath	= '';
 		if(substr($filepath,-6)=='uptemp'){
 			$aupath = ROOT_PATH.'/'.$filepath;
 			$nfilepath  = str_replace('.uptemp','.'.$frs['fileext'].'', $filepath);
@@ -31,6 +33,7 @@ class qcloudCosClassAction extends runtAction
 		}
 		
 		$msg 	= $this->sendpath($filepath, $frs, 'filepathout');
+		if($nfilepath && file_exists($nfilepath))unlink($nfilepath);
 		if($msg)return $msg;
 		
 		$thumbpath	= $frs['thumbpath'];

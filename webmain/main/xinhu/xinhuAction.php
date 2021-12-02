@@ -101,20 +101,7 @@ class xinhuClassAction extends Action
 		echo $msg;
 	}
 	
-	public function testsendsAjax()
-	{
-		$obj = m('reim');
-		$url = $obj->serverhosturl;
-		$msg = '';
-		if(isempt($url))$msg = '请先设置地址后保存在测试';
-		if($msg==''){
-			$url = str_replace('ws:','http:', $url);
-			$cont = c('curl')->getcurl($url);
-			if(!contain($cont,'400 Bad Request'))$msg = '通信地址不能用，请看当前页面提示';
-		}
-		if($msg=='')$msg = '通信地址可以用';
-		echo $msg;
-	}
+	
 	
 	
 	/**

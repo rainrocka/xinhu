@@ -10,7 +10,7 @@ $(document).ready(function(){
 		},{
 			text:'编号',dataIndex:'num'
 		},{
-			text:'模块名',dataIndex:'name',editor:true
+			text:'模块名',dataIndex:'name'
 		},{
 			text:'对应表',dataIndex:'table'
 		},{

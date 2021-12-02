@@ -15,6 +15,7 @@ class reimplatClassAction extends apiAction{
 	//平台上通知过来的数据
 	public function indexAction()
 	{
+		return 'success'; //这个用不到就直接返回了
 		$body = $this->getpostdata();
 		if(!$body)return;
 		$db 	 = m('reimplat:dept');

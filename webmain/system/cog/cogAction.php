@@ -223,7 +223,7 @@ class cogClassAction extends Action
 		
 		$str = '<?php
 if(!defined(\'HOST\'))die(\'not access\');
-//['.$this->adminname.']在'.$this->now.'通过[系统→系统工具→系统设置]，保存修改了配置文件
+//[管理员]在'.$this->now.'通过[系统→系统工具→系统设置]，保存修改了配置文件
 return array(
 '.$str1.'
 );';
