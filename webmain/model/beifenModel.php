@@ -9,7 +9,7 @@ class beifenClassModel extends Model
 		$alltabls 	= $this->db->getalltable();
 		$nobeifne	= array(''.PREFIX.'log',''.PREFIX.'logintoken',''.PREFIX.'kqanay',''.PREFIX.'email_cont',''.PREFIX.'dailyfx',''.PREFIX.'todo',''.PREFIX.'city',''.PREFIX.'kqjcmd'); //不备份的表;
 		
-		$beidir 	= ''.UPDIR.'/data/'.date('Y.m.d.H.i.s').'';
+		$beidir 	= ''.UPDIR.'/data/'.date('Y.m.d.H.i.s').'.'.rand(1000,9999).'';
 		foreach($alltabls as $tabs){
 			if(in_array($tabs, $nobeifne))continue;
 			$rows  	= $this->db->getall('select * from `'.$tabs.'`');
