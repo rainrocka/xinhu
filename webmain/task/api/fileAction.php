@@ -47,4 +47,28 @@ class fileClassAction extends apiAction
 		
 		$this->showreturn($rs);
 	}
+	
+	/**
+	*	生成水印图片
+	*/
+	public function shuiyinAction()
+	{
+		header("Content-type:image/png");
+		$font	= 'upload/data/simsun.ttc';
+		if(!file_exists($font))$font = 'C:/Windows/Fonts/simsun.ttc';
+		$w 		= 110;
+		$im		= imagecreatetruecolor($w,$w);
+		$bg		= imagecolorallocate($im,255,255,255);
+		imagefill($im,0,0,$bg);	//添加背景颜色
+		$str 	= $this->adminname;
+		//$str 	= '信呼开发团队'; //改成你要的文字去掉注释
+		$black	= imagecolorallocate($im,220,220,220);
+		if(file_exists($font)){
+			imagettftext($im, 14,45, 20, $w-10,$black, $font, $str);
+		}else{
+			imagestring($im,5,5, $w-50,$this->adminuser,$black);
+		}
+		imagepng($im);
+		imagedestroy($im);
+	}
 }

@@ -87,6 +87,14 @@ class checkChajian extends Chajian{
 	}
 	
 	/**
+	*	是否为日期时间
+	*/
+	public function isdatetime($str)
+	{
+		return preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})$/", $str);
+	}
+	
+	/**
 	*	是否为月份
 	*/
 	public function ismonth($str)

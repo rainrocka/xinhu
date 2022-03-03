@@ -50,7 +50,7 @@ final class rockClass
 	*/
 	public function xssrepstr($str)
 	{
-		$xpd  = explode(',','(,), ,	,<,>,\\,*,/,&,%,$,^,[,],{,},!,@,#,",+,?,;\'');
+		$xpd  = explode(',','(,), ,	,<,>,\\,*,&,%,$,^,[,],{,},!,@,#,",+,?,;\'');
 		$xpd[]= "\n";
 		return str_ireplace($xpd, '', $str);
 	}

@@ -20,7 +20,7 @@ $(document).ready(function(){
 //[自定义区域start]
 
 bootparams.fanye=false;
-bootparams.celleditor=true;
+//bootparams.celleditor=true;
 bootparams.tree=true;
 c.setcolumns('sort',{
 	'editor':true

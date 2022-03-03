@@ -57,6 +57,7 @@ function initbody(){
 	}
 	
 	$('#contentshow img[onclick=""]').click(function(){c.showviews(this)});
+	c.addwater();
 }
 function showchayue(opt, st){
 	alert('总查阅:'+st+'次\n最后查阅：'+opt+'');
@@ -636,7 +637,15 @@ var c={
 			$('#editcontview').html(ret);
 		},'get');
 	},
-	
+	addwater:function(){
+		if(typeof(watertype)!='string' || watertype!='1')return;
+		var dizs = 'api.php?m=file&a=shuiyin';
+		if(get('maindiv')){
+			get('maindiv').style.background='url('+dizs+') white';
+		}else{
+			get('contentshow').style.background='url('+dizs+') white';
+		}
+	},
 	//审核表单中可重写的方法，录入js写用到
 	onselectdata:{},
 	onselectdataall:function(){},

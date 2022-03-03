@@ -58,12 +58,18 @@ $(document).ready(function(){
 			
 		
 			
-			<tr><td align="right" style="color:gray">图片压缩尺寸：</td><td><input name="imgcompress" type="text" value="<?=getconfig('imgcompress')?>" style="width:150px" placeholder="不设置不压缩" class="form-control">
+			<tr><td align="right" style="color:gray">图片压缩尺寸：</td><td><input name="imgcompress" type="text" value="<?=getconfig('imgcompress')?>" style="width:200px" placeholder="不设置不压缩" class="form-control">
 			<span style="color:#aaaaaa;">仅对jpg文件压缩格式：宽x高，如800x1000</span>
 			</td></tr>
 			<tr><td height="10"></td></tr>
 			
-		
+			<tr><td align="right" style="color:gray">详情页水印：</td><td><select style="width:200px" name="watertype" class="form-control"><option value="">默认没有开启</option><option <?php if(getconfig('watertype')=='1')echo 'selected';?> value="1">开启</option></select>
+			<span style="color:#aaaaaa;"><a target="_blank" href="<?=URLY?>view_shuiyin.html">帮助</a>说明</span></td></tr>
+			<tr><td height="10"></td></tr>
+			
+			<tr><td align="right" style="color:gray">APP音视频通话：</td><td><select style="width:200px" name="video_bool" class="form-control"><option value="0">关闭</option><option <?php if(getconfig('video_bool'))echo 'selected';?> value="1">开启</option></select>
+			<span style="color:#aaaaaa;">开启后需要到[系统→系统工具→插件模块]安装音视频通话的插件</span></td></tr>
+			<tr><td height="10"></td></tr>
 
 			<tr>
 				<td  align="right"></td>

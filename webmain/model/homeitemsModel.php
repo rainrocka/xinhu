@@ -85,6 +85,8 @@ class homeitemsClassModel extends Model
 	//通知公告读取，5是读取的条数
 	public function get_gong_arr()
 	{
+		$to = m('mode')->rows("`num`='gong' and `status`=1");
+		if($to==0)return array();
 		return m('flow')->initflow('gong')->getflowrows($this->adminid,'my', 5);
 	}
 	
@@ -130,6 +132,8 @@ class homeitemsClassModel extends Model
 	//读取新闻的
 	public function get_news_arr()
 	{
+		$to = m('mode')->rows("`num`='news' and `status`=1");
+		if($to==0)return array('typearr'=>array(),'rows'=>array());
 		$typearr = m('option')->getdata('newstype',"and `value` like 'home%'");
 		$rows 	 = m('flow')->initflow('news')->getflowrows($this->adminid,'my');
 		

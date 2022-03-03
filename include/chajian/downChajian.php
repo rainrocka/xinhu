@@ -19,6 +19,7 @@ class downChajian extends Chajian{
 	*/
 	public function getallfilename($ext)
 	{
+		if(!is_dir(UPDIR))mkdir(UPDIR);
 		$mkdir 	= ''.UPDIR.'/'.date('Y-m').'';
 		if(!is_dir($mkdir))mkdir($mkdir);
 		$allfilename			= ''.$mkdir.'/'.date('d_His').''.rand(10,99).'.'.$ext.'';

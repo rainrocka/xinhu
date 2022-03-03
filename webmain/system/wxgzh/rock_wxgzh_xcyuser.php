@@ -49,13 +49,14 @@ $(document).ready(function(){
 	
 	//编辑和删除按钮可用状态切换
 	function btn(bo){
-		
+		get('del_{rand}').disabled=bo;
 	}
 	
 
 	var c={
-		
-		
+		del:function(){
+			a.del();
+		},
 		refresh:function(){
 			a.reload();//刷新列表的方法
 		},
@@ -87,7 +88,7 @@ $(document).ready(function(){
 
 	</td>
 	<td align="right" nowrap>
-		
+		<button class="btn btn-danger" id="del_{rand}" click="del" disabled type="button"><i class="icon-trash"></i> 删除</button>
 	</td>
 </tr>
 </table>

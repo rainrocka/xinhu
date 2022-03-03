@@ -189,6 +189,7 @@ class indexreimClassAction extends apiAction
 	public function ldataAction()
 	{
 		$loaddt		= $this->rock->jm->base64decode($this->post('loaddt'));
+		if($loaddt && !c('check')->isdatetime($loaddt))$loaddt='';
 		$type		= $this->post('type','history');
 		$dbs 		= m('reim');
 		$json		= array();

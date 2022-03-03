@@ -20,7 +20,7 @@ $db			= null;
 $smarty		= false;
 define('HOST', $rock->host);
 define('REWRITE', 'true');
-if(!defined('PROJECT'))define('PROJECT', $rock->get('p', 'webmain'));
+if(!defined('PROJECT'))define('PROJECT', 'webmain');
 if(!defined('ENTRANCE'))define('ENTRANCE', 'index');
 
 $config		= array(

@@ -15,6 +15,7 @@ class mode_customerClassAction extends inputAction{
 		m('custsale')->update("`custname`='$name'", "`custid`='$id'");
 		m('custappy')->update("`custname`='$name'", "`custid`='$id'");
 		m('goodm')->update("`custname`='$name'", "`custid`='$id' and `type` in(1,2)");//1采购,2销售
+		m('crm')->custtotal($id);
 	}
 	
 	

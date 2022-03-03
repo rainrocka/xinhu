@@ -9,7 +9,7 @@ class beifenClassAction extends runtAction
 	//每天cli备份数据为sql文件的
 	public function defaultAction()
 	{
-		
+		if(PHP_SAPI != 'cli') return 'plase cli run';
 		$alltabls 	= $this->db->getalltable();
 		$nobeifne	= array(''.PREFIX.'log',''.PREFIX.'logintoken',''.PREFIX.'kqanay',''.PREFIX.'email_cont',''.PREFIX.'reads',''.PREFIX.'dailyfx',''.PREFIX.'todo',''.PREFIX.'city'); //不备份的表;
 		$data 		= array();
@@ -39,7 +39,7 @@ class beifenClassAction extends runtAction
 		}
 
 		$rnd  = str_shuffle('abcedfghijk').rand(1000,9999);
-		$file = ''.DB_BASE.'_'.date('Y.m.d.H.i.s').'.sql';
+		$file = ''.DB_BASE.'_'.date('Y.m.d.H.i.s').'_'.$rnd.'.sql';
 		$filepath = ''.UPDIR.'/data/'.$file.'';
 		$this->rock->createtxt($filepath, $strstr);
 		

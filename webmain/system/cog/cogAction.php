@@ -257,14 +257,14 @@ return array(
 	
 	public function delloginAjax()
 	{
-		$id = $this->post('id');
+		$id = c('check')->onlynumber($this->post('id'));
 		m('logintoken')->delete('id in('.$id.')');
 		backmsg();
 	}
 	
 	public function dellogAjax()
 	{
-		$id = $this->post('id');
+		$id = c('check')->onlynumber($this->post('id'));
 		m('log')->delete('id in('.$id.')');
 		backmsg();
 	}
@@ -363,11 +363,11 @@ return array(
 		if(getconfig('systype')=='demo')return '演示不要改';
 		$stype = (int)$this->post('stype','0');
 		$msg  = 'ok';
-		if($stype==0)$msg = $this->saveconfig('title,imgcompress');
+		if($stype==0)$msg = $this->saveconfig('title,imgcompress,watertype,video_bool',',video_bool,');
 	
 		return $msg;
 	}
-	private function saveconfig($cont)
+	private function saveconfig($cont, $bsto)
 	{
 		$path = ''.P.'/'.P.'Config.php';
 		
@@ -386,7 +386,10 @@ return array(
 					if(contain($val,'*****')){
 						$strs.="".$line."\n";
 					}else{
-						$strs.="	'".$fid."'	=> '".$val."',\n";
+						$val  = $this->rock->xssrepstr($val);
+						$vals = "'".$val."'";
+						if(contain($bsto,','.$fid.','))$vals = ($val=='1') ? 'true' : 'false';
+						$strs.="	'".$fid."'	=> ".$vals.",\n";
 					}
 					$bo = true;
 					$szida[]=$fid;

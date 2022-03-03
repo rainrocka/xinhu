@@ -154,9 +154,11 @@ class crmClassModel extends Model
 	public function custtotal($ids='')
 	{
 		$wher	= '';
+		$whe2	= '';
 		$ustr 	= '`moneyz`=0,`moneyd`=0,`htshu`=0';
 		if($ids!=''){
 			$wher=' and `custid` in('.$ids.')';
+			$whe2=' and a.`id` in('.$ids.')';
 			$this->update($ustr,'id in('.$ids.')');
 		}else{
 			$this->update($ustr,'id>0');
@@ -179,7 +181,7 @@ class crmClassModel extends Model
 			$custid = $rs['custid'];
 			$this->update('htshu='.$rs['htshu'].'', $custid);
 		}
-		$rows= $this->db->getall('select b.name,a.id from `[Q]customer` a left join `[Q]admin` b on a.`uid`=b.`id` where  a.`uid`>0 and (a.`suoname`<>b.`name` or a.`suoname` is null)');
+		$rows= $this->db->getall('select b.name,a.id from `[Q]customer` a left join `[Q]admin` b on a.`uid`=b.`id` where  a.`uid`>0 '.$whe2.' and (a.`suoname`<>b.`name` or a.`suoname` is null)');
 		foreach($rows as $k=>$rs){
 			$this->update("`suoname`='".$rs['name']."'", $rs['id']);
 		}

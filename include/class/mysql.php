@@ -44,6 +44,9 @@ abstract class mysql{
 		'betweeni' => "BETWEEN ?0 AND ?1",	'notbetweeni' => "NOT BETWEEN ?0 AND ?1"
 	);
 	
+	//sql中禁用方法
+	protected $disabledfua = array('dumpfile','outfile','load_file','system_user');
+	
 	public function __construct()
 	{
 		$this->rock			= $GLOBALS['rock'];
@@ -117,6 +120,9 @@ abstract class mysql{
 		if($this->conn == null)exit('数据库的帐号/密码有错误!'.$this->errormsg.'');
 		$sql	= trim($sql);
 		$sql	= str_replace(array('[Q]','[q]','{asqom}'), array($this->perfix, $this->perfix,''), $sql);
+		$sqls 	= strtolower($sql);
+		foreach($this->disabledfua as $fus)if(contain($sqls,$fus))exit('禁止包含'.$fus.'字符串');
+		
 		$this->countsql++;
 		$this->sqlarr[]	= $sql;
 		$this->nowsql	= $sql;

@@ -19,7 +19,7 @@ if($jswxsdk=='1')echo '<script type="text/javascript" src="js/jswxsdk.js"></scri
 <script type="text/javascript" src="web/res/js/jquery-imgview.js"></script>
 <script type="text/javascript" src="mode/plugin/jquery-rockmodels.js"></script>
 <script>
-var mid = '<?=$da['arr']['mid']?>',adminid='<?=$da['adminid']?>',admintoken='',modenum='<?=$da['arr']['modenum']?>',ismobile=1,receiptrs=<?=json_encode($da['arr']['receiptrs'])?>,isinput=0;
+var mid = '<?=$da['arr']['mid']?>',adminname='<?=$da['adminname']?>',adminid='<?=$da['adminid']?>',admintoken='',modenum='<?=$da['arr']['modenum']?>',ismobile=1,receiptrs=<?=json_encode($da['arr']['receiptrs'])?>,isinput=0,watertype='<?=getconfig('watertype')?>';
 js.changeuser=function(na,lx,tit, cans){
 	var can = {
 		'changetype':lx,
