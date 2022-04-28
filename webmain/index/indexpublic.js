@@ -148,6 +148,7 @@ function optmenuclass(o1,num,id,obj,mname,oi, cola){
 	this.obj 	= o1;
 	this.columns= cola;
 	this.optmenudatas= {};
+	this.optobj = obj.options.optobj || {};
 	var me 		= this;
 	xrockcd={inputblur:function(){},selectdata:function(){js.msg('msg','此功能未开发')}}
 	this._init=function(){
@@ -224,11 +225,12 @@ function optmenuclass(o1,num,id,obj,mname,oi, cola){
 			if(isempt(upg)){
 				js.msg('msg','没有设置自定义方法');
 			}else{
-				if(!window[upg]){
+				var dxs = this.optobj[upg];
+				if(!dxs)dxs = window[upg];
+				if(!dxs){
 					js.msg('msg','设置的方法“'+upg+'”不存在');
 				}else{
-					var xda = this.tableobj.getData(this.oi);
-					window[upg](xda,d);
+					dxs(this.tableobj.getData(this.oi),d);
 				}
 			}
 			return;

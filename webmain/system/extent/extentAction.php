@@ -17,7 +17,7 @@ class extentClassAction extends Action
 	{
 		$where = '';
 		if($this->adminid>1 && ISMORECOM){
-			$where.= 'and `companyid` in(0,'.m('admin')->getcompanyid().')';
+			$where.= 'and `companyid` in('.m('admin')->getcompanyid().')';
 		}
 		return $where;
 	}

@@ -187,8 +187,8 @@ class downChajian extends Chajian{
 				c('rockqueue')->push('flow,uptofile', array('fileid'=>$id), $stime);
 			}
 			
-			//自动上传到腾讯云存储
-			if(getconfig('qcloudCos_autoup') && $noasyn != 'yes'){
+			//自动上传到腾讯云存储/阿里云oss存储
+			if((getconfig('qcloudCos_autoup') || getconfig('alioss_autoup'))  && $noasyn != 'yes'){
 				$stime = time()+rand(3,6);
 				if($subo)$stime=0;
 				c('rockqueue')->sendfile($id, $stime);

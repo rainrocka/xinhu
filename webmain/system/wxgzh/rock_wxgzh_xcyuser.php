@@ -80,7 +80,7 @@ $(document).ready(function(){
 	<td width="95%" align="left">
 	
 		<div class="input-group" style="width:220px;">
-			<input class="form-control" id="key_{rand}"   placeholder="昵称/城市/省份">
+			<input class="form-control" id="key_{rand}"  placeholder="昵称/城市/省份">
 			<span class="input-group-btn">
 				<button class="btn btn-default" click="search" type="button"><i class="icon-search"></i></button>
 			</span>

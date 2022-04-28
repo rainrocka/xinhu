@@ -353,6 +353,7 @@ class Action extends mainAction
 		if($id > 0)$otherfields.=','.$editotherfields.'';
 		if($otherfields != ''){
 			$otherfields = str_replace(array('{now}','{date}','{admin}','{adminid}'),array($this->now,date('Y-m-d'),$this->adminname,$this->adminid),$otherfields);
+			if(contain($otherfields,'{companyid}'))$otherfields = str_replace('{companyid}',m('admin')->getcompanyid(),$otherfields);
 			$fiarsse = explode(',', $otherfields);
 			foreach($fiarsse as $ffes){
 				if($ffes!=''){

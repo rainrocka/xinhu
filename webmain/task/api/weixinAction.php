@@ -21,11 +21,7 @@ class weixinClassAction extends apiAction{
 			$url = $this->getvals('url');
 			if($isqywx){
 				$agentid = $this->rock->post('agentid', $this->getsession('wxqyagentid'));
-				if(isempt($agentid)){
-					$arr['appId'] = '';
-				}else{
-					$arr = m('weixinqy:signjssdk')->getsignsdk($url, $agentid);
-				}
+				$arr = m('weixinqy:signjssdk')->getsignsdk($url, $agentid);
 			}else{
 				$arr = m('weixin:signjssdk')->getsignsdk($url);
 			}

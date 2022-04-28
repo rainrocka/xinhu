@@ -19,6 +19,7 @@ abstract class Model{
 	public  $table;
 	public 	$adminname;
 	public 	$adminid;
+	public 	$tempxinxi	= array();
 	
 	public function __construct($table='')
 	{
@@ -176,6 +177,14 @@ abstract class Model{
 	public function count($where='1=1')
 	{
 		return $this->rows($where);
+	}
+	
+	public function getXinxi($id,$fields='*')
+	{
+		if(isset($this->tempxinxi[$id]))return $this->tempxinxi[$id];
+		$rs = $this->getone($id,$fields);
+		$this->tempxinxi[$id] = $rs;
+		return $rs;
 	}
 }
 

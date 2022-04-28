@@ -174,7 +174,7 @@ js.serverdt=function(atype){
 }
 js.open=function(url,w,h,wina,can,wjcan){
 	if(wina){try{var owina	= this.openarr[wina];owina.document.body;owina.focus();return owina;}catch(e){}}
-	if(!w)w=600;if(!h)h=500;
+	if(!w)w=750;if(!h)h=500;
 	var l=(screen.width-w)*0.5,t=(screen.height-h)*0.5-50,rnd = parseInt(Math.random()*50);
 	if(rnd%2==0){l=l+rnd;t=t-rnd;}else{l=l-rnd;t=t+rnd;}
 	if(!can)can={};

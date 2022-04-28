@@ -43,6 +43,13 @@ $(document).ready(function(){
 		}],
 		itemclick:function(){
 			btn(false);
+		},
+		load:function(d){
+			if(d.pdata && d.pdata.length>0){
+				var o1 = get('soupid_{rand}');
+				js.setselectdata(o1,d.pdata,'id');
+				$(o1).change(c.changed);
+			}
 		}
 	});
 	function btn(bo){
@@ -52,6 +59,9 @@ $(document).ready(function(){
 	}
 	
 	var c = {
+		changed:function(){
+			a.setparams({pid:this.value},true);
+		},
 		del:function(){
 			a.del({url:js.getajaxurl('delmenu','{mode}','{dir}')});
 		},
@@ -115,6 +125,9 @@ $(document).ready(function(){
 	</td>
 
 	<td  style="padding-left:10px">
+		<select class="form-control" style="width:150px" id="soupid_{rand}" >
+		<option value="0">-所有的菜单-</option>
+		</select>
 		<!--
 		<div class="input-group" style="width:100px">
 			<input class="form-control" id="key_{rand}"   placeholder="pid">

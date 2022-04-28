@@ -259,7 +259,7 @@ class taskClassModel extends Model
 				$len 	= strlen($url)+rand(1000,9999);
 				$option->setval($keynum, $len);
 			}
-			$barr	= c('rockqueue')->push($url, array('rtype'=>'queue','nolog'=>'1','runtime'=>$runtime), $runtime, $len);
+			$barr	= c('rockqueue')->push($url, array('rtype'=>'queue','dwnum'=>'dev','nolog'=>'1','runtime'=>$runtime), $runtime, $len);
 			if(!COMPANYNUM && getconfig('platdwnum')){
 				$creaar = m('company')->getall('`iscreate`=1');
 				foreach($creaar as $k=>$rs)$barr = c('rockqueue')->push($url, array('dwnum'=>$rs['num'],'nolog'=>'1','runtime'=>$runtime), $runtime, $len+1+$k);

@@ -1,6 +1,6 @@
 <?php
 /**
-*	文件同步上传到腾讯云存储
+*	文件同步上传到腾讯云存储/阿里云oss，两个都配置只上传到腾讯云存储。
 *	
 */
 class qcloudCosClassAction extends runtAction
@@ -13,7 +13,7 @@ class qcloudCosClassAction extends runtAction
 	*/
 	public function runAction()
 	{
-		if(!getconfig('qcloudCos_SecretKey'))return '未配置腾讯云存储';
+		if(!getconfig('qcloudCos_SecretKey') && !getconfig('alioss_keysecret'))return '未配置存储';
 		
 		$fileid = (int)$this->getparams('fileid','0'); //文件ID
 		if($fileid<=0)return 'error fileid';
@@ -48,7 +48,14 @@ class qcloudCosClassAction extends runtAction
 	{
 		$path 		= ROOT_PATH.'/'.$filepath;
 		if(!file_exists($path))return 'filepath['.$fields.'] not exists';
-		$res = c('qcloudCos')->upload($path,'', $filepath);
+		if(getconfig('qcloudCos_autoup')){
+			$res = c('qcloudCos')->upload($path,'', $filepath);
+		}else{
+			if(getconfig('alioss_autoup')){
+				$res = c('alioss')->uploadFile($filepath);
+				if(!$res['success'])$res['message'] = $res['msg'];
+			}
+		}
 		if($res['code']==0){
 			$data = $res['data'];
 			$bo = m('file')->update("`$fields`='".$res['url']."'", $frs['id']);
@@ -85,9 +92,23 @@ class qcloudCosClassAction extends runtAction
 		$filepath 	 = ''.UPDIR.'/logs/costmp/'.date('YmdHis').'a'.$fileid.'.'.$fileext.'';//用临时文件
 		$dstPath	 = ROOT_PATH.'/'.$filepath;
 		$this->rock->createdir($filepath);
-		$fsarr 		 = explode('myqcloud.com', $filepathout);
-		$srcPath 	 = substr($fsarr[1],1);
-		$res 		 = c('qcloudCos')->download($srcPath, $dstPath);
+		$res		 = returnerror('error');
+		$res['message'] = '';
+		//腾讯云的存储
+		if(contain($filepathout,'myqcloud.com')){
+			$fsarr 		 = explode('myqcloud.com', $filepathout);
+			$srcPath 	 = substr($fsarr[1],1);
+			$res 		 = c('qcloudCos')->download($srcPath, $dstPath);
+		}
+		
+		//腾讯云的存储
+		if(contain($filepathout,'aliyuncs.com')){
+			$fsarr 		 = explode('aliyuncs.com', $filepathout);
+			$srcPath 	 = substr($fsarr[1],1);
+			$res 		 = c('alioss')->download($srcPath, $dstPath);
+			if(!$res['success'])$res['message'] = $res['msg'];
+		}
+		
 		if($res['code']==0 && file_exists($dstPath)){
 			if(!c('upfile')->issavefile($fileext)){
 				$filebase64	= base64_encode(file_get_contents($dstPath));
@@ -98,7 +119,7 @@ class qcloudCosClassAction extends runtAction
 			$fobj->update("`filepath`='$filepath'", $fileid);
 		}else{
 			$msg = ''.$frs['filename'].',无法下载('.$res['code'].')：'.$res['message'].'';
-			m('log')->addlogs('腾讯云存储下载',$msg,2);
+			m('log')->addlogs('存储下载',$msg,2);
 		}
 		
 		return $res['code'].'.'.$res['message'].'@'.$filepath.'@'.$srcPath;

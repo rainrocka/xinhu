@@ -4,7 +4,13 @@ class companyClassModel extends Model
 {
 	public function getselectdata($lx=0)
 	{
-		$rows = $this->getall('id>0','`id`,name,pid','`sort`');
+		$where= 'id>0';
+		if(ISMORECOM && $this->adminid>1){
+			$cinfo = m('admin')->getcompanyinfo($this->adminid);
+			$allid = join(',',$cinfo['companyallid']);
+			$where = 'id in('.$allid.')';
+		}
+		$rows = $this->getall($where,'`id`,name,pid','`sort`');
 		$barr = array();
 		if($lx==0)$barr[] = array(
 			'value' => '0',

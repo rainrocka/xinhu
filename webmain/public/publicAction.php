@@ -73,10 +73,10 @@ class publicClassAction extends ActionNot{
 	
 	private function getdstr($frs)
 	{
-		$fenz = (int)(floatval($frs['filesize'])/(1024*100));
+		$fenz = (int)(floatval($frs['filesize'])/(1024*150));
 		if($fenz<5)$fenz = 5;
 		c('rockqueue')->senddown($frs['id']);
-		return '<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"><img src="images/mloading.gif" align="absmiddle"> 等待从远程文件下载(<span id="mia0shu">'.$fenz.'</span>)...<script>zmian='.$fenz.';function yunshi(){zmian--;if(zmian==0){location.reload();return;};document.getElementById(\'mia0shu\').innerHTML=zmian};setInterval(yunshi,1000);</script>';
+		return '<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"><img src="images/mloading.gif" align="absmiddle"> '.$frs['filename'].'('.$frs['filesizecn'].')等待从远程文件下载(<span id="mia0shu">'.$fenz.'</span>)...<script>zmian='.$fenz.';function yunshi(){zmian--;if(zmian==0){location.reload();return;};document.getElementById(\'mia0shu\').innerHTML=zmian};setInterval(yunshi,1000);</script>';
 	}
 	
 	private function topdfshow($frs, $lx=0)

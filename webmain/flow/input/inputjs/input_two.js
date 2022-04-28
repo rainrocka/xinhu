@@ -364,5 +364,19 @@ var inputtwo={
 				js.msgerror(ret.msg);
 			}
 		},'get,json');
+	},
+	
+	//手写签名
+	autograph:function(fid,lx){
+		if(typeof(autographClass)=='undefined'){
+			js.importjs('web/res/js/autograph.js?'+Math.random()+'', function(){
+				c.autograph(fid,lx);
+			});
+			return;
+		}
+		var obj = new autographClass({fid:fid});
+		if(lx==0)obj.create();
+		if(lx==1)obj.imports();
+		if(lx==2)obj.clear();
 	}
 }

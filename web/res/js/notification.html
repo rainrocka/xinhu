@@ -23,7 +23,9 @@ $(document).ready(function(){
 	if(nr){
 		nr = unescape(nr);
 		var da = JSON.parse(nr);
-		$('#logodiv').attr('src', da.icon);
+		var src = da.icon;
+		if(src.substr(0,4)!='http')src='../../../'+src+'';
+		$('#logodiv').attr('src', src);
 		$('#titlediv').html(da.title);
 		$('#messdiv').html(da.body);
 	}

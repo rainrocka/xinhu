@@ -435,6 +435,9 @@ var c={
 						for(j=0;j<ojb.length;j++){
 							if(val.indexOf(','+ojb[j].value+',')>-1)ojb[j].checked=true;
 						}
+					}else if(flx=='graph'){
+						if(form(fid))form(fid).value=val;
+						if(val)$('#graphview_'+fid+'').append('<div><img id="imgqianming_'+fid+'" src="'+val+'"  height="90"></div>');
 					}else if(flx=='checkbox'){
 						form(fid).checked = (val=='1');
 					}else if(flx=='htmlediter' && this.editorobj[fid]){

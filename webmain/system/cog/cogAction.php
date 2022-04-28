@@ -171,6 +171,10 @@ class cogClassAction extends Action
 		
 		if($asynsend == '1' && isempt($puurl))exit('未安装或开启服务端不能使用异步发送消息');
 		
+		$xpd = explode(',', "\\,', ,<,>,*,%,&");
+		$xpd[]= "\n";
+		foreach($arr as $k=>$v)if(!is_bool($v))$arr[$k] = str_replace($xpd,'',$v);
+		
 		$smarr['url']			= '系统URL';
 		$smarr['localurl']		= '本地系统URL，用于服务器上浏览地址';
 		$smarr['title']			= '系统默认标题';
@@ -363,7 +367,7 @@ return array(
 		if(getconfig('systype')=='demo')return '演示不要改';
 		$stype = (int)$this->post('stype','0');
 		$msg  = 'ok';
-		if($stype==0)$msg = $this->saveconfig('title,imgcompress,watertype,video_bool',',video_bool,');
+		if($stype==0)$msg = $this->saveconfig('title,imgcompress,watertype,video_bool,flowchehuitime',',video_bool,');
 	
 		return $msg;
 	}

@@ -227,6 +227,11 @@ class inputChajian extends Chajian
 			$str.= '<div style="display:inline-block" id="fileview_'.$fname.'"><div onclick="c.uploadfilei(\''.$fname.'\')" style="display:;border:dashed 1px #cccccc" id="'.$fname.'_divadd" class="upload_items"><img class="imgs" src="images/jia.png"></div></div>';
 			$str.= '<div style="display:none" tsye="file" tnam="'.$fname.'" tdata="'.$data.'" id="filed_'.$fname.'"><input type="file" style="width:120px" id="filed_'.$fname.'_inp"></div>';
 		}
+		if($type=='graph'){
+			$str = '<input name="'.$fname.'" value="'.$val.'" type="hidden">';
+			$str.= '<div id="graphview_'.$fname.'" >';
+			$str.= '<button type="button" onclick="c.autograph(\''.$fname.'\',0)" class="webbtn">手写</button><button type="button" onclick="c.autograph(\''.$fname.'\',1)" class="webbtn">引入</button><button onclick="c.autograph(\''.$fname.'\',2)" class="webbtn" type="button">x</button></div>';
+		}
 		if($type=='auto'){
 			$datanum = $data;
 			if(!isempt($datanum)){
@@ -419,5 +424,20 @@ class inputChajian extends Chajian
 			}
 		}
 		return $rows;
+	}
+	
+	/**
+	*	创建签名图片生成的
+	*/
+	public function createqianming($_val)
+	{
+		if(isempt($_val))return '';
+		if(substr($_val,0,10)=='data:image'){
+			$_vlu = ''.UPDIR.'/'.date('Y-m').'/qmimg'.time().''.rand(10,99).'.png';
+			$bar= explode(',', $_val);
+			$bo = $this->rock->createtxt($_vlu, base64_decode($bar[1]));
+			if($bo)$_val = $_vlu;
+		}
+		return $_val;
 	}
 }                                              

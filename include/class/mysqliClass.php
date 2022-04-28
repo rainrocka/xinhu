@@ -50,6 +50,7 @@ class mysqliClass extends mysql{
 	{
 		$sql	= 'select * from '.$table.' limit 0,0';
 		$result	= $this->query($sql);
+		if(!$result)return array();
 		$finfo 	= $result->fetch_fields();
 		foreach ($finfo as $val) {
 			$arr[] = $val->name;

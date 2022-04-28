@@ -44,6 +44,9 @@ class loginClassModel extends Model
 		$lasci	= m('log')->rows("`level`=3 and `device`='$device' and `optdt`>'$dtstr'");
 		if($lasci>=5)return '登录错误太频繁，请稍后在试';
 		
+		$lasci	= m('log')->rows("`level`=3 and `optdt`='{$this->rock->now}'");
+		if($lasci>0)return '登录太快了，1秒后再试';
+		
 		$loginyzm	= (int)getconfig('loginyzm','0');
 		
 		if($loginyzm == 2 || $ltype==1){

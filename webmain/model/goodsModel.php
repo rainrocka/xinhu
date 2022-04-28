@@ -108,7 +108,7 @@ class goodsClassModel extends Model
 			$where.= ' and a.`id` in('.$aids.')';
 		}
 		$where .= m('admin')->getcompanywhere(1,'a.');
-		$rowss  = $this->db->getall('select a.`id`,a.`name`,a.`xinghao`,a.`stock`,a.`price`,a.`unit`,b.`name` as `typename` from `[Q]goods` a left join `[Q]option` b on a.`typeid`=b.`id` where '.$where.'');
+		$rowss  = $this->db->getall('select a.`id`,a.`name`,a.`xinghao`,a.`guige`,a.`stock`,a.`price`,a.`unit`,b.`name` as `typename` from `[Q]goods` a left join `[Q]option` b on a.`typeid`=b.`id` where '.$where.'');
 		$rows	= array();
 		foreach($rowss as $k=>$rs){
 			$name 	= $rs['name'];
@@ -231,6 +231,7 @@ class goodsClassModel extends Model
 					}
 				}
 			}
+			$this->typenamearr[$tid] = $varr;
 			return $varr;
 		}
 	}

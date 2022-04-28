@@ -19,19 +19,30 @@ $(document).ready(function(){
 	
 //[自定义区域start]
 
-$('#tdright_{rand}').prepend(c.getbtnstr('重新统计物品数','retotal')+'&nbsp;');
-c.retotal=function(){
-	js.ajax(this.getacturl('retotal'),{},function(s){
-		a.reload();
-	},'get',false,'统计中...,统计完成')
-}
-c.setcolumns('wpshu', {
-	renderer:function(v,d){
-		return ''+v+'<a href="javascript:;" onclick="chakanpand{rand}(\''+d.depotname+'\','+d.id+')">查看</a>';
+if(pnum=='all'){
+	$('#tdright_{rand}').prepend(c.getbtnstr('重新统计物品数','retotal')+'&nbsp;');
+	c.retotal=function(){
+		js.ajax(this.getacturl('retotal'),{},function(s){
+			a.reload();
+		},'get',false,'统计中...,统计完成')
 	}
-});
-chakanpand{rand}=function(na,id){
-	addtabs({name:'仓库['+na+']下物品',url:'main,goods,pdck,depotid='+id+'','num':'pdck'+id+''});
+	c.setcolumns('wpshu', {
+		renderer:function(v,d){
+			return ''+v+'<a href="javascript:;" onclick="chakanpand{rand}(\''+d.depotname+'\','+d.id+')">查看</a>';
+		}
+	});
+	chakanpand{rand}=function(na,id){
+		addtabs({name:'仓库['+na+']下物品',url:'main,goods,pdck,depotid='+id+'','num':'pdck'+id+''});
+	}
+}
+
+if(pnum=='alljxc'){
+	$('#tdright_{rand}').prepend(c.getbtnstr('重新统计商品数','retotal')+'&nbsp;');
+	c.retotal=function(){
+		js.ajax(publicmodeurl('jxcxiaoshou','reshus'),{},function(s){
+			a.reload();
+		},'get',false,'统计中...,统计完成')
+	}
 }
 
 //[自定义区域end]

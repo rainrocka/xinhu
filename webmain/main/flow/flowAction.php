@@ -28,6 +28,20 @@ class flowClassAction extends Action
 		return $where;
 	}
 	
+	public function flowwheresave_before($table,$das)
+	{
+		$setid = $das['setid'];
+		$where = $this->jm->base64decode($das['wheresstr']);
+		$where  = m('where')->getstrwhere($where);
+		$stable = m('flow_set')->getmou('`table`', $setid);
+		$where  = '`id`=0 and '.str_replace('{asqom}','', $where);
+		$sql    = 'select * from `[Q]'.$stable.'` a where '.$where.'';
+		$bool 	= $this->db->query($sql, false);
+		if(!$bool){
+			return '条件不能使用:'.$this->db->errorlast.'';
+		}
+	}
+	
 	private function getwherelist($setid)
 	{
 		return m('flow_where')->getall('setid='.$setid.'','id,name','sort');

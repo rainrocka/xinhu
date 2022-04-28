@@ -1680,3 +1680,22 @@ strformat.onopenfile=function(da,glx){
 	}
 	return true;
 }
+strformat.clickface=function(rnd,os){
+	$.imgview({url:os.src});
+}
+
+strformat.openurl=function(dz){
+	if(!nwjsgui){
+		window.open(dz);
+	}else{
+		nwjs.openurl(dz);
+		//js.open(dz,1000,600);
+	}
+}
+strformat.clickfile=function(fid,lx){
+	if(isNaN(fid)){
+		//reim.outgroup.fileopt(fid,lx);
+	}else{
+		js.fileopt(fid,lx);
+	}
+}

@@ -46,7 +46,7 @@ class flowtotalClassAction extends Action
 			$farr[] = $rows[$k];
 		}
 		
-		$fwhee = m('flow_where')->getall('`setid`='.$modeid.' and `num` is not null','`num`,`name`','`pnum`,`sort`');
+		$fwhee = m('flow_where')->getall('`setid`='.$modeid.' and `status`=1 and `num` is not null','`num`,`name`','`pnum`,`sort`');
 		
 		echo json_encode(array(
 			'farr' => $farr,

@@ -129,6 +129,10 @@ class inputAction extends Action
 				$_val= arrvalue($uaarr, $rs['fields']);
 				if(!isempt($_val))$this->otherfileid.=','.$_val.'';
 			}
+			if($rs['fieldstype']=='graph'){
+				$_val= arrvalue($uaarr, $rs['fields']);
+				if($_val)$uaarr[$rs['fields']] = c('input')->createqianming($_val);
+			}
 		}
 		
 		

@@ -67,24 +67,43 @@ $(document).ready(function(){
 		},
 		daochu:function(){
 			a.exceldown();
+		},
+		search:function(){
+			var s=get('key_{rand}').value;
+			a.setparams({key:s},true);
 		}
 	};
 
 	
 	js.initbtn(c);
+	c{rand} = c;
 });
 </script>
 
 <div>
-<ul class="floats">
-	<li class="floats50">
-		<button class="btn btn-success" click="yidu,1"  type="button">标为已读</button>
-	</li>
-	<li class="floats50" style="text-align:right">
-		<button class="btn btn-default"  click="daochu" type="button">导出</button>&nbsp;
-		<button class="btn btn-danger" click="del" type="button"><i class="icon-trash"></i> 删除</button>
-	</li>
-</ul>
+<table width="100%">
+<tr>
+<td nowrap>
+	<button class="btn btn-success" click="yidu,1"  type="button">标为已读</button> &nbsp; 
+</td>
+
+<td width="95%" align="left">
+	
+		<div class="input-group" style="width:220px;">
+			<input class="form-control" id="key_{rand}" onkeydown="if(event.keyCode==13)c{rand}.search()" placeholder="关键词">
+			<span class="input-group-btn">
+				<button class="btn btn-default" click="search" type="button"><i class="icon-search"></i></button>
+			</span>
+		</div>
+
+	</td>
+
+<td align="right" nowrap>
+	<button class="btn btn-default"  click="daochu" type="button">导出</button>&nbsp;
+	<button class="btn btn-danger" click="del" type="button"><i class="icon-trash"></i> 删除</button>
+</td>
+</tr>
+</table>
 </div>
 <div class="blank10"></div>
 <div id="veiw_{rand}"></div>

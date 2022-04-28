@@ -221,7 +221,7 @@ $(document).ready(function(){
 	
 	notifyobj=new notifyClass({
 		title:'系统提醒',
-		sound:'web/res/sound/todo.ogg',
+		sound:'web/res/sound/email.mp3',
 		sounderr:'',
 		soundbo:true,
 		showbool:true

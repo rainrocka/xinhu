@@ -6,6 +6,8 @@ class menuClassAction extends Action
 	{
 		$this->rows		= array();
 		$type 			= $this->get('type');
+		$loadci 		= (int)$this->get('loadci');
+		$pid 			= (int)$this->get('pid','0');
 		$where 			= '';
 		//权限那来的
 		if($type != ''){
@@ -14,11 +16,23 @@ class menuClassAction extends Action
 		}else{
 			$this->updatepirss();
 		}
+		if($pid>0){
+			$where.=' and (`id`='.$pid.' or `pid`='.$pid.' or `pid` in(select `id` from `[Q]menu` where `pid`='.$pid.'))';
+		}
 		$this->alldata 	= $this->db->getall('select *,(select count(1)from `[Q]menu` where `pid`=a.id '.$where.')stotal from `[Q]menu` a where 1=1 '.$where.' order by `sort`');
 		
 		$this->getmenu(0, 1, 1);
+		
+		$pdata = array();
+		if($loadci==1){
+			foreach($this->alldata as $k=>$rs){
+				if($rs['pid']=='0')$pdata[] = array('name'=>$rs['name'],'id'=>$rs['id']);
+			}
+		}
+		
 		echo json_encode(array(
 			'totalCount'=> 0,
+			'pdata'		=> $pdata,
 			'rows'		=> $this->rows
 		));
 	}

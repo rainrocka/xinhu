@@ -160,6 +160,8 @@ class gerenClassAction extends Action
 	public function beforetotaldaetods($table)
 	{
 		$s = " and `uid`='$this->adminid' and `tododt`<='$this->now'";
+		$key = $this->post('key');
+		if($key)$s.=" and (`title` like '%$key%' or `mess` like '%$key%')";
 		return $s;
 	}
 	

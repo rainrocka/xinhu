@@ -70,7 +70,11 @@ $(document).ready(function(){
 			<tr><td align="right" style="color:gray">APP音视频通话：</td><td><select style="width:200px" name="video_bool" class="form-control"><option value="0">关闭</option><option <?php if(getconfig('video_bool'))echo 'selected';?> value="1">开启</option></select>
 			<span style="color:#aaaaaa;">开启后需要到[系统→系统工具→插件模块]安装音视频通话的插件</span></td></tr>
 			<tr><td height="10"></td></tr>
-
+			
+			<tr><td align="right" style="color:gray">人员审批撤回时间：</td><td><input name="flowchehuitime" type="number" value="<?=getconfig('flowchehuitime')?>" onfocus="js.focusval=this.value" onblur="js.number(this)" min="0" style="width:200px" placeholder="默认是2小时" class="form-control"></select>
+			<span style="color:#aaaaaa;">默认2小时，已完成审批不支持撤回</span></td></tr>
+			<tr><td height="10"></td></tr>
+			
 			<tr>
 				<td  align="right"></td>
 				<td align="left"><button click="savecog,0" class="btn btn-success" type="button"><i class="icon-save"></i>&nbsp;保存</button>&nbsp;<span id="msgview0_{rand}"></span>

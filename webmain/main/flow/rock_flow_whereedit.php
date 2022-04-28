@@ -6,7 +6,7 @@ $(document).ready(function(){
 	if(!id)id = 0;
 	var h = $.bootsform({
 		window:false,rand:'{rand}',tablename:'flow_where',url:publicsave('{mode}','{dir}'),
-		submitfields:'setid,name,wheresstr,whereustr,wheredstr,pnum,explain,recename,status,islb,receid,nrecename,nreceid,num,sort',requiredfields:'name',
+		submitfields:'setid,name,wheresstr,whereustr,wheredstr,pnum,explain,recename,status,islb,receid,nrecename,nreceid,num,sort',requiredfields:'name',beforesaveaction:'flowwheresave_before',
 		success:function(){
 			if(id>0){
 				closenowtabs();

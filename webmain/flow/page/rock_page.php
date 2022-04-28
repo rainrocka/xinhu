@@ -205,7 +205,7 @@
 					sa.push(d2);
 				}
 			}
-			if(isflow>0)d.push({text:'状态',dataIndex:'statustext'});
+			if(isflow>0)d.push({text:'流程状态',dataIndex:'statustext'});
 			if(nstr=='' || nstr.indexOf(',caozuo,')>=0)d.push({text:'',dataIndex:'caozuo',callback:'opegs{rand}'});
 			for(i=0;i<d.length;i++)if(this.setcinfo[d[i].dataIndex])d[i] = js.apply(d[i],this.setcinfo[d[i].dataIndex]);
 			bootparams.columns = d;
@@ -291,7 +291,7 @@
 	
 	var bootparams = {
 		fanye:true,modenum:modenum,modename:modename,statuschange:false,tablename:jm.base64decode(listname),
-		url:c.storeurl(),storeafteraction:'storeaftershow',storebeforeaction:'storebeforeshow',
+		url:c.storeurl(),storeafteraction:'storeaftershow',storebeforeaction:'storebeforeshow',optobj:c,
 		params:{atype:atype},
 		columns:[{text:"字段",dataIndex:"face"},{
 			text:'',dataIndex:'caozuo',callback:'opegs{rand}'

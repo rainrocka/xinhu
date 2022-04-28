@@ -6,6 +6,7 @@ function optionclass(cans){
 	var me 		= this;
 	this.sspid 	= 0;
 	this.typeid = 0;
+	this.isguanli = true;
 	
 	this.reloadtype = function(){
 		this.at.reload();
@@ -118,8 +119,9 @@ function optionclass(cans){
 		this.mobj.setparams({'typeid':spd}, true);
 	}
 	this.showfooter=function(){
-		var s= '<div class="panel-footer"><a href="javascript:;" style="TEXT-DECORATION:none" title="新增" click="clicktypewin,0" onclick="return false"><i class="icon-plus"></i></a>&nbsp; &nbsp;<a href="javascript:;" style="TEXT-DECORATION:none" title="编辑" click="clicktypeeidt" onclick="return false"><i class="icon-edit"></i></a>&nbsp; &nbsp;<a href="javascript:;" style="TEXT-DECORATION:none" title="删除" click="typedel" onclick="return false"><i class="icon-trash"></i></a>&nbsp; &nbsp;<a href="javascript:;" style="TEXT-DECORATION:none" title="刷新" click="reloadtype" onclick="return false"><i class="icon-refresh"></i></a>&nbsp; &nbsp; <a href="javascript:;" style="TEXT-DECORATION:none" title="移动" click="optionmove" onclick="return false"><i class="icon-move"></i></a>&nbsp; &nbsp;<a href="javascript:;" title="移动到顶级" style="TEXT-DECORATION:none" click="optionmoveto" onclick="return false"><i class="icon-arrow-up"></i></a>&nbsp; &nbsp; <a href="javascript:;" style="TEXT-DECORATION:none" title="所有'+this.title+'" click="allshow" onclick="return false"><i class="icon-search"></i></a></div>';
-		$('#'+this.optionview+'').after(s);
+		var s = '<a href="javascript:;" style="TEXT-DECORATION:none" title="刷新" click="reloadtype" onclick="return false"><i class="icon-refresh"></i></a>&nbsp; &nbsp;<a href="javascript:;" style="TEXT-DECORATION:none" title="所有'+this.title+'" click="allshow" onclick="return false"><i class="icon-search"></i></a>';
+		if(this.isguanli)s+= '&nbsp; &nbsp;<a href="javascript:;" style="TEXT-DECORATION:none" title="新增" click="clicktypewin,0" onclick="return false"><i class="icon-plus"></i></a>&nbsp; &nbsp;<a href="javascript:;" style="TEXT-DECORATION:none" title="编辑" click="clicktypeeidt" onclick="return false"><i class="icon-edit"></i></a>&nbsp; &nbsp;<a href="javascript:;" style="TEXT-DECORATION:none" title="删除" click="typedel" onclick="return false"><i class="icon-trash"></i></a>&nbsp; &nbsp;<a href="javascript:;" style="TEXT-DECORATION:none" title="移动" click="optionmove" onclick="return false"><i class="icon-move"></i></a>&nbsp; &nbsp;<a href="javascript:;" title="移动到顶级" style="TEXT-DECORATION:none" click="optionmoveto" onclick="return false"><i class="icon-arrow-up"></i></a>';
+		$('#'+this.optionview+'').after('<div class="panel-footer">'+s+'</div>');
 		return true;
 	}
 	
