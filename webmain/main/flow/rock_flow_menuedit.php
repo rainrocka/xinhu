@@ -9,7 +9,7 @@ $(document).ready(function(){
 		url:publicsave('{mode}','{dir}'),
 		params:{otherfields:'setid='+mid+''},
 		submitfields:'name,statusname,statuscolor,type,statusvalue,actname,wherestr,upgcont,explain,status,num,iszs,issm,islog,fields',
-		requiredfields:'name',
+		requiredfields:'name',beforesaveaction:'flowmenusave_before',
 		success:function(){
 			closenowtabs();
 			try{guanflowmenulist.reload();}catch(e){}

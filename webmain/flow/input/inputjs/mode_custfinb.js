@@ -17,8 +17,8 @@ function initbodys(){
 		salechange(val);
 	});
 	
-	var defe = js.request('def_htid');
-	if(defe && defe<0)salechange(defe);
+	//var defe = js.request('def_htid');
+	//if(defe && defe<0)salechange(defe);
 }
 function salechange(v){
 	if(v==''){

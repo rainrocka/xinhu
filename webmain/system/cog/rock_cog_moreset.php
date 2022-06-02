@@ -75,6 +75,10 @@ $(document).ready(function(){
 			<span style="color:#aaaaaa;">默认2小时，已完成审批不支持撤回</span></td></tr>
 			<tr><td height="10"></td></tr>
 			
+			<tr><td align="right" style="color:gray">SAAS多单位模式：</td><td><select style="width:200px" name="saasmode" class="form-control"><option value="">默认没有开启</option><option <?php if(getconfig('saasmode')=='1')echo 'selected';?> value="1">开启(用不到不要开启)</option></select>
+			<span style="color:#aaaaaa;">授权版使用，<a target="_blank" href="<?=URLY?>view_xinhuduo.html">帮助</a>说明，每个单位一个访问地址数据库分开。</span></td></tr>
+			<tr><td height="10"></td></tr>
+			
 			<tr>
 				<td  align="right"></td>
 				<td align="left"><button click="savecog,0" class="btn btn-success" type="button"><i class="icon-save"></i>&nbsp;保存</button>&nbsp;<span id="msgview0_{rand}"></span>

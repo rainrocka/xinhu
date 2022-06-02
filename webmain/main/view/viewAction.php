@@ -25,18 +25,8 @@ class viewClassAction extends Action
 	
 	public function flowview_savebefore($table, $das)
 	{
-		$setid = $das['modeid'];
-		$where = $this->jm->base64decode($das['wherestr']);
-		if($where=='all')return '';
-		$where  = m('where')->getstrwhere($where);
-		$stable = m('flow_set')->getmou('`table`', $setid);
-		$where  = '`id`=0 and '.str_replace('{asqom}','', $where);
-		$sql    = 'select * from `[Q]'.$stable.'` a where '.$where.'';
-		$bool 	= $this->db->query($sql, false);
-		if(!$bool){
-			return '条件不能使用:'.$this->db->errorlast.'';
-		}
-	
+		$str   = m('where')->checkwhere($das['modeid'], $das['wherestr']);
+		if($str)return $str;
 	}
 	
 	public function autographAction()

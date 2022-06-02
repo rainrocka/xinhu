@@ -592,6 +592,7 @@ function publicdaochuobj(options){
 		});
 		var d = [{name:'导出全部',lx:0},{name:'导出当前页',lx:1},{name:'自定义列导出',lx:3}];
 		if(!this.notdingyue)d.push({name:'订阅此列表',lx:2});
+		d.push({name:'打印此列表',lx:4});
 		this.daochuobj.setData(d);
 		var lef = $(this.btnobj).offset();
 		this.daochuobj.showAt(lef.left, lef.top+35);
@@ -601,6 +602,16 @@ function publicdaochuobj(options){
 		if(d.lx==1)this.objtable.exceldownnow();
 		if(d.lx==2)this.subscribelist();
 		if(d.lx==3)this.excelautoinit();
+		if(d.lx==4)this.printlist();
+	}
+	this.printlist=function(){
+		var rnd = this.objtable.printrnd;
+		if(!rnd){
+			rnd = 'table'+js.getrand();
+			window[rnd] = this.objtable;
+			this.objtable.printrnd = rnd;
+		}
+		window.open('?d=public&m=print&table='+rnd+'&modenum='+this.modenum+'&modename='+jm.base64encode(this.modename)+'');
 	}
 	this.subscribelist=function(){
 		var name = nowtabs.name;

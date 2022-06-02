@@ -30,16 +30,14 @@ class flowClassAction extends Action
 	
 	public function flowwheresave_before($table,$das)
 	{
-		$setid = $das['setid'];
-		$where = $this->jm->base64decode($das['wheresstr']);
-		$where  = m('where')->getstrwhere($where);
-		$stable = m('flow_set')->getmou('`table`', $setid);
-		$where  = '`id`=0 and '.str_replace('{asqom}','', $where);
-		$sql    = 'select * from `[Q]'.$stable.'` a where '.$where.'';
-		$bool 	= $this->db->query($sql, false);
-		if(!$bool){
-			return '条件不能使用:'.$this->db->errorlast.'';
-		}
+		$str   = m('where')->checkwhere($das['setid'], $das['wheresstr']);
+		if($str)return $str;
+	}
+	
+	public function flowmenusave_before($table,$das)
+	{
+		$str   = m('where')->checkwhere($das['setid'], $das['wherestr']);
+		if($str)return $str;
 	}
 	
 	private function getwherelist($setid)
@@ -1183,7 +1181,8 @@ class mode_'.$modenum.'ClassAction extends inputAction{
 		if($mid>0 && m($table)->rows("`setid`='$setid' and `id`='$mid'")==0)return '上级步骤ID['.$mid.']不存在';
 		if($nid>0 && m($table)->rows("`setid`='$setid' and `id`='$nid'")==0)return '下级步骤ID['.$nid.']不存在';
 		
-		
+		$str   = m('where')->checkwhere($setid, $arr['where']);
+		if($str)return $str;
 	}
 	
 	public function getfieldsAjax()

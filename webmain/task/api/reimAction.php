@@ -308,4 +308,65 @@ class reimClassAction extends apiAction
 		if($barr['success'])$msg='ok';
 		return returnsuccess($msg);
 	}
+	
+	/**
+	*	读取消息情况
+	*/
+	public function getxqkkdAction()
+	{
+		$barr = array();
+		$id = (int)$this->get('id');
+		$mrs 		= m('im_mess')->getone($id);
+		$type 		= $mrs['type'];
+		$receuid = $mrs['receuid'];
+		$recearr = explode(',', $receuid);
+		//$barr['mrs'] = $mrs;
+		$yiduids	= '';
+		$widuids	= '';
+		if($type=='user'){
+			if($mrs['zt']==1){
+				$yiduids = $mrs['receid'];
+			}else{
+				$widuids = $mrs['receid'];
+			}
+		}else{
+			$rows = m('im_messzt')->getall('mid='.$id.'');
+			foreach($rows as $k=>$rs)$widuids.=','.$rs['uid'].'';
+			if($widuids){
+				$widuids = substr($widuids, 1);
+				$widuar  = explode(',', $widuids);
+				foreach($recearr as $sid)if(!in_array($sid, $widuar))$yiduids.=','.$sid.'';
+				if($yiduids)$yiduids = substr($yiduids, 1);
+			}else{
+				$yiduids = $receuid;
+			}
+		}
+		$ydarr = $wdarr = array();
+		$dbs   = m('admin');
+		if($yiduids){
+			$rows = $dbs->getall('`id` in('.$yiduids.')','name,face,id','sort asc');
+			foreach($rows as $k=>$rs){
+				$ydarr[] = array(
+					'name' => $rs['name'],
+					'id' => $rs['id'],
+					'face' => $dbs->getface($rs['face']),
+				);
+			}
+		}
+		if($widuids){
+			$rows = $dbs->getall('`id` in('.$widuids.')','name,face,id','sort asc');
+			foreach($rows as $k=>$rs){
+				$wdarr[] = array(
+					'name' => $rs['name'],
+					'id' => $rs['id'],
+					'face' => $dbs->getface($rs['face']),
+				);
+			}
+		}
+		
+		
+		$barr['ydarr'] = $ydarr;
+		$barr['wdarr'] = $wdarr;
+		return returnsuccess($barr);
+	}
 }

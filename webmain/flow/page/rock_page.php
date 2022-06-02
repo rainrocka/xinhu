@@ -64,7 +64,7 @@
 			a.setparams(cs,true);
 		},
 		daochu:function(o1,lx,lx1,e){
-			publicdaochuobj({
+			new publicdaochuobj({
 				'objtable':a,
 				'modename':modename,
 				'fieldsarr':fieldsarr,
@@ -264,7 +264,13 @@
 			return url;
 		},
 		printlist:function(){
-			js.msg('success','可使用导出，然后打开在打印');
+			var rnd = this.printrnd;
+			if(!rnd){
+				rnd = 'table'+js.getrand();
+				window[rnd] = a;
+				this.printrnd = rnd;
+			}
+			window.open('?d=public&m=print&table='+rnd+'&modenum='+modenum+'&modename='+jm.base64encode(modename)+'');
 		},
 		getbtnstr:function(txt, click, ys, ots){
 			if(!ys)ys='default';

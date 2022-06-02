@@ -49,7 +49,7 @@ $(document).ready(function(){
 			var h = $.bootsform({
 				title:'分配',height:320,width:400,
 				tablename:'kqdist',isedit:lx,submitfields:'recename,receid,mid,startdt,enddt,sort',
-				params:{otherfields:'type='+type+',comid={companyid}'},
+				params:{otherfields:'type='+type+''},
 				items:[{
 					labelText:'针对人员',name:'recename',required:true,type:'changeuser',changeuser:{
 						type:'deptusercheck',idname:'receid',title:'选择人员'

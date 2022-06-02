@@ -1563,6 +1563,16 @@ function chatcreate(cans){
 	};
 	this.showusershow=function(a){
 		this.userlistarr = a;
+		var sad = this.showtableda(a);
+		$('#showuserlist').html(sad[0]);
+		$('#showuserlist').perfectScrollbar();
+		$('#msgview_syscogshow').html('<span style="font-size:12px;color:#888888">右键人名可以@TA，'+sad[1]+'人在线</span>');
+		$('#showuserlist').find('div[xuh]').contextmenu(function(e){
+			me.atright(this,e);
+			return false;
+		});
+	};
+	this.showtableda=function(a){
 		var i,len=a.length,s='',oi=0,s1='',zx=0,d1;
 		s+='<table width="100%"><tr>';
 		for(i=0;i<len;i++){
@@ -1580,14 +1590,9 @@ function chatcreate(cans){
 			s+='<td width="20%"><div style="padding:5px" align="center"><div><img style="height:34px;width:34px;border-radius:50%" onclick="$.imgview({url:this.src})" src="'+a[i].face+'"></div><div xuh="'+i+'" style="color:#888888">'+a[i].name+''+s1+'</div></div></td>';
 			if(oi%5==0)s+='</tr><tr>';
 		}
+		if(len<5)for(i=0;i<5-len;i++)s+='<td width="20%"></td>';
 		s+='</tr></table>';
-		$('#showuserlist').html(s);
-		$('#showuserlist').perfectScrollbar();
-		$('#msgview_syscogshow').html('<span style="font-size:12px;color:#888888">右键人名可以@TA，'+zx+'人在线</span>');
-		$('#showuserlist').find('div[xuh]').contextmenu(function(e){
-			me.atright(this,e);
-			return false;
-		});
+		return [s, zx];
 	};
 	this.atright=function(o1){
 		var xu = parseFloat($(o1).attr('xuh'));
@@ -1994,7 +1999,8 @@ function chatcreate(cans){
 			if(this.rightdata.cont==this.chuihuinr)isch=false;
 			if(isch)d.push({name:'撤回',lx:2});
 		}
-		
+		if(this.type!='gout' && this.rightdata.sendid==adminid)d.push({name:'已读未读情况',lx:6});
+
 		this.rightqipaoobj.setData(d);
 		this.rightqipaoobj.showAt(e.clientX,e.clientY);
 	};
@@ -2031,6 +2037,7 @@ function chatcreate(cans){
 			});
 		};
 		if(lx==5)this.staradd(this.rightdata);
+		if(lx==6)this.showhuizhi();
 	};
 	this.rebianji=function(o1,rnd){
 		var d  = this.listdata[rnd],
@@ -2039,6 +2046,30 @@ function chatcreate(cans){
 		this.inputobj.val($('#addcstre').text());
 		$('#addcstre').remove();
 	};
+	this.showhuizhi=function(){
+		var s = '<div id="showstarlistdss" class="qipao" style="height:250px;overflow:hidden;position:relative"><div align="center" style="padding:10px;"><img src="images/mloading.gif" align="absmiddle">&nbsp;加载...</div></div>';
+		js.tanbody('xiaoxirece','消息已读未读情况',480,100,{html:s});
+		reim.ajax(reim.getapiurl('reim','getxqkkd'),{id:this.rightdata.id},function(ret){
+			me.showhuizhishow(ret.data);
+		},'get');
+	};
+	this.showhuizhishow=function(ret){
+		var str = '';
+		var d = ret.wdarr;
+		if(d.length>0){
+			str+='<div style="padding:5px 10px;border-bottom:1px solid #eeeeee;font-size:12px;color:gray">未读'+d.length+'人</div>';
+			var sad = this.showtableda(d);
+			str+=sad[0];
+		}
+		d = ret.ydarr;
+		if(d.length>0){
+			str+='<div style="padding:5px 10px;border-bottom:1px solid #eeeeee;font-size:12px;color:gray">已读'+d.length+'人</div>';
+			var sad = this.showtableda(d);
+			str+=sad[0];
+		}
+		$('#showstarlistdss').html(str);
+		$('#showstarlistdss').perfectScrollbar();
+	}
 	
 	//以下是收藏使用的
 	this.showstar=function(){

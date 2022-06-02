@@ -851,7 +851,7 @@ class inputAction extends Action
 		$barr['modeid'] 	= $this->modeid;
 		$barr['loadci'] 	= $this->loadci;
 		$barr['rows'] 		= $rows;
-		$scarr 				= $this->storeafter($table, $rows);
+		$scarr 				= $this->storeafter($table, $rows, $barr);
 		if(is_array($scarr))foreach($scarr as $k=>$v)$barr[$k]=$v;
 		return $barr;
 	}

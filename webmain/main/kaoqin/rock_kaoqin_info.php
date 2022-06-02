@@ -48,9 +48,9 @@ $(document).ready(function(){
 			$(o1).rockdatepicker({initshow:true,view:'month',inputid:'dt'+lx+'_{rand}'});
 		},
 		daochu:function(o1){
-			publicdaochuobj({
+			new publicdaochuobj({
 				'objtable':a,
-				'modename':'',
+				'modename':'考勤信息',
 				'btnobj':o1
 			});
 		},

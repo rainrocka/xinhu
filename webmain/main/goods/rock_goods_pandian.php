@@ -59,7 +59,7 @@ $(document).ready(function(){
 		},
 
 		daochu:function(o1){
-			publicdaochuobj({
+			new publicdaochuobj({
 				'objtable':a,
 				'modename':'物品盘点',
 				'btnobj':o1

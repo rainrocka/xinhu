@@ -2,7 +2,7 @@
 /**
 *	客户.付款单
 */
-class mode_custfinaClassAction extends inputAction{
+class mode_custfinbClassAction extends inputAction{
 	
 
 	protected function savebefore($table, $arr, $id, $addbo){
@@ -26,6 +26,7 @@ class mode_custfinaClassAction extends inputAction{
 		}
 		
 		//从销售单读取
+		/*
 		if($htid<0){
 			$htrs = m('goodm')->getone('`id`='.(0-$htid).'');
 			$narr['htnum'] 		= $htrs['num'];
@@ -37,8 +38,9 @@ class mode_custfinaClassAction extends inputAction{
 			$chaojg	= $omoney + $money - $zmoney;
 			if($chaojg>0)return '金额已超过销售单上金额'.$zmoney.'';
 		}
+		*/
 		$narr['htid'] = $htid;
-		if(!isset($narr['type']))$narr['type'] = 0;
+		if(!isset($narr['type']))$narr['type'] = 1;
 		return array('rows'=> $narr);
 	}
 	
@@ -65,7 +67,7 @@ class mode_custfinaClassAction extends inputAction{
 		if($mid>0){
 			$htid = (int)$this->flow->getmou('htid', $mid); //当前记录也要显示合同ID
 		}
-		$rows = m('crm')->getmyract($this->adminid, $htid, 0);
+		$rows = m('crm')->getmyract($this->adminid, $htid, 1);
 		$arr  = array();
 		foreach($rows as $k=>$rs){
 			$arr[] = array(
@@ -75,15 +77,7 @@ class mode_custfinaClassAction extends inputAction{
 			);
 		}
 		
-		//读取我的销售单
-		$rows = m('goodm')->getall('`uid`='.$this->adminid.' and `type`=2 and `status`=1 and `custractid`=0 and (`ispay`=0 or `id`='.(0-$htid).')');
-		foreach($rows as $k=>$rs){
-			$arr[] = array(
-				'value' => '-'.$rs['id'],
-				'optgroup'=>'销售单',
-				'name' 	=> '['.$rs['num'].']'.$rs['custname'],
-			);
-		}
+		
 		
 		return $arr;
 	}
@@ -91,7 +85,7 @@ class mode_custfinaClassAction extends inputAction{
 	public function ractchangeAjax()
 	{
 		$htid 	= (int)$this->get('ractid');
-		$cars['type'] = '0';
+		$cars['type'] = '1';
 		//销售单
 		if($htid<0){
 			$xrs = m('goodm')->getone('`id`='.(0-$htid).'');

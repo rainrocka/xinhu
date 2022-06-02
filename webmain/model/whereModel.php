@@ -116,10 +116,12 @@ class whereClassModel extends Model
 				$rstr= $dbs->getjoinstr('{asqom}`'.$fie.'`', $uid, 1, 1);
 			}
 			//我的同级部门人员：{uid,dept}
+			if($match=='dept'){$type = 'dept';$fie  = 'uid';}
 			if($type=='dept'){
 				$rstr= '{asqom}`'.$fie.'` in(select `id` from `[Q]admin` where `deptid`='.$deptid.' or '.$this->rock->dbinstr('deptids',$deptid).')';
 			}
 			//我的同级部门人员(含子部门)：{uid,deptall}
+			if($match=='deptall'){$type = 'deptall';$fie  = 'uid';}
 			if($type=='deptall'){
 				$rstr= '{asqom}`'.$fie.'` in(select `id` from `[Q]admin` where instr(`deptpath`,\'['.$deptid.']\')>0)';
 			}
@@ -216,5 +218,25 @@ class whereClassModel extends Model
 		}
 		$rows = $this->getrows($where, '`id`,`num`,`name`', '`sort`');
 		return $rows;
+	}
+	
+	
+	/**
+	*	判断条件是否可以使用$modeid模块id，$str条件
+	*/
+	public function checkwhere($modeid, $str)
+	{
+		if(isempt($str))return '';
+		$where = $this->rock->jm->base64decode($str);
+		if($where=='all' || contain($where, '{super}') || 
+			contain($where, '{allsuper}') || 
+			contain($where, '{company}'))return '';
+		$where  = $this->getstrwhere($where);
+		$stable = m('flow_set')->getmou('`table`', $modeid);
+		$where  = '`id`=0 and '.str_replace('{asqom}','', $where);
+		$sql    = 'select * from `[Q]'.$stable.'` a where '.$where.'';
+		$bool 	= $this->db->query($sql, false);
+		if(!$bool)return '条件不能使用:'.$this->db->errorlast.'<hr>'.$this->db->getLastSql().'';
+		return '';
 	}
 }

@@ -5,7 +5,7 @@ class wxgzhClassAction extends Action
 	public function setsaveAjax()
 	{
 		m('wxgzh:index')->clearalltoken();
-		$pid = m('dingding:index')->optionpid;
+		$pid = m('wxgzh:index')->optionpid;
 		$this->option->setval('wxgzh_appid@'.$pid.'', $this->post('appid'));
 		$this->option->setval('wxgzh_secret@'.$pid.'', $this->post('secret'));
 		$this->option->setval('wxgzh_tplmess@'.$pid.'', $this->post('tplmess'));

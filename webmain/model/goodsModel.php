@@ -15,7 +15,10 @@ class goodsClassModel extends Model
 	public function setstock($id='', $lsx='1')
 	{
 		$where = '';
-		if($id!='')$where=' and `aid` in('.$id.')';
+		if($id!=''){
+			$id = c('check')->onlynumber($id);
+			$where=' and `aid` in('.$id.')';
+		}
 		$sql = 'SELECT sum(count)stock,aid FROM `[Q]goodss` where `status`=1 '.$where.' GROUP BY aid';
 		if($id=='')$this->update('stock=0','id>0');
 		$rows= $this->db->getall($sql);
@@ -28,7 +31,10 @@ class goodsClassModel extends Model
 	public function getstock($id='', $dt='')
 	{
 		$where= '';
-		if($id!='')$where='`aid` in('.$id.') and ';
+		if($id!=''){
+			$id = c('check')->onlynumber($id);
+			$where='`aid` in('.$id.') and ';
+		}
 		if($dt!='')$where.="`applydt`<='$dt' and "; //日期
 		$sql = 'SELECT sum(count)stock,`aid`,`depotid` FROM `[Q]goodss` where '.$where.' `status`=1  GROUP BY `aid`,`depotid`';
 		$rows= $this->db->getall($sql);

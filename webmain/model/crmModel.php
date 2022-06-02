@@ -12,7 +12,7 @@ class crmClassModel extends Model
 		if(isempt($id))$id = 0;
 		if($uid==0)$uid=$this->adminid;
 		$s		= $this->rock->dbinstr('shateid', $uid);
-		$rows 	= $this->getrows("`status`=1 and ((`uid`='$uid') or (`id`=$id) or (".$s."))",'id as value,name,id,unitname as subname','`name`');
+		$rows 	= $this->getrows("`status`=1 and ((`uid`='$uid') or (`id`=$id) or (".$s."))",'id as value,name,id,unitname as subname','`optdt` desc');
 		return $rows;
 	}
 	
@@ -34,9 +34,11 @@ class crmClassModel extends Model
 	}
 	
 	//读取我的合同
-	public function getmyract($uid, $id=0)
+	public function getmyract($uid, $id=0, $type=2)
 	{
-		$where 	= '`uid`='.$uid.' and (`isover`=0 or `id`='.$id.')';
+		$where = '';
+		if($type==0 || $type==1)$where='and `type`='.$type.'';
+		$where 	= '`uid`='.$uid.' '.$where.' and (`isover`=0 or `id`='.$id.')';
 		$rows 	= m('custract')->getrows($where, 'id,custid,custname,money,num');
 		return $rows;
 	}

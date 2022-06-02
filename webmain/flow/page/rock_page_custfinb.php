@@ -1,15 +1,15 @@
 <?php
 /**
-*	模块：gong.通知公告
+*	模块：custfinb.付款单
 *	说明：自定义区域内可写你想要的代码
-*	来源：流程模块→表单元素管理→[模块.通知公告]→生成列表页
+*	来源：流程模块→表单元素管理→[模块.付款单]→生成列表页
 */
 defined('HOST') or die ('not access');
 ?>
 <script>
 $(document).ready(function(){
 	{params}
-	var modenum = 'gong',modename='通知公告',isflow=0,modeid='1',atype = params.atype,pnum=params.pnum,modenames='多行子表名称',listname='aW5mb3I:';
+	var modenum = 'custfinb',modename='付款单',isflow=0,modeid='57',atype = params.atype,pnum=params.pnum,modenames='',listname='Y3VzdGZpbmE:';
 	if(!atype)atype='';if(!pnum)pnum='';
 	var fieldsarr = [],fieldsselarr= [],chufarr= [];
 	
@@ -19,27 +19,13 @@ $(document).ready(function(){
 	
 //[自定义区域start]
 
-bootparams.celleditor = true;
-c.setcolumns('recename',{
-	renderer:function(v){
-		return '<div style="max-width:250px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap" class="wrap">'+v+'</div>';
-	}
-});
-c.setcolumns('fengmian',{
-	renderer:function(v){
-		if(!v)return '&nbsp;';
-		return '<img src="'+v+'" height="60">';
-	}
-});
-var isedit = (admintype=='1' || pnum=='all')
-c.setcolumns('istop',{
-	type:'number',
-	'editor':isedit
-});
-c.setcolumns('appxs',{
-	type:'checkbox',
-	'editor':isedit
-});
+c.initpage=function(){
+	$('#key_{rand}').parent().before('<td><input onclick="js.datechange(this,\'month\')" style="width:110px;border-radius:0;border-left:0;'+datesss+'" placeholder="所属月份" readonly class="form-control" id="dt_{rand}" ></td>');
+}
+c.searchbtn=function(){
+	var dt = get('dt_{rand}').value;
+	this.search({month:dt});
+}
 
 //[自定义区域end]
 	c.initpagebefore();
@@ -75,5 +61,5 @@ c.setcolumns('appxs',{
 	</table>
 </div>
 <div class="blank10"></div>
-<div id="viewgong_{rand}"></div>
+<div id="viewcustfinb_{rand}"></div>
 <!--HTMLend-->

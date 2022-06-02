@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?=$modename?>_打印</title>
+<link rel="stylesheet" type="text/css" href="webmain/css/css.css"/>
+<link rel="shortcut icon" href="favicon.ico" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/js.js"></script>
+<script type="text/javascript" src="js/base64-min.js"></script>
+<script>
+var table = '<?=$table?>',watertype='<?=getconfig('watertype')?>';
+
+function initbody(){
+	prt.init();
+}
+var prt = {
+	init:function(){
+		if(!table)return;
+		var obj = opener[table];
+		if(!obj){
+			js.msgerror('无数据，请重新打开');
+			return;
+		}
+		var colums = obj.getcolumns(),str='',i,j,len,lej,align,nr,d,nr1,ind;
+		str+='<tr>';
+		lej = colums.length;
+		for(i=0;i<lej;i++){
+			ind = colums[i].dataIndex;
+			if(ind=='caozuo')continue;
+			align = 'center';
+			if(colums[i].align)align = colums[i].align;
+			
+			str+='<td class="border" align="'+align+'"><b>'+colums[i].text+'</b></td>';
+		}
+		str+='</tr>';
+		var data  = obj.getData();
+		len = data.length;
+		
+		for(j=0;j<len;j++){
+			str+='<tr>';
+			d = data[j];
+			for(i=0;i<lej;i++){
+				ind = colums[i].dataIndex;
+				if(ind=='caozuo')continue;
+				
+				align = 'center';
+				if(colums[i].align)align = colums[i].align;
+				nr = d[ind];
+				if(colums[i].renderer){
+					nr1 = colums[i].renderer(nr, d, j);
+					if(nr1)nr = nr1;
+				}
+				str+='<td class="border" align="'+align+'">'+nr+'</td>';
+			}
+			str+='</tr>';
+		}
+		
+		//console.log(colums);
+		//console.log(data);
+		$('#tablelist').html(str);
+		this.addwater();
+	},
+	print:function(){
+		window.print()
+	},
+	addwater:function(){
+		if(typeof(watertype)!='string' || watertype!='1')return;
+		var dizs = 'api.php?m=file&a=shuiyin';
+		get('maindiv').style.background='url('+dizs+') white';
+	}
+}
+</script>
+<style>
+.border{border:0.5px #000000 solid;font-size:12px;padding:2px 3px}
+@media print {
+.noprint { display: none }
+}
+</style>
+</head>
+
+
+<body >
+<div align="center" >
+	<div style="width:1000px;padding:10px 0px"  id="maindiv">
+		<div style="padding:10px" align="center"><b style="font-size:16px"><?=$modename?></b></div>
+		<div class="blank10"></div>
+		<div>
+			<table width="100%" style="" cellspacing="0" cellpadding="0" border="0" id="tablelist"></table>
+		</div>
+		<div style="font-size:12px" align="left">打印者：<?=$da['adminname']?> <a class="noprint blue" style="font-size:12px" href="javascript:;" onclick="prt.print()">打印</a><span style="float:right">时间：<?=$rock->now?></span></div>
+	</div>
+</div>
+
+
+</body>
+</html>

@@ -67,7 +67,7 @@ $(document).ready(function(){
 			},'get','','刷新中...,刷新完成');
 		},
 		daochu:function(o1){
-			publicdaochuobj({
+			new publicdaochuobj({
 				'objtable':a,
 				'modename':'物品列表',
 				'modenum':'goods',
