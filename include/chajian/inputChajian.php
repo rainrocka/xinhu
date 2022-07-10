@@ -225,7 +225,7 @@ class inputChajian extends Chajian
 		if($type=='uploadfile'){
 			$str = '<input name="'.$fname.'" value="'.$val.'" type="hidden">';
 			$str.= '<div style="display:inline-block" id="fileview_'.$fname.'"><div onclick="c.uploadfilei(\''.$fname.'\')" style="display:;border:dashed 1px #cccccc" id="'.$fname.'_divadd" class="upload_items"><img class="imgs" src="images/jia.png"></div></div>';
-			$str.= '<div style="display:none" tsye="file" tnam="'.$fname.'" tdata="'.$data.'" id="filed_'.$fname.'"><input type="file" style="width:120px" id="filed_'.$fname.'_inp"></div>';
+			$str.= '<div style="display:none" tsye="file" tnam="'.$fname.'" tdata="'.$data.'" id="filed_'.$fname.'"><input type="file" style="width:120px" multiple="multiple" id="filed_'.$fname.'_inp"></div>';
 		}
 		if($type=='graph'){
 			$str = '<input name="'.$fname.'" value="'.$val.'" type="hidden">';

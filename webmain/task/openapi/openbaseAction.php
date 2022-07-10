@@ -23,6 +23,8 @@ class openbaseClassAction extends openapiAction
 		$sm 	 = arrvalue($arr,'baseexplain'); //说明
 		unset($arr['basemodenum']);
 		unset($arr['baseoptid']);
+		if($sm)unset($arr['baseexplain']);
+		
 		
 		//此方法在文件：webmain/model/flowModel.php下的querydata方法。
 		$mid = m('flow')->querydata($modenum, $arr, $sm); 

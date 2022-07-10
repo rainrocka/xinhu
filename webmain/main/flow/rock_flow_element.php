@@ -23,36 +23,36 @@ $(document).ready(function(){
 		},{
 			text:'默认值',dataIndex:'dev',editor:true
 		},{
+			text:'分组',dataIndex:'ftype',editor:true
+		},{
 			text:'排序号',dataIndex:'sort',editor:true,sortable:true
 		},{
-			text:'录入列',dataIndex:'islu',type:'checkbox',editor:true,sortable:true,editorbefore:function(d){
+			text:'录入列',dataIndex:'islu',type:'checkbox',editor:true,editorbefore:function(d){
 				if(d.islu=='0'){js.msg('msg','打开录入项需要用编辑');return false;}else{return true;}
 			}
 		},{
-			text:'必填',dataIndex:'isbt',type:'checkbox',editor:true,sortable:true
+			text:'必填',dataIndex:'isbt',type:'checkbox',editor:true
 		},{
-			text:'展示',dataIndex:'iszs',type:'checkbox',editor:true,sortable:true
+			text:'展示',dataIndex:'iszs',type:'checkbox',editor:true
 		},{
-			text:'列表列',dataIndex:'islb',type:'checkbox',editor:true,sortable:true
+			text:'列表列',dataIndex:'islb',type:'checkbox',editor:true
 		},{
-			text:'列排序',dataIndex:'ispx',type:'checkbox',editor:true,sortable:true
+			text:'列排序',dataIndex:'ispx',type:'checkbox',editor:true
 		},{
-			text:'可搜索',dataIndex:'issou',type:'checkbox',editor:true,sortable:true
+			text:'可搜索',dataIndex:'issou',type:'checkbox',editor:true
 		},{
-			text:'可统计',dataIndex:'istj',type:'checkbox',editor:true,sortable:true
+			text:'可统计',dataIndex:'istj',type:'checkbox',editor:true
 		},{
-			text:'唯一值',dataIndex:'isonly',type:'checkbox',editor:true,sortable:true
+			text:'唯一值',dataIndex:'isonly',type:'checkbox',editor:true
 		},{
-			text:'可导入',dataIndex:'isdr',type:'checkbox',editor:true,sortable:true
+			text:'可导入',dataIndex:'isdr',type:'checkbox',editor:true
 		},{
-			text:'对齐',dataIndex:'isalign',type:'select',editor:true,sortable:true,renderer:function(v,d){
+			text:'对齐',dataIndex:'isalign',type:'select',editor:true,renderer:function(v,d){
 				var s='<font color="#888888">居中</font>';
 				if(v==1)s='<font color="#ff6600">居左</font>';
 				if(v==2)s='居右';
 				return s;
 			},store:js.arraystr('0|居中,1|居左,2|居右')
-		},{
-			text:'数据源',dataIndex:'data'
 		}],
 		itemclick:function(d){
 			btn(false, d);

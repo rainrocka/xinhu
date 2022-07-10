@@ -161,6 +161,7 @@ var inputtwo={
 					c.showupid(sna);//显示ID	
 				}
 				c.uploadback(sna, f);
+				if(this.changenext)this.changenext();//上传下一个文件
 			},
 			'onprogress':function(f,bl){
 				var sna= f.sname,tsye=f.snape;

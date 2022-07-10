@@ -13,7 +13,7 @@ class agent_custfkdClassModel extends agentModel
 			$ztarr	 = $statea[$state];
 			$rows[$k]['statustext']		= $ztarr[0];
 			$rows[$k]['statuscolor']	= $ztarr[1];
-			$rows[$k]['modenum']	    = 'custfina';
+			$rows[$k]['modenum']	    = 'custfinb';
 		}
 		return $rows;
 	}

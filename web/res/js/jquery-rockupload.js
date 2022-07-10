@@ -35,7 +35,7 @@
 				$('body').append(s);
 			}
 			$('#'+this.inputfile+'').change(function(){
-				me.change(this);
+				me.change(this, 0);
 			});
 		};
 		this.reset=function(){
@@ -64,13 +64,25 @@
 			this.xu 		= 0;
 			$('#'+this.fileview+'').html('');
 		};
-		this.change=function(o1){
+		this.changenext=function(max){
+			var nxd = this.allfilesnow+1;
+			if(!max)max = 20;
+			if(nxd>=this.allfileslen || nxd>=max){
+				if(nxd>1)js.msg('success','共有'+nxd+'个文件全部上传完成');
+			}else{
+				this.change(this.allfilesobj, nxd);
+			}
+		}
+		this.change=function(o1,nxd){
 			if(!o1.files){
 				js.msg('msg','当前浏览器不支持上传1');
 				return;
 			}
-			
-			var f = o1.files[0];
+			if(!nxd)nxd=0;
+			var f = o1.files[nxd];
+			this.allfilesobj = o1;
+			this.allfileslen = o1.files.length;
+			this.allfilesnow = nxd;
 			if(!f || f.name=='/')return;
 			var a = {filename:f.name,filesize:f.size,filesizecn:js.formatsize(f.size)};
 			if(a.filesize<=0){
@@ -190,7 +202,7 @@
 		};
 		this.getimgview=function(o1){
 			try{
-				return URL.createObjectURL(o1.files.item(0));
+				return URL.createObjectURL(o1.files.item(this.allfilesnow));
 			}catch(e){return false;}
 		};
 		this.isfields=function(a){

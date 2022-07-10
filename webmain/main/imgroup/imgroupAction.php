@@ -28,15 +28,15 @@ class imgroupClassAction extends Action
 	public function saveuserAjax()
 	{
 		$gid 	= (int)$this->post('gid','0');
-		$sid 	= $this->post('sid');
+		$sid 	= c('check')->onlynumber($this->post('sid'));
 		m('reim')->adduserchat($gid, $sid, true);
 		echo 'success';
 	}
 	
 	public function deluserAjax()
 	{
-		$gid 	= $this->post('gid','0');
-		$sid 	= $this->post('sid','0');
+		$gid 	= (int)$this->post('gid','0');
+		$sid 	= c('check')->onlynumber($this->post('sid','0'));
 		m('reim')->exitchat($gid, $sid);
 		echo 'success';
 	}

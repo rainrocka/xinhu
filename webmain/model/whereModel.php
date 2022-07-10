@@ -231,8 +231,10 @@ class whereClassModel extends Model
 		if($where=='all' || contain($where, '{super}') || 
 			contain($where, '{allsuper}') || 
 			contain($where, '{company}'))return '';
+		$moders = m('flow_set')->getone($modeid);	
+		$this->moders = $moders;
 		$where  = $this->getstrwhere($where);
-		$stable = m('flow_set')->getmou('`table`', $modeid);
+		$stable = $moders['table'];
 		$where  = '`id`=0 and '.str_replace('{asqom}','', $where);
 		$sql    = 'select * from `[Q]'.$stable.'` a where '.$where.'';
 		$bool 	= $this->db->query($sql, false);

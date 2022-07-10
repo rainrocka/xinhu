@@ -483,11 +483,12 @@ class inputAction extends Action
 		$this->rs 	= $oldrs;
 		$this->gongsiarr = array();
 		
-		$fieldarr 	= m('flow_element')->getrows("`mid`='$modeid' and `iszb`=0 $stwhe",'fields,fieldstype,name,dev,data,isbt,islu,attr,iszb,issou,gongsi,placeholder,lens','`sort`');
+		$fieldarr 	= m('flow_element')->getrows("`mid`='$modeid' and `iszb`=0 $stwhe",'*','`sort`');
 		$fieldarr	= $this->flow->flowfieldarr($fieldarr, $this->ismobile);
 		
 		$modelu		= '';
 		$fieldstypearr = array();
+		$fmoddfarr	   = array();
 		foreach($fieldarr as $k=>$rs){
 			if($slx==1 && $oldrs){
 				$rs['value'] = $oldrs[$rs['fields']];
@@ -496,7 +497,10 @@ class inputAction extends Action
 				$rs['isbt'] = 0;
 				if($rs['issou']==1)$modelu.='{'.$rs['fields'].'}';
 			}else{	
-				if($rs['islu'] || $stwhe!='')$modelu.='{'.$rs['fields'].'}';
+				if($rs['islu'] || $stwhe!=''){
+					$fmoddfarr[] = $rs;
+					$modelu.='{'.$rs['fields'].'}'; //手机端字段布局
+				}
 				if(!isempt($rs['gongsi']) && contain($rs['gongsi'],'{'))$this->gongsiarr[] = array(
 					'iszb' 	 => 0,
 					'fields' => $rs['fields'],
@@ -530,7 +534,7 @@ class inputAction extends Action
 		if($this->ismobile==0){
 			$content = $pclucont;
 		}else{
-			$content = $modelu;
+			$content = $this->mobileautov($modelu, $fmoddfarr);
 			if($tableas && $slx==0){
 				foreach($tableas as $k1=>$tableass){
 					$zbstr 	 = m('input')->getsubtable($modeid,$k1+1,1,1, $zbzdshu);
@@ -671,6 +675,25 @@ class inputAction extends Action
 		$otherfile = 'webmain/flow/input/tpl_input_luother_'.$this->ismobile.'.html';
 		if(!file_exists($otherfile))$otherfile = '';
 		$this->assign('otherfile', $otherfile);
+	}
+	
+	//2022-06-15添加分组显示
+	private function mobileautov($str, $farr)
+	{
+		if(!$farr)return $str;
+		$fzuar = array();
+		foreach($farr as $k=>$rs){
+			$ftype = arrvalue($rs, 'ftype');
+			if(isempt($ftype))$ftype = 'defv';
+			if(!isset($fzuar[$ftype]))$fzuar[$ftype] = '';
+			$fzuar[$ftype].= '{'.$rs['fields'].'}';
+		}
+		$str = '';
+		foreach($fzuar as $fl=>$fstr){
+			if($fl!='defv')$str.='<tr><td colspan="2" style="line-height:35px;color:#888888;font-size:12px;padding-left:10px">'.$fl.'</td></tr>';
+			$str.=$fstr;
+		}
+		return $str;
 	}
 	
 	//多行子表内替换

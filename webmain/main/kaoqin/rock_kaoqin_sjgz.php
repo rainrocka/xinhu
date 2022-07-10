@@ -60,8 +60,9 @@ $(document).ready(function(){
 		},{
 			text:'ID',dataIndex:'id'
 		}],
-		itemclick:function(){
+		itemclick:function(d){
 			btn(false);
+			if(d.stotal>0)get('del_{rand}').disabled = true;
 		},
 		beforeload:function(){
 			btn(true);

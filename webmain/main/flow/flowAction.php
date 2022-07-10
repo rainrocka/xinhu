@@ -655,18 +655,59 @@ class mode_'.$modenum.'ClassAction extends inputAction{
 		
 		$mrs 	= m('mode')->getone($modeid);
 		$rowsa   = m('flow_element')->getall('mid='.$modeid.' and `iszb`=0 and `islu`=1','*','sort,id');
-		$zhang  = array('textarea','htmlediter','uploadfile','uploadimg','changedeptusercheck');
-		$s = '<table width="100%" border="0"><tbody><tr class="autoyijianview">';
-		$xuo = 0;
-		$yczd = '';
-		$rows = array();
+		$yczd 	= '';
+		$rows 	= array();
+		$fzuar  = array();
 		foreach($rowsa as $k1=>$rs1){
 			if($rs1['fieldstype']=='hidden' || $rs1['fieldstype']=='fixed'){
 				$yczd.='{'.$rs1['fields'].'}';
 			}else{
 				$rows[] = $rs1;
+				$ftype = arrvalue($rs1, 'ftype');
+				if(isempt($ftype))$ftype = 'defv';
+				if(!isset($fzuar[$ftype]))$fzuar[$ftype] = array();
+				$fzuar[$ftype][]= $rs1;
 			}
 		}
+		
+		$xichu = 0;
+		$s = '';
+		foreach($fzuar as $fl=>$fstra){
+			$xichu++;
+			if($xichu>1){
+				$s.='</tbody></table>';
+			}
+			if($fl!='defv'){
+				$s.='<br><div><b>'.$fl.'</b></div>';
+			}
+			$str1 = $this->yubustsin($fstra, $yczd);
+			$s.=$str1;
+			$yczd 	= '';
+		}
+
+		$tables	 = $mrs['tables'];
+		if(!isempt($tables)){
+			$tablesa = explode(',', $tables);
+			$tablesn = explode(',', $mrs['names']);
+			foreach($tablesa as $k=>$tab){
+				$str 	= m('input')->getsubtable($modeid, $k+1, 1);
+				$s.='<tr ><td class="ys2" style="background-color:#CCCCCC;" colspan="4"><strong>'.arrvalue($tablesn, $k).'</strong></td></tr>';
+				$s.='<tr><td class="ys0" colspan="4">'.$str.'</td></tr>';
+			}
+		}
+		if($xgwj==1)$s.='<td height="34" align="right" class="ys1">^file_content^</td><td colspan="3" class="ys2">	{file_content}</td>';
+		if($base==1)$s.='<tr><td height="34"  align="right" class="ys1">^base_name^</td><td class="ys2" >{base_name}</td><td align="right" class="ys1" >^base_deptname^</td><td class="ys2" >{base_deptname}</td></tr>';
+		$s.='</tbody></table>';
+		return $s;
+	}
+	
+	
+	public function yubustsin($rows, $yczd)
+	{
+		$zhang  = array('textarea','htmlediter','uploadfile','uploadimg','changedeptusercheck');
+		$s = '<table width="100%" border="0"><tbody><tr class="autoyijianview">';
+		$xuo = 0;
+		
 		$zlen= count($rows)-1;
 		foreach($rows as $k=>$rs){
 			$xuo++;
@@ -689,24 +730,8 @@ class mode_'.$modenum.'ClassAction extends inputAction{
 				$s.='<td height="34" align="right" class="ys1"></td><td class="ys2"></td></tr>';
 			}
 		}
-		$tables	 = $mrs['tables'];
-		if(!isempt($tables)){
-			$tablesa = explode(',', $tables);
-			$tablesn = explode(',', $mrs['names']);
-			foreach($tablesa as $k=>$tab){
-				$str 	= m('input')->getsubtable($modeid, $k+1, 1);
-				$s.='<tr ><td class="ys2" style="background-color:#CCCCCC;" colspan="4"><strong>'.arrvalue($tablesn, $k).'</strong></td></tr>';
-				$s.='<tr><td class="ys0" colspan="4">'.$str.'</td></tr>';
-			}
-		}
-		if($xgwj==1)$s.='<td height="34" align="right" class="ys1">^file_content^</td><td colspan="3" class="ys2">	{file_content}</td>';
-		if($base==1)$s.='<tr><td height="34"  align="right" class="ys1">^base_name^</td><td class="ys2" >{base_name}</td><td align="right" class="ys1" >^base_deptname^</td><td class="ys2" >{base_deptname}</td></tr>';
-		$s.='</tbody></table>';
 		return $s;
 	}
-	
-	
-	
 	
 	
 	public function getmodearrAjax()
