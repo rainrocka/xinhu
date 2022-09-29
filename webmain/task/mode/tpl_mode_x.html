@@ -377,7 +377,8 @@ if($da['arr']['isplview']=='1'){
 	?>	
 </div>
 <?php
-if($cheikbo){
+$modelujs = arrvalue($da['arr'], 'modelujs');
+if($cheikbo || $modelujs){
 ?>
 <script type="text/javascript" src="web/res/js/jquery-changeuser.js"></script>
 <link rel="stylesheet" type="text/css" href="mode/plugin/css/jquery-rockdatepicker.css"/>
@@ -385,7 +386,7 @@ if($cheikbo){
 <script type="text/javascript" src="mode/plugin/jquery-signature.js"></script>
 <script type="text/javascript" src="web/res/js/jquery-rockupload.js"></script>
 <?php 
-if($flowinfor['checkfields'] && $da['inputjspath']!='')echo '<script type="text/javascript" id="modelujs" src="'.$da['inputjspath'].'"></script>';
+if(($modelujs || $flowinfor['checkfields']) && $da['inputjspath']!='')echo '<script type="text/javascript" id="modelujs" src="'.$da['inputjspath'].'?'.time().'"></script>';
 
 }?>
 </body>

@@ -30,6 +30,7 @@ final class rockClass
 	{		
 		$this->ip		= $this->getclientip();
 		$this->host		= isset($_SERVER['HTTP_HOST'])		? $_SERVER['HTTP_HOST']		: '' ;
+		if($this->host && substr($this->host,-3)==':80')$this->host = str_replace(':80', '', $this->host);
 		$this->url		= '';
 		$this->isqywx	= false;
 		$this->win		= php_uname();

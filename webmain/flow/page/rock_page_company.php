@@ -78,6 +78,7 @@ gotucompany=function(oi){
 		js.msgerror('没有设置平台地址');
 		return;
 	}
+	if(da.yuming)pldz = NOWURL.replace(HOST, da.yuming);
 	window.open(pldz+='?m=login&dwnum='+da.num+'');
 }
 createcompany=function(oi){

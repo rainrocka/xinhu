@@ -55,7 +55,12 @@ class scheduleClassModel extends Model
 				$dts  = $rs['time'];
 				$time = '';
 				if($rate=='d'){
+					$pinv = $rs['rateval'];
+					if(isempt($pinv))$pinv = 1;
+					$pinv = (int)($pinv);
+					$jgsj = $this->dtobj->datediff('d',$rs['startdt'], $dt);
 					$time = ''.$dt.' '.$dts[3].':'.$dts[4].':00';
+					if($pinv>1 && $jgsj % $pinv!=0)$time='';
 				}else if($rate=='m'){
 					if(contain($ratev,','.$_d.',')){
 						$time = ''.$dt.' '.$dts[3].':'.$dts[4].':00';
@@ -73,6 +78,7 @@ class scheduleClassModel extends Model
 						'title' => $rs['title'],
 						'optname'=>$rs['optname'],
 						'receid' =>$rs['receid'],
+						'explain' =>$rs['explain'],
 						'txsj' 	=>$rs['txsj'],
 						'isdai'	=>arrvalue($rs, 'isdai'),
 						'week'	=>$this->dtobj->cnweek($dt),
@@ -116,7 +122,11 @@ class scheduleClassModel extends Model
 					if(!isempt($rs['receid'])){
 						$receid  = 'u'.$receid.','.$rs['receid'].'';
 					}
-					if($rs['txsj']=='1')$flow->push($receid, '', $rs['title'], '日程提醒');
+					if($rs['txsj']=='1'){
+						$cont = '类型：日程提醒\n记事人：'.$rs['optname'].'\n时间：'.$rs['time'].'';
+						if(!isempt($rs['explain']))$cont.='\n说明：'.$rs['explain'].'';
+						$flow->push($receid, '', $cont, ''.$rs['title'].'');
+					}
 					
 					//写入到日程待办里
 					$this->insertdaiban($rs);

@@ -514,7 +514,7 @@ abstract class mysql{
 
 	public function insert($table,$name,$values,$sel=false)
 	{
-		$sql="insert into `$table` ($name) ";
+		$sql="insert into ".$this->gettables($table)." ($name) ";
 		if(!$sel){
 			$sql.="values($values)";
 		}else{
@@ -526,14 +526,14 @@ abstract class mysql{
 	public function update($table,$content,$where)
 	{
 		$where = $this->getwhere($where);
-		$sql="update `$table` set $content where $where ";
+		$sql="update ".$this->gettables($table)." set $content where $where ";
 		return $this->tranbegin($sql);
 	}	
 
 	public function delete($table,$where)
 	{
 		$where = $this->getwhere($where);
-		$sql="delete from `$table` where $where ";
+		$sql="delete from ".$this->gettables($table)." where $where ";
 		return $this->tranbegin($sql);
 	}
 	
@@ -553,13 +553,23 @@ abstract class mysql{
 		}else{
 			$cont	= $array;
 		}
+		$table = $this->gettables($table);
 		if($addbool){
-			$sql="insert into `$table` set $cont";
+			$sql="insert into $table set $cont";
 		}else{
 			$where = $this->getwhere($where);
-			$sql="update `$table` set $cont where $where";
+			$sql="update $table set $cont where $where";
 		}
 		return $this->tranbegin($sql);
+	}
+	
+	/**
+	*	处理表名
+	*/
+	public function gettables($str)
+	{
+		if(!contain($str,'`'))$str='`'.$str.'`';
+		return $str;
 	}
 	
 	/**

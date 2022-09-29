@@ -81,8 +81,8 @@ class modeClassModel extends Model
 		$farr[] = array('name'=>arrvalue($chufarr, 'base_sericnum', '单号'),'fields'=>'sericnum');
 		$farrs 	= m('flow_element')->getall("`mid`='$modeid'",'`fields`,`name`,`fieldstype`,`ispx`,`isalign`,`iszb`,`islb`,`issou`,`data`','`iszb`,`sort`');
 		$inpub  = c('input');
-		$zbarr	= array();
-		$zbnamea = explode(',', $mors['names']);
+		$zbarr	= $zbnamea = array();
+		if(!isempt($mors['names']))$zbnamea = explode(',', $mors['names']);
 		foreach($farrs as $k=>$rs){
 			if($glx==1 && $rs['issou']=='1' && ($rs['fieldstype']=='select' || $rs['fieldstype']=='rockcombo')){
 				$rs['store'] =$inpub->getdatastore($rs['fieldstype'],$inrs,$rs['data']);

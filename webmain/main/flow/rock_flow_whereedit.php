@@ -178,6 +178,7 @@ $(document).ready(function(){
 			<td class="tdinput" colspan="3">
 				<label><input name="status" value="1" checked type="checkbox"> 启用?</label>&nbsp; &nbsp; 
 				<label><input name="islb" value="0" type="checkbox"> 列表页显示</label>&nbsp; &nbsp; 
+				<label><input name="yuanwhere" value="1" checked type="checkbox"> 验证条件</label>
 			</td>
 		</tr>
 

@@ -170,7 +170,7 @@ function dingdengl(bo){
 					dingdlogn(result.code);
 				},
 				onFail : function(err) {
-					shidengl(1);
+					shidengl(err.errorMessage);
 				}
 			});
 		});

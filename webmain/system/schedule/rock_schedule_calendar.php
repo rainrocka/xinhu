@@ -26,7 +26,7 @@ $(document).ready(function(){
 			},'json');
 		},
 		guanli:function(){
-			addtabs({num:'guanlieschedule',url:'{dir},{mode},guan',name:'日程管理'});
+			addtabs({num:'guanlieschedule',url:'flow,page,schedule,atype=my',name:'日程管理'});
 		},
 		ricdaibn:function(){
 			addtabs({num:'scheduld',url:'flow,page,scheduld,atype=my',name:'日程待办'});

@@ -226,7 +226,7 @@ class whereClassModel extends Model
 	*/
 	public function checkwhere($modeid, $str)
 	{
-		if(isempt($str))return '';
+		if(isempt($str) || $this->rock->post('yuanwhere')!='1')return '';
 		$where = $this->rock->jm->base64decode($str);
 		if($where=='all' || contain($where, '{super}') || 
 			contain($where, '{allsuper}') || 

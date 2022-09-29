@@ -98,6 +98,7 @@ $(document).ready(function(){
 		},
 		auther:function(a){
 			if(HOST==this.bd2('MTI3LjAuMC4x') || HOST==this.bd2('bG9jYWxob3N0'))return;
+			if(a.authmsg)return a.authmsg;
 			var akey = a.authkey,usedt = a.usedt;
 			if(!usedt)return '5peg5pWI6K6.6Zeu';
 			if(usedt>=js.now())return;

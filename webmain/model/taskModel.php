@@ -262,7 +262,11 @@ class taskClassModel extends Model
 			$barr	= c('rockqueue')->push($url, array('rtype'=>'queue','dwnum'=>'dev','nolog'=>'1','runtime'=>$runtime), $runtime, $len);
 			if(!COMPANYNUM && getconfig('platdwnum')){
 				$creaar = m('company')->getall('`iscreate`=1');
-				foreach($creaar as $k=>$rs)$barr = c('rockqueue')->push($url, array('dwnum'=>$rs['num'],'nolog'=>'1','runtime'=>$runtime), $runtime, $len+1+$k);
+				foreach($creaar as $k=>$rs){
+					$url1 = $url;
+					if(substr($url,0,4)=='http' && !isempt($rs['yuming']))$url1 = $this->tihuanurl($url1, $rs['yuming']);
+					$barr = c('rockqueue')->push($url1, array('dwnum'=>$rs['num'],'nolog'=>'1','runtime'=>$runtime), $runtime, $len+1+$k);
+				}
 			}
 		}else{
 			$url 	= ''.$turl.'task.php?m=runt&a=getlist';
@@ -271,6 +275,14 @@ class taskClassModel extends Model
 			));
 		}
 		return $barr;
+	}
+	private function tihuanurl($url1, $yj)
+	{
+		$str  = str_replace('/','@',str_replace('//', '@', $url1));
+		$urla = explode('@', $str);
+		$nhur = $urla[1];
+		$url1 = str_replace('/'.$nhur.'/', '/'.$yj.'/', $url1);
+		return $url1;
 	}
 	
 	/**

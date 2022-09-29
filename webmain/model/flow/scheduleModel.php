@@ -36,7 +36,7 @@ class flow_scheduleClassModel extends flowModel
 		$rate = $rs['rate'];
 		if(isset($this->ratearr[$rate])){
 			if($rate=='w')$rate='每周'.$rs['rateval'].'';
-			if($rate=='d')$rate='每天';
+			if($rate=='d')$rate='每'.$rs['rateval'].'天';
 			if($rate=='m')$rate='每月'.$rs['rateval'].'号';
 			$rs['rate'] = $rate;
 		}

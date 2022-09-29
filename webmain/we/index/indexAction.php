@@ -19,6 +19,7 @@ class indexClassAction extends ActionNot{
 		if(is_string($ybarr))return $ybarr;
 		$this->assign('xhauthkey', getconfig('authkey', $ybarr['authkey']));
 		$this->assign('tplmess', $this->option->getval('wxgzh_tplmess'));
+		$this->assign('lxrshow', $this->option->getval('appsy_lxrshow'));
 	}
 	
 	public function bd6($str)

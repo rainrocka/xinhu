@@ -16,7 +16,7 @@ class hwpushChajian extends Chajian{
 	/**
      * 相关域名定义
      */
-    private $tokenurl 	= 'https://login.cloud.huawei.com/oauth2/v2/token';
+    private $tokenurl 	= 'https://oauth-login.cloud.huawei.com/oauth2/v3/token';
     private $pushurl	= 'https://push-api.cloud.huawei.com/v1/{appid}/messages:send';
 	
 	protected function initChajian()

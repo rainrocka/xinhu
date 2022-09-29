@@ -6,7 +6,7 @@ class flow_assetmClassModel extends flowModel
 		$this->statearr = c('array')->strtoarray('blue|闲置,#ff6600|在用,red|维修,gray|报废,gray|丢失');
 	}
 	
-	public function flowrsreplace($rs)
+	public function flowrsreplace($rs,$lx=0)
 	{
 		if(isset($rs['typeid']))$rs['typeid'] 	= $this->db->getmou('[Q]option','name',"`id`='".$rs['typeid']."'");
 		if(isset($rs['ckid']) && $rs['ckid']>0){
@@ -21,6 +21,16 @@ class flow_assetmClassModel extends flowModel
 			$rs['state'] = '<font color="'.$b[0].'">'.$b[1].'</font>';
 		}
 		if(isset($rs['fengmian']) && !isempt($rs['fengmian']))$rs['fengmian'] = '<img src="'.$rs['fengmian'].'" height="100">';
+		
+		if($lx==1){
+			$rows = $this->db->getall('select a.runren,a.id,a.optdt from `[Q]planm` a left join `[Q]plans` b on a.id=b.mid where b.itemid='.$rs['id'].' and a.`type`=1');
+			$str = '';
+			foreach($rows as $k1=>$rs1){
+				$url = $this->getxiangurl('assetmly', $rs1['id'],'auto');
+				$str.=''.$rs1['runren'].'('.$rs1['optdt'].') <a href="'.$url.'">查看</a><br>';
+			}
+			$rs['lycount'] = $str;
+		}
 		return $rs;
 	}
 

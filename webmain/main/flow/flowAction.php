@@ -28,6 +28,23 @@ class flowClassAction extends Action
 		return $where;
 	}
 	
+	public function getcompanydataAjax()
+	{
+		$rows = array();
+		$msg  = '';
+		if(!getconfig('platdwnum')){
+			$msg  = '当前不是SAAS模式不需要操作';
+		}else{
+			if(!COMPANYNUM){
+				$rows = m('company')->getall('`iscreate`=1','id,name');
+				if(!$rows)$msg='没有创建过任何单位';
+			}else{
+				$msg  = '请在管理模式下操作';
+			}
+		}
+		return returnsuccess($rows, $msg);
+	}
+	
 	public function flowwheresave_before($table,$das)
 	{
 		$str   = m('where')->checkwhere($das['setid'], $das['wheresstr']);

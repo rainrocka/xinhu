@@ -198,8 +198,59 @@ $(document).ready(function(){
 		shengsheng:function(){
 			var sid = a.getchecked();
 			addtabs({'name':'创建安装包',url:'main,flow,createinstall,sid='+jm.base64encode(sid)+'',num:'createinstall'});
+		},
+		tongbudanwu:function(){
+			var sid = a.getchecked();
+			if(!sid){
+				js.msgerror('复选框中没有选中模块');return;
+			}
+			this.xuandanwefe(sid,0);
+		},
+		xuandanwefe:function(sid,lx){
+			js.tanbody('senddw','同步到单位数据里', 350, 200, {
+				html:'<form name="sendform"><div style="padding:10px;" id="senddwdiv"><img src="images/mloading.gif"></div></form>',
+				btn:[{text:'确定同步'}]
+			});
 			
+			js.ajax(js.getajaxurl('getcompanydata','{mode}','{dir}'),{},function(ret){
+				var str = '',da=ret.data;
+				for(var i=0;i<da.length;i++){
+					str+='<div><label><input type="checkbox" name="xuanzhe[]" value="'+da[i].id+'">'+da[i].name+'</label></div>';
+				}
+				if(!str)str=ret.msg;
+				$('#senddwdiv').html(str);
+			},'get,json');
+			
+			$('#senddw_btn0').click(function(){
+				c.sendgongwenjsok(sid,lx);
+			});
+		},
+		
+		sendgongwenjsok:function(id1,lx){
+			var da = js.getformdata('sendform');
+			if(!da.xuanzhe){
+				js.msgerror('请选择单位');
+				return;
+			}
+			da.modeids = id1;
+			da.lx 	   = lx;
+			js.loading('同步中...');
+			js.tanclose('senddw');
+			js.ajax(publicmodeurl('company','anaymodedata'),da,function(ret){
+				js.msgok(ret.data);
+			},'post,json');
+		},
+		tongbumenu:function(){
+			$.selectdata({
+				title:'选择需要同步的菜单',
+				url:js.getajaxurl('getmenu','upgrade','system',{glx:1}),
+				checked:true,maxshow:500,
+				onselect:function(d1,sna,sid){
+					if(sid)c.xuandanwefe(sid, 1)
+				}
+			});
 		}
+		
 	};
 	js.initbtn(c);
 	
@@ -211,6 +262,10 @@ $(document).ready(function(){
 			name:'PC端录入页面布局',lx:1
 		},{
 			name:'清空此模块数据',lx:2
+		},{
+			name:'同步到单位数据',lx:3
+		},{
+			name:'同步菜单到单位数据',lx:4
 		}],
 		itemsclick:function(d, i){
 			var id = a.changedata.id;
@@ -218,6 +273,8 @@ $(document).ready(function(){
 			if(d.lx==1)c.input(0);
 			if(d.lx==0)c.elements();
 			if(d.lx==2)c.clearalldata(id);
+			if(d.lx==3)c.tongbudanwu();
+			if(d.lx==4)c.tongbumenu();
 		}
 	});
 });

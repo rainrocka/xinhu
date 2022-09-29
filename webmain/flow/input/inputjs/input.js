@@ -828,12 +828,16 @@ var c={
 		return str;
 	},
 	gongsv:function(ne,vlas,gongss){
-		var val = '0',vals,val1;
+		var val = '0',vals,val1,xs;
 		if(form(ne)){
 			try{
 				val = eval(vlas);if(!val)val='0';
 				val1= 'a'+val+'';vals= val1.split('.');
-				if(vals[1] && vals[1].length>2)val=js.float(val);
+				if(vals[1] && vals[1].length>2){
+					xs = $(form(ne)).attr('xiaoshu');
+					if(!xs || xs=='0')xs = 2;
+					val=js.float(val, parseFloat(xs));
+				}
 				form(ne).value=val;
 			}catch(e){
 				alert(''+ne+'计算公式设置有错误：'+gongss+'\n\n'+vlas+'');

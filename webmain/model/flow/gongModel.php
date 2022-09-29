@@ -101,8 +101,8 @@ class flow_gongClassModel extends flowModel
 		
 		$h 	  = c('html');
 		$cont = $h->htmlremove($this->rs['content']);
-		$cont = $h->substrstr($cont,0, 50);
-		if(strlen($cont)>40)$cont.='...';
+		$cont = $h->substrstr($cont,0, 40);
+		if(strlen($cont)>41)$cont.='...';
 		if(isempt($cont))$cont = $this->rs['title']; //为空时
 		$this->push($this->rs['receid'], '通知公告', $cont, $this->rs['title'],1);
 		
@@ -159,6 +159,8 @@ class flow_gongClassModel extends flowModel
 		if($lx=='my' || $lx=='wexx'){
 			$whyere= "and (`zstart` is null or `zstart`<='{$this->rock->date}')";
 			$whyere.= " and (`zsend` is null or `zsend`>='{$this->rock->date}')";
+			$wdate = $this->adminmodel->getmou('workdate', $uid);
+			if(!isempt($wdate))$whyere.=" and `indate`>='$wdate'";
 		}
 		
 		if($typeid>0){

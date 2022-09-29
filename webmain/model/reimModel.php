@@ -1075,6 +1075,7 @@ class reimClassModel extends Model
 			}else if(in_array($rs['cfrom'], array('nppandroid','nppios'))){//2019-11-25最新新app
 				$nestr = ''.$rs['token'].'|'.$rs['web'].'|'.$_uid.'|';
 				if(contain($rs['web'],'huawei') && !contain($rs['ip'],'.'))$nestr.=''.$rs['ip'].'';
+				if(contain($rs['web'],'xiaomi'))$nestr.=''.$rs['pushtoken'].'';
 				$alias2019[] = $nestr;
 				$uid2019[]   = $_uid;
 			}else if(substr($_web,0,4)=='app_'){

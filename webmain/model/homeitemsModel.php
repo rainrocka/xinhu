@@ -71,6 +71,13 @@ class homeitemsClassModel extends Model
 		if(in_array('receiptmy', $nubar) && !isset($arr['receiptmy']))$arr['receiptmy']	= m('flow:receipt')->getweitotal($uid);
 		if(in_array('myhong', $nubar) && !isset($arr['myhong']))$arr['myhong'] 		= m('official')->rows('`uid`='.$uid.' and `type`=0 and `status`=1 and `thid`=0');//统计未套红的
 		if(in_array('officidus', $nubar) && !isset($arr['officidus']))$arr['officidus'] = m('officidu')->rows('`status` in(0,3) and `isturn`=1 and '.$this->rock->dbinstr('runrenid',$uid).'');
+		
+		//未完成工作计划
+		if(in_array('myplan', $nubar) && !isset($arr['myplan'])){
+			$obj = m('flow:planm');
+			if(method_exists($obj,'getwwctotals'))$arr['myplan'] = $obj->getwwctotals($uid);
+		}
+		
 
 		return $arr;
 	}

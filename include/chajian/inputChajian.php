@@ -173,7 +173,8 @@ class inputChajian extends Chajian
 		}
 		//数字类型
 		if($type=='number'){
-			$str 	= '<input class="inputs" '.$attr.''.$styles.' value="'.$val.'" type="number" onfocus="js.focusval=this.value" '.$lenstr.' onblur="js.number(this);c.inputblur(this,'.$iszb.')" name="'.$fname.'">';
+			$xiaoshu= arrvalue($a,'xiaoshu','0');
+			$str 	= '<input class="inputs" xiaoshu="'.$xiaoshu.'" '.$attr.''.$styles.' value="'.$val.'" type="number" onfocus="js.focusval=this.value" '.$lenstr.' onblur="js.number(this);c.inputblur(this,'.$iszb.')" name="'.$fname.'">';
 		}
 		if($type=='xuhao'){
 			$str = '<input class="inputs xuhao" '.$attr.' type="text" value="'.$val.'" name="'.$fname.'">';

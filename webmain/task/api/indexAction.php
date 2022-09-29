@@ -122,7 +122,9 @@ class indexClassAction extends apiAction
 	{
 		$hwtoken 	= $this->get('hwtoken');
 		$pushtoken 	= $this->get('pushtoken');
+		$appver 	= $this->get('appversion');
 		$ispush  	= (int)$this->get('ispush','0');
+		if($appver)$pushtoken.='_'.$appver.'';
 		$uarr['ispush'] 	= $ispush;
 		$uarr['pushtoken'] 	= $pushtoken;
 		$uarr['moddt'] 		= $this->now;

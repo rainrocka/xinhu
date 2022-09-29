@@ -112,17 +112,20 @@ class fworkClassAction extends Action
 		//抄送的
 		if($lx=='chaosview'){
 			$where =' and 1=2';
-			$crows = $this->db->getall("select * from `[Q]flow_chao` where ".$this->rock->dbinstr('csnameid', $uid)."");
+			$where1= $this->rock->dbinstr('csnameid', $uid);
+			if($modeid>0)$where1.=' and `modeid`='.$modeid.'';
+			$crows = $this->db->getall("select * from `[Q]flow_chao` where $where1");
 			$this->modeids = '0';
 			if($crows){
 				$modeids = '';
-				$mids 	 = '';
+				$modeidsa= array();
 				foreach($crows as $k1=>$rs1){
 					$modeids.=','.$rs1['modeid'].'';
-					$mids.=','.$rs1['mid'].'';
+					$modeidsa[$rs1['modeid']][] = $rs1['mid'];
 				}
 				$this->modeids = substr($modeids,1);
-				$where = " and a.`isturn`=1 and a.`modeid` in(".$this->modeids.") and a.`mid` in(".substr($mids,1).")";
+				foreach($modeidsa as $mkid=>$mids)$wherea[]='(a.`modeid` = '.$mkid.' and a.`mid` in('.join(',', $mids).'))';
+				$where = ' and a.`isturn`=1 and ( '.join(' or ', $wherea).' )';
 			}
 		}
 		

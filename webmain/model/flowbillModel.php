@@ -88,15 +88,18 @@ class flowbillClassModel extends Model
 		//抄送
 		if($lx=='flow_chaos'){
 			$where ='1=2';
-			$crows = $this->db->getall("select * from `[Q]flow_chao` where ".$this->rock->dbinstr('csnameid', $uid)."");
+			$where1= $this->rock->dbinstr('csnameid', $uid);
+			if($modeid>0)$where1.=' and `modeid`='.$modeid.'';
+			$crows = $this->db->getall("select * from `[Q]flow_chao` where $where1");
 			if($crows){
 				$modeids = '';
-				$mids 	 = '';
+				$modeidsa= array();
 				foreach($crows as $k1=>$rs1){
 					$modeids.=','.$rs1['modeid'].'';
-					$mids.=','.$rs1['mid'].'';
+					$modeidsa[$rs1['modeid']][] = $rs1['mid'];
 				}
-				$where = "`isturn`=1 and `modeid` in(".substr($modeids,1).") and `mid` in(".substr($mids,1).")";
+				foreach($modeidsa as $mkid=>$mids)$wherea[]='(`modeid` = '.$mkid.' and `mid` in('.join(',', $mids).'))';
+				$where = '`isturn`=1 and ( '.join(' or ', $wherea).' )';
 			}
 		}
 		

@@ -17,5 +17,10 @@ function changeratess(v, lx){
 		}
 		s+='<label><input name="rateval[]" '+sel+' value="'+d1+'" type="checkbox">'+d[d1]+'</label>&nbsp;&nbsp;';
 	}
+	if(v=='d'){
+		sel = data.rateval;
+		if(!sel)sel='1';
+		s='每 <input name="rateval" class="inputs" onfocus="js.focusval=this.value" onblur="js.number(this)" style="width:50px" value="'+sel+'" type="number" min="1"> 天';
+	}
 	$('#div_rateval').html(s);
 }

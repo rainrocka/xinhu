@@ -22,6 +22,9 @@ class agent_gongClassModel extends agentModel
 		$where.= " and (`zstart` is null or `zstart`<='{$this->rock->date}')";
 		$where.= " and (`zsend` is null or `zsend`>='{$this->rock->date}')";
 		
+		$wdate = m('admin')->getmou('workdate', $uid);
+		if(!isempt($wdate))$where.=" and `indate`>='$wdate'";
+		
 		$where .= m('admin')->getcompanywhere(1);
 		$stotal	= m('infor')->rows($where);
 		return $stotal;

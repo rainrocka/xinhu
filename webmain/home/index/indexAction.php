@@ -42,7 +42,11 @@ class indexClassAction extends Action{
 				$this->option->setval($_key.'@-102', $usedt);
 			}
 			$arr['usedt']	= $usedt;
-		
+			if(!isempt($arr['authkey'])){
+				$ybarr	 = $this->option->authercheck();
+				if(is_string($ybarr))$arr['authmsg'] = $this->jm->base64encode($ybarr);
+			}
+			
 			if(DB_USER=='root'){
 				$sqld = $this->db->getall('select @@global.sql_mode as total');
 				if($sqld){

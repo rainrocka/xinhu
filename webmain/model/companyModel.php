@@ -17,6 +17,16 @@ class companyClassModel extends Model
 			'name'  => '最顶级',
 		);
 		$this->getselectdatas($rows, $barr, '0', 0);
+		$idarr = array();
+		foreach($barr as $k=>$rs)$idarr[] = $rs['value'];
+		foreach($rows as $k=>$rs){
+			if(!in_array($rs['id'], $idarr)){
+				$barr[] = array(
+					'name' => $rs['name'],
+					'value' => $rs['id'],
+				);
+			}
+		}
 		return $barr;
 	}
 	private function getselectdatas($rows,&$barr, $pid='0', $level=0)

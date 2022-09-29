@@ -168,9 +168,9 @@ function returnerror($msg='', $code=201, $carr=array())
 /**
 *	返回正确信息
 */
-function returnsuccess($data=array())
+function returnsuccess($data=array(),$msg='')
 {
-	$carr['msg']  		= '';
+	$carr['msg']  		= $msg;
 	$carr['code'] 		= 200;
 	$carr['success'] 	= true;
 	$carr['data'] 		= $data;

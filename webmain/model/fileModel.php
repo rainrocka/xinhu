@@ -329,11 +329,12 @@ class fileClassModel extends Model
 					header('location:'.$filepath.'');
 					return;
 				}
-				ob_clean();flush();readfile($filepath);return;
-				if($filesize > 5*1024*1024){
+				
+				if($filesize > 10*1024*1024 && 1==1){
 					header('location:'.$filepath.'');
 				}else{
-					echo file_get_contents($filepath);
+					//echo file_get_contents($filepath);
+					ob_clean();flush();readfile($filepath);
 				}
 			}
 		}

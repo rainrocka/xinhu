@@ -204,12 +204,14 @@ maincolor = '<?=$maincolor?>';
 		</div>
 		<p class="weui_tabbar_label" style="margin-top:0">应用</p>
 	</a>
+	<?php if($lxrshow!='否'){?>
 	<a href="javascript:;" id="tabnav2" onclick="RO.ctab(2)" class="weui_tabbar_item">
 		<div class="weui_tabbar_icon">
 			<i class="icon-group"></i>
 		</div>
 		<p class="weui_tabbar_label" style="margin-top:0">联系人</p>
 	</a>
+	<?php }?>
 	<a href="javascript:;" id="tabnav3" onclick="RO.smenu()" class="weui_tabbar_item">
 		<div class="weui_tabbar_icon">
 			<i class="icon-cog"></i>

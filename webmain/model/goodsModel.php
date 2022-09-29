@@ -203,14 +203,17 @@ class goodsClassModel extends Model
 	*/
 	public function getgoodninfo($mid, $glx=0, $mgx=5)
 	{
-		$rows 	= $this->db->getall("select a.`count`,a.couns,a.`price`,b.`unit`,b.`num`,b.`name`,b.`guige`,b.`xinghao` from `[Q]goodn` a left join `[Q]goods` b on a.`aid`=b.`id` where a.`mid`='$mid' order by a.`sort`");
+		$rows 	= $this->db->getall("select a.`count`,a.couns,a.`price`,b.`unit`,b.`num`,b.`name`,b.`guige`,b.`xinghao`,a.`lygh` from `[Q]goodn` a left join `[Q]goods` b on a.`aid`=b.`id` where a.`mid`='$mid' order by a.`sort`");
 		$str 	= '';
 		if($glx==1){
 			foreach($rows as $k1=>$rs1){
 				if($k1>$mgx)break;
 				$str.=''.$rs1['name'].'';
 				if(!isempt($rs1['xinghao']))$str.='('.$rs1['xinghao'].')';
-				$str .=':'.$rs1['count'].''.$rs1['unit'].';';
+				$str .=':'.$rs1['count'].''.$rs1['unit'].'';
+				if($rs1['lygh']=='1')$str.='<font color=blue>(需归还)</font>';
+				if($rs1['lygh']=='2')$str.='<font color=green>(已归还)</font>';
+				$str.=';';
 			}
 			return $str;
 		}
