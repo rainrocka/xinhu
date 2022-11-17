@@ -268,9 +268,13 @@ function optmenuclass(o1,num,id,obj,mname,oi, cola){
 		if(lx==4){
 			js.prompt(d.name, '说明('+bts+')：', function(index, text){
 				if(index=='yes'){
-					var ad=js.getformdata('myformsbc');
-					for(var i in ad)d['fields_'+i+'']=ad[i];
-					me.okchangevalue(d, text);
+					if(!text && d.issm==1){
+						js.msg('msg','没有输入['+d.name+']说明');
+					}else{
+						var ad=js.getformdata('myformsbc');
+						for(var i in ad)d['fields_'+i+'']=ad[i];
+						me.okchangevalue(d, text);
+					}
 					return true;
 				}
 			},'','<div align="left" id="showmenusss" style="padding:10px">加载中...</div>', uostr);
@@ -724,6 +728,15 @@ function publicdaochuobj(options){
 	this._init();
 }
 
+function pirnttablelist(d,na){
+	var rnd = d.printrnd;
+	if(!rnd){
+		rnd = 'table'+js.getrand();
+		window[rnd] = d;
+		d.printrnd = rnd;
+	}
+	window.open('?d=public&m=print&table='+rnd+'&modename='+jm.base64encode(na)+'');
+}
 
 //重写js.tanbody
 /*

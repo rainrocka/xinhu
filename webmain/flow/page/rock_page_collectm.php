@@ -21,13 +21,28 @@ $(document).ready(function(){
 
 c.setcolumns('leixing',{
 	renderer:function(v,d,i){
-		return ''+v+'&nbsp;<a href="javascript:;" onclick="viespere{rand}('+i+')">查看</a>';
+		var str = ''+v+'';
+		str+='&nbsp;<a href="javascript:;" onclick="viespere{rand}('+i+',0)">查看</a>';
+		str+='&nbsp;<a href="javascript:;" onclick="viespere{rand}('+i+',1)">统计</a>';
+		return str;
 	}
 });
 
-viespere{rand}=function(id){
+viespere{rand}=function(id,lx){
 	var d 	= a.getData(id);
-	var bo 	= addtabs({name:'信息收集表['+d.name+']',url:'flow,page,collects,atype=all,pnum=all,leixingid='+d.id+'',num:'collects'+d.id+''});
+	if(lx==1){
+		addtabs({name:'信息收集表['+d.name+']统计',url:'flow,page,collectstotal,mid='+d.id+'',num:'collectstotal'+d.id+''});
+	}else{
+		addtabs({name:'信息收集表['+d.name+']',url:'flow,page,collects,atype=all,pnum=all,leixingid='+d.id+'',num:'collects'+d.id+''});
+	}
+}
+
+c.createouturl=function(d){
+	var url = c.getacturl('createouturl')+'&id='+d.id+'';
+	js.tanbody('createurl','['+d.name+']外部收集地址', 300,200,{
+		html:'<div  style="height:160px;padding:5px" align="center"><div><img id="createurlimg" src="images/logo.png" width="130" height="130"></div><div><a href="'+url+'" download="'+d.name+'130x130.png" class="blue">保存二维码</a>，<a href="javascript:;" onclick="js.open(\'?m=login&a=collect&mid='+d.id+'\',350,500)" class="blue">打开页面</a></div></div>'
+	});
+	get('createurlimg').src = url;
 }
 
 //[自定义区域end]

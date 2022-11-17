@@ -24,12 +24,14 @@ $(document).ready(function(){
 		},
 		loadcharts:function(){
 			var rows = a.getData('rows'),i,len=rows.length,v;
-			var xAxis=[],data=[];
+			var xAxis=[],data=[],hj=0;
 			for(i=0;i<len;i++){
 				xAxis.push(rows[i].name);
 				v = rows[i].value;if(v=='')v=0;
+				hj+=parseFloat(v);
 				data.push({value:parseFloat(v),name:rows[i].name});
 			}
+			if(hj>0)a.insert({name:'合计',value:hj});
 			var o1 = get('type_{rand}');
 			if(!myChart)myChart = echarts.init(get('main_show{rand}'));
 			var ss = o1.options[o1.selectedIndex].text;

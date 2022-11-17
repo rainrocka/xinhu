@@ -16,7 +16,7 @@ class openbaseClassAction extends openapiAction
 		if(!$arr)return returnerror('not data');
 		
 		$modenum = $arr['basemodenum'];
-		$adminid = $arr['baseoptid']; 	//提交的用户
+		$adminid = $this->rock->xssrepstr($arr['baseoptid']); 	//提交的用户
 		if(isempt($modenum))return returnerror('modenum is empty');
 		$uid 	 = $this->getuserid($adminid);
 		if($uid==0)return returnerror('['.$adminid.']用户不存在');

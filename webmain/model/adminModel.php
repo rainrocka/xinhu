@@ -463,7 +463,7 @@ class adminClassModel extends Model
 				$where2 = $this->gjoin($rangeno, '', 'where');
 				$where2 = 'and not('.$where2.')';
 			}
-			if($lx==0)$where.=' and `isvcard`=1'; //通讯录显示
+			
 			//--start--
 			if(ISMORECOM && $uid>1){
 				$comid = $this->getcompanyid($uid);
@@ -477,9 +477,12 @@ class adminClassModel extends Model
 			}else{
 				$where = 'and ((1 '.$where.') or (`id`='.$uid.'))';
 			}
-			$rows = $this->getall("`status`=1 $where $where1 $where2",$fields,'`sort`,`name`');
+			if($lx==0)$where2.=' and `isvcard`=1'; //通讯录显示
+			$sql  = "select $fields from `[Q]admin` where `status`=1 $where $where1 $where2 order by `sort`,`name`";
+			$rows = $this->db->getall($sql);
 		}else{
-			$rows = $this->getall("`id`='$uid'",$fields,'`sort`,`name`');
+			$sql  = "select $fields from `[Q]admin` where `id`='$uid'";
+			$rows = $this->db->getall($sql);
 		}
 
 		

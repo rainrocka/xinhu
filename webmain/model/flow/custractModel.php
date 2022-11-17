@@ -11,6 +11,7 @@ class flow_custractClassModel extends flowModel
 		$this->goodmobj		= m('goodm');
 		
 		$this->wherejoin['custfina'] = 'htid';
+		$this->wherejoin['custfinb'] = 'htid';
 	}
 	
 	//作废或删除时

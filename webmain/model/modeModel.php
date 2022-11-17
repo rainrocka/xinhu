@@ -7,7 +7,9 @@ class modeClassModel extends Model
 	}
 	public function getmodearr($whe='')
 	{
-		$arr = $this->getall('status=1 '.$whe.'','`id`,`num`,`name`,`table`,`type`,`isflow`','sort');
+		$where 	= 'status=1 '.$whe.'';
+		if($whe=='all')$where='1=1';
+		$arr 	= $this->getall($where,'`id`,`num`,`name`,`table`,`type`,`isflow`,`status`','sort');
 		$typea = array();
 		foreach($arr as $k=>$rs){
 			$arr[$k]['name'] = ''.$rs['id'].'.'.$rs['name'].'('.$rs['num'].')';
@@ -239,5 +241,110 @@ $rstr 	= "".$hstart."
 	public function flowtotal($modeid, $fields, $type)
 	{
 		
+	}
+	
+	
+	
+	public function menulist()
+	{
+		$arr['schedule'] 	= '45';
+		$arr['hrsalary'] 	= '184,98,277,276,99,278,102';
+		$arr['knowtraim'] = '202,199,200,201';
+		$arr['hrcheck'] 	= '274,272,273,244,275';
+		$arr['emailm'] 	= '157';
+		$arr['meet'] 	= '89,150,151,283';
+		$arr['kqdkjl'] 	= '59,92,33,58,60,234,86,88,169,170'; //打卡记录
+		$arr['waichu'] 	= '160,159'; //打卡记录
+		$arr['kaoqin'] 	= '32,61,53,54,197,55,56,152,153,240,241,243,242,36,87,260,57';
+		$arr['kqdw'] 	= '93,94'; 
+		$arr['jiaban'] 	= '217'; 
+		$arr['daily'] 	= '76,77,195,78,198,231,192,193,194,196'; 
+		
+		$arr['project'] 	= '79,69,70,72,71,82'; 
+		$arr['work'] 		= '66,65,67,83,68,80,81'; 
+		$arr['word'] 		= '124,125,203'; 
+		$arr['wordxie'] 		= '281'; 
+		$arr['wordeil'] 		= '282'; 
+		$arr['knowledge'] 		= '134,158'; 
+		$arr['knowtiku'] 		= '135,136';
+		$arr['news'] 		= '288';
+		$arr['wenjuan'] 		= '321';
+		
+		$arr['wupin'] 		= '28,247,248,30,249,253,31,251,250,319,261,323,252';
+		$arr['assetm'] 		= '137,411,412,413';
+		$arr['repair'] 		= '413';
+		
+		$arr['cheliang'] 		= '138,143,214,144,146,215,216';
+		$arr['book'] 		= '139,141,145';
+		$arr['seal'] 		= '165,166,167';
+		$arr['dangan'] 		= '336,337,338';
+		
+		$arr['gongwen'] 		= '204,239,289,290,232,256,258,291,292,293,306,205,257,259,294,255,233,206,304,305'; 
+		
+		$arr['crm'] 		= '63,37,64,73,104,105,114,118,126,179,262,299,131,132,75,112,113,123,263,317,110,111,108,109,106,119,115,116,117,107,120,121,122,175,176,177,178,264,302,318,300,301,386,387';
+		
+		$arr['userinfo'] 		= '85,101,149';
+		$arr['userract'] 		= '95';
+		$arr['userzheng'] 		= '339';
+		$arr['hrdemand'] 		= '265';
+		$arr['hrmanshi'] 		= '266';
+		$arr['hrpositive'] 		= '96';
+		$arr['hrredund'] 		= '97';
+		$arr['hrtransfer'] 		= '128';
+		$arr['hrtrsalary'] 		= '129';
+		$arr['reward'] 		= '130';
+		
+		$arr['finjishou'] 		= '311,312,316,369';
+		$arr['finzhang'] 		= '308';
+		$arr['finkemu'] 		= '309';
+		$arr['finount'] 		= '310';
+		
+		$arr['finfybx'] 		= '187,191';
+		$arr['finccbx'] 		= '188';
+		$arr['finjkd'] 		= '189,218';
+		$arr['finhkd'] 		= '190';
+		$arr['finpay'] 		= '229';
+		$arr['finkai'] 		= '230';
+		$arr['finpiao'] 		= '279,280';
+		$arr['finyisu'] 		= '325,326,329,327,328';
+		
+		$arr['finbei'] 	= '330,331,335,333,332,334';
+		$arr['wxgzh']	= '180,181,284,285,366';
+		$arr['weixinqy']	= '171,172,155,173,174,370';
+		$arr['ding']	= '208,209,210,211,212';
+		$arr['gongcheng']	= '345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,373,374,375,376,377,378,379,380,381,382,383,384,385';
+		$arr['officidu']	= '361,362,363,364,365';
+		$arr['gong']	= '90,287';
+		
+		$arr['jxcbase']	= '388,389,390,391,392,393,394,395,396,397,398,399,400,401,402,403,404,405,406,417,418';
+		
+		$arr['planm']	= '410,407,408,409';
+		$arr['collectm']	= '414,415,416';
+		$arr['eduxueqi']	= '419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435';
+		$arr['yqhealthy']	= '436,437';
+		return $arr;
+	}
+	
+	public function yinglist()
+	{
+		$arr['kaoqin'] = '29,45,28,30,24,58';
+		$arr['work'] = '12';
+		$arr['project'] = '44';
+		$arr['gongwen'] = '41,42,43';
+		$arr['emailm'] = '26';
+		$arr['schedule'] = '21';
+		$arr['daily'] = '7';
+		$arr['meet'] = '4';
+		$arr['hrsalary'] = '38';
+		$arr['news'] = '52';
+		$arr['word'] = '20';
+		$arr['wordxie'] = '50';
+		$arr['knowledge'] = '27';
+		$arr['knowtiku'] = '32';
+		$arr['knowtraim'] = '33';
+		$arr['crm'] = '18,17,56,19,34,35,36';
+		$arr['bianjian'] = '59';
+		$arr['gong'] = '3';
+		return $arr;
 	}
 }

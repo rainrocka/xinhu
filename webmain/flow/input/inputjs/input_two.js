@@ -3,6 +3,7 @@
 */
 
 var inputtwo={
+	onchangebefore:function(){},
 	selectdatadata:{}, //保存数据源
 	selectdata:function(s1,ced,fid,tit,zbis){
 		if(isedit==0)return;
@@ -144,7 +145,7 @@ var inputtwo={
 		}
 		this.initupssa[sna]=$.rockupload({
 			'inputfile':'filed_'+sna+'_inp',
-			'initremove':false,'uptype':uptp,
+			'initremove':false,'uptype':uptp,'formming':sna,
 			'urlparams':{'sysmodenum':modenum,'sysmid':mid},
 			'oparams':{sname:sna,snape:tsye},
 			'onsuccess':function(f,gstr){
@@ -186,6 +187,13 @@ var inputtwo={
 				}else if(tsye=='img'){
 					js.loading('上传中...');
 				}
+			},
+			onerror:function(estr){
+				c.upfbo = false;
+				js.msg('msg',estr);
+			},
+			onchangebefore:function(){
+				c.onchangebefore(this);
 			}
 		});
 	},
@@ -207,7 +215,7 @@ var inputtwo={
 			js.loading('等待上传完成...');
 			setTimeout("c.upimages('"+fid+"','"+fileid+"', true)",3000);
 		}else{
-			js.ajax(geturlact('upimagepath'),{fileid:fileid,fid:fid},function(ret){
+			js.ajax('api.php?m=login&a=upimagepath',{fileid:fileid,fid:fid},function(ret){
 				js.unloading();
 				var da = ret.data;
 				if(da.path)form(da.fid).value=da.path;
@@ -379,5 +387,69 @@ var inputtwo={
 		if(lx==0)obj.create();
 		if(lx==1)obj.imports();
 		if(lx==2)obj.clear();
+	},
+	//自动完成2022-10-30添加
+	autocompletearr:{},
+	autocomplete:function(o1,s1,id1,zb){
+		clearTimeout(this.autoctime);
+		this.autocompletea=[o1,s1,id1,zb];
+		if(this.nowinpvle == o1.value && get('completelist'))return;
+		if(this.autocompletearr[id1]){
+			this.autoctime = setTimeout(function(){c.autocompleteshow(o1,c.autocompletearr[id1]);},10);
+			return;
+		}
+		var a1 = s1.split(',');
+		var gcan = {'act':a1[0],'actstr':jm.base64encode(s1),'acttyle':'act','sysmodenum':modenum,'sysmid':mid};
+		js.ajax(geturlact('getselectdata', gcan),{key:jm.base64encode(o1.value)}, function(ret){
+			c.autocompletearr[id1] = ret;
+			c.autocompleteshow(o1,ret);
+		},'get,json')
+	},
+	autocompleteshow:function(o1,da){
+		if(!da || da.length==0)return;
+		var o2 = $(o1),lefta=o2.offset(),i,len=da.length,ds=[],zl=10,j=0;
+		$('#completelist').remove();
+		var str= '<div id="completelist" style="position:absolute;z-index:9;left:'+lefta.left+'px;top:'+(lefta.top+29)+'px;background:white;border:1px var(--main-color) solid;box-shadow: 0px 0px 5px rgb(0,0,0,0.3)"></div>';
+		var val= strreplace(o1.value);
+		if(val){
+			for(i=0;i<len;i++)if(da[i].name.indexOf(val)>-1 || (da[i].subname && da[i].subname.indexOf(val)>-1)){
+				ds.push(da[i]);j++;if(j>=zl*3)break;
+			}
+		}else{
+			ds=da;
+		}
+		this.autodata = ds;
+		this.nowinpvle= o1.value;
+		$('body').append(str);
+		this.autocompleteshows(zl,1)
+		js.addbody('completelist', 'remove','completelist');
+	},
+	autocompleteshows:function(zl,p){
+		var ds = this.autodata;
+		var str='',i,len=ds.length,j=0;
+		for(i=(p-1)*zl;i<len;i++){
+			str+='<div class="list-itemv" onclick="c.autocompleteclick('+i+')" value="'+i+'" style="padding:5px 10px">'+ds[i].name+'';
+			if(ds[i].subname)str+='&nbsp;<span style="font-size:12px">('+ds[i].subname+')</span>';
+			str+='</div>';
+			j++;
+			if(j>=zl)break;
+		}
+		if(len>zl){
+			str+='<div style="padding:5px 10px;background:#eeeeee">总记录'+len+'条';
+			if(p>1)str+='&nbsp;<a href="javascript:;" class="zhu" onclick="c.autocompleteshows(\''+zl+'\','+(p-1)+')">&lt;上页</a>';
+			if(j==zl)str+='&nbsp;<a href="javascript:;" class="zhu" onclick="c.autocompleteshows(\''+zl+'\','+(p+1)+')">下页&gt;</a>';
+			str+='</div>';
+		}
+		setTimeout(function(){$('#completelist').html(str)},10);
+	},
+	autocompleteclick:function(i){
+		var d = this.autodata[i],o1=this.autocompletea[0];
+		o1.value=d.name;
+		var a1 = this.autocompletea[1].split(',');
+		if(a1[1]){
+			if(form(a1[1]))form(a1[1]).value = d.value;
+		}
+		this.onselectdataall(o1.name,d);
+		$('#completelist').remove();
 	}
 }

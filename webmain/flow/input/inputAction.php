@@ -255,6 +255,7 @@ class inputAction extends Action
 		
 		//保存后处理
 		$this->saveafter($table,$this->getsavenarr($uaarr, $oldrs), $id, $addbo);
+		if($addbo)c('cache')->del('tempdata_'.$modenum.'_'.$this->adminid.'');//删除暂存
 		
 		//保存修改记录
 		$editcont = '';
@@ -675,6 +676,8 @@ class inputAction extends Action
 		$otherfile = 'webmain/flow/input/tpl_input_luother_'.$this->ismobile.'.html';
 		if(!file_exists($otherfile))$otherfile = '';
 		$this->assign('otherfile', $otherfile);
+		$tempdata	= ($mid==0) ? c('cache')->get('tempdata_'.$num.'_'.$this->adminid.'') : '';
+		$this->assign('tempdata', $tempdata);
 	}
 	
 	//2022-06-15添加分组显示
@@ -699,7 +702,7 @@ class inputAction extends Action
 	//多行子表内替换
 	private function pisubduolie($content, $modeid, $nameaas)
 	{
-		$fieldarr 	= m('flow_element')->getrows("`mid`='$modeid' and `iszb`>0",'fields,fieldstype,name,dev,data,isbt,islu,attr,iszb,gongsi,lens','`sort`');
+		$fieldarr 	= m('flow_element')->getrows("`mid`='$modeid' and `iszb`>0",'*','`sort`');
 		if(!$fieldarr)return $content;
 		$this->fieldarr = array();
 		foreach($fieldarr as $k=>$rs){
@@ -1161,6 +1164,22 @@ class inputAction extends Action
 			}
 		}
 		return 'ok';
+	}
+	
+	/**
+	*	暂存7天
+	*/
+	public function savezhanAjax()
+	{
+		$flownum = $this->post('flownum');
+		$contstr = $this->post('contstr');
+		$key 	 = 'tempdata_'.$flownum.'_'.$this->adminid.'';
+		if($contstr){
+			c('cache')->set($key, $contstr, 3600*24*7);
+		}else{
+			c('cache')->del($key);
+		}
+		return returnsuccess();
 	}
 }
 

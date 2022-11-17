@@ -105,8 +105,10 @@ class loginClassAction extends apiAction
 	public function getmaxupAction()
 	{
 		$maxup = c('upfile')->getmaxzhao();
+		$upkey = md5('upkey'.time().$this->jm->getRandkey());
 		$this->showreturn(array(
-			'maxup' => $maxup
+			'maxup' => $maxup,
+			'upkey' => $upkey
 		));
 	}
 	
@@ -266,6 +268,28 @@ class loginClassAction extends apiAction
 			'name' => $na,
 			'key'  => md5(getconfig('openkey')),
 			'logo' => 'images/logo.png'
+		));
+	}
+	
+	/**
+	*	获取第三方上传图片地址
+	*/
+	public function upimagepathAction()
+	{
+		$fileid = (int)$this->get('fileid');
+		$fid  	= $this->get('fid');
+		$adddt  = date('Y-m-d H:i:s', time()-20);
+		$frs  	= m('file')->getone("`id`='$fileid' and `adddt`>'$adddt'");
+		if(!$frs)return returnerror('404');
+		$path   = '';
+		if(!isempt($frs['thumbplat'])){
+			$path = str_replace('_s.','.',$frs['thumbplat']);
+		}
+		$filepathout = arrvalue($frs,'filepathout');
+		if($filepathout)$path = $filepathout;
+		return returnsuccess(array(
+			'path' => $path,
+			'fid'  => $fid,
 		));
 	}
 }

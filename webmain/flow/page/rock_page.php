@@ -113,6 +113,7 @@
 			
 		},
 		onloadbefore:function(){},
+		oncolumns:function(d){return d},
 		loaddatabefore:function(d){
 			var das = d.listinfo;
 			if(das){
@@ -173,7 +174,7 @@
 		},
 		daoru:function(){
 			window['managelist'+modenum+''] = a;
-			addtabs({num:'daoruuser',url:'flow,input,daoru,modenum='+modenum+'',icons:'plus',name:'导入'+modename+''});
+			addtabs({num:'daoru'+modenum+'',url:'flow,input,daoru,modenum='+modenum+'',icons:'plus',name:'导入'+modename+''});
 		},
 		initcolumns:function(bots){
 			var num = 'columns_'+modenum+'_'+pnum+'',d=[],d1,d2={},i,len=fieldsarr.length,bok,sa=[{name:'默认搜索',fields:'','inputtype':'dev'}];
@@ -208,6 +209,7 @@
 			if(isflow>0)d.push({text:'流程状态',dataIndex:'statustext'});
 			if(nstr=='' || nstr.indexOf(',caozuo,')>=0)d.push({text:'',dataIndex:'caozuo',callback:'opegs{rand}'});
 			for(i=0;i<d.length;i++)if(this.setcinfo[d[i].dataIndex])d[i] = js.apply(d[i],this.setcinfo[d[i].dataIndex]);
+			d = this.oncolumns(d);
 			bootparams.columns = d;
 			if(bots)a.setColumns(d);
 			d1 = this.fieldzarr;

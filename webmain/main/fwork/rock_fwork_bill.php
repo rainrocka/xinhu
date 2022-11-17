@@ -145,6 +145,10 @@ $(document).ready(function(){
 		c.reload();
 	}
 	
+	$('#key_{rand}').keyup(function(e){
+		if(e.keyCode==13)c.search();
+	});
+	
 	$('#state{rand}_'+zt+'').addClass('active');
 	
 	if(atype=='mywtg' || atype=='daiturn'){
@@ -181,7 +185,7 @@ $(document).ready(function(){
 	
 
 	<td  style="padding-left:10px">
-		<input class="form-control" style="width:130px" id="key_{rand}"   placeholder="单号/处理人/姓名/部门">
+		<input class="form-control" style="width:130px" id="key_{rand}"  placeholder="单号/处理人/姓名/部门">
 	</td>
 	
 	<td  style="padding-left:10px">

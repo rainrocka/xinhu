@@ -13,13 +13,23 @@ class beifenClassModel extends Model
 		foreach($alltabls as $tabs){
 			if(in_array($tabs, $nobeifne))continue;
 			$rows  	= $this->db->getall('select * from `'.$tabs.'`');
-			$fields	= $this->db->gettablefields($tabs);
 			$data 		 = array();
+			$sqla 	   = $this->db->getall('show create table `'.$tabs.'`');
+			$createsql = $sqla[0]['Create Table'];
 			$data[$tabs] = array(
-				'fields' 	=> $fields,
-				'data'		=> $rows
+				//'fields' 	=> $fields,
+				'createsql'	=> $createsql,
+				'data'		=> $rows,
 			);
-			$file	= ''.$tabs.'_'.count($fields).'_'.count($rows).'.json';
+			$fzshu	= 0;
+			if(isset($rows[0]))foreach($rows[0] as $k1=>$v1)$fzshu++;
+			//if($fzshu==0){
+			//	$fields	= $this->db->gettablefields($tabs);
+			//	$fzshu  = count($fields);
+			//}
+			
+			$file	= ''.$tabs.'_'.$fzshu.'_'.count($rows).'.json';
+			//$str  	= $this->rock->jm->encrypt(json_encode($data));
 			$str  	= json_encode($data);
 			$bo 	= $this->rock->createtxt(''.$beidir.'/'.$file.'', $str);
 			if(!$bo){echo '无权限写入：'.$beidir.'';break;return false;}

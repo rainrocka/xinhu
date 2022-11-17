@@ -78,7 +78,7 @@ $(document).ready(function(){
 <div  style="padding:10px;width:700px">
 	
 	
-	<form name="form_{rand}">
+	<form name="form_{rand}" autocomplete="off">
 	
 		<input name="id" value="0" type="hidden" />
 		

@@ -17,7 +17,7 @@
 <?php
 $maincolor = getconfig('apptheme','#1389D3');
 ?>
-var editor,arr=<?=$da['fieldsjson']?>,moders=<?=json_encode($da['moders'])?>,gongsiarr=<?=json_encode($da['gongsiarr'])?>,subfielsa=<?=json_encode($da['subfielsa'])?>,zbnamearr=<?=json_encode($da['zbnamearr'])?>,isedit=0,mid='<?=$da['mid']?>',isinput=1,data={},maincolor='<?=$maincolor?>';
+var editor,arr=<?=$da['fieldsjson']?>,moders=<?=json_encode($da['moders'])?>,gongsiarr=<?=json_encode($da['gongsiarr'])?>,subfielsa=<?=json_encode($da['subfielsa'])?>,zbnamearr=<?=json_encode($da['zbnamearr'])?>,isedit=0,mid='<?=$da['mid']?>',isinput=1,data={},maincolor='<?=$maincolor?>',tempdata='<?=$tempdata?>';
 </script>
 <style>
 <?php
@@ -133,7 +133,7 @@ echo 'body{--main-color:'.$maincolor.';--main-border:rgba('.$maincolors.',0.2)}'
 		<?php
 		if($da['isflow']>0)echo '<label><input onclick="c.changeturn(this)" value="1" checked type="checkbox" id="sysisturn">直接提交</label>&nbsp;';
 		?>
-		<input id="AltS" type="button" style="border-radius:5px" onclick="return c.save()" value="提交" class="webbtn"></span>&nbsp; &nbsp; 
+		<a class="hui" id="Altzhan" style="margin-right:10px;display:none" onclick="return c.savezhan()" href="javascript:;">暂存</a><input id="AltS" type="button" style="border-radius:5px" onclick="return c.save()" value="提交" class="webbtn"></span>&nbsp; &nbsp; 
 	</div>
 </div>
 <script>

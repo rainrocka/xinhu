@@ -285,6 +285,7 @@ var myScroll=false,yy={
 		if(lx==999)return;
 		if(lx==998){this.xiang(d.oi);return;}
 		if(lx==996){this.xiang(this.temparr.oi);return;}
+		xrockcd={inputblur:function(){},selectdata:function(){js.msg('msg','此功能未开发')}}
 		this.changdatsss = d;
 		if(lx==2 || lx==3){
 			var clx='changeuser';if(lx==3)clx='changeusercheck';
@@ -320,15 +321,33 @@ var myScroll=false,yy={
 			}
 			return;
 		}
-		if(lx==1 || lx==9 || lx==10 || lx==13 || lx==15 || lx==16 || lx==17){
+		if(lx==1 || lx==9 || lx==10 || lx==13 || lx==15 || lx==16 || lx==17 || lx==4){
 			var bts = (d.issm==1)?'必填':'选填';
-			js.wx.prompt(d.name,'请输入['+d.name+']说明('+bts+')：',function(text){
-				if(!text && d.issm==1){
-					js.msg('msg','没有输入['+d.name+']说明');
-				}else{
-					yy.showmenuclicks(d, text);
+			var str1= '请输入['+d.name+']说明('+bts+')：';
+			if(lx==4)str1='<div align="left" id="showmenusss" style="padding:10px">加载中...</div>'+str1+'';
+			js.prompt(d.name,str1,function(jg,text){
+				if(jg=='yes'){
+					if(!text && d.issm==1){
+						js.msg('msg','没有输入['+d.name+']说明');
+						return true;
+					}else{
+						if(lx==4){
+							var ad=js.getformdata('myformsbc');
+							for(var i in ad)d['fields_'+i+'']=ad[i];
+						}
+						yy.showmenuclicks(d, text);
+					}
 				}
 			});
+			if(lx==4){
+				var url='index.php?a=lus&m=input&d=flow&num='+d.modenum+'&menuid='+d.optmenuid+'&mid='+d.mid+'';
+				$.get(url, function(s1){
+					s1=s1.replace(/c\./gi, 'xrockcd.');
+					var s='<form name="myformsbc">'+s1+'</form>';
+					$('#showmenusss').html(s);
+					js.resizetan('confirm');
+				});
+			}
 			return;
 		}
 		if(lx==14){

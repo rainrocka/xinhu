@@ -93,6 +93,7 @@ class indexClassAction extends Action{
 		$arr['editpass']= m('admin')->iseditpass($uid);
 		$arr['miaoshu'] = (int)$this->option->getval('syshometime', '200');
 		$arr['tanwidth']= $this->option->getval('tanwidth', '900x800');
+		$arr['htimeout']= (int)getconfig('hoemtimeout','0');
 		
 		return $arr;
 	}

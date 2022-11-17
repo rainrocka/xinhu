@@ -375,6 +375,8 @@ var c={
 		if(smid=='0'||smid==''){
 			isedit=1;
 			$('#AltSspan').show();
+			$('#Altzhan').show();
+			c.loadzhan();
 			c.initdatelx();
 			c.initinput();
 			initbodys(smid);
@@ -421,36 +423,9 @@ var c={
 			var da = a.data;
 			alldata= da;
 			js.setmsg();
-			var len = arr.length,i,fid,val,flx,ojb,j;
+			var len = arr.length,i,j;
 			data=da.data;
-			for(i=0;i<len;i++){
-				fid=arr[i].fields;
-				flx=arr[i].fieldstype;
-				if(arr[i].islu=='1' && arr[i].iszb=='0' && fid.indexOf('temp_')!=0){
-					val=da.data[fid];
-					if(val==null)val='';
-					if(flx=='checkboxall'){
-						ojb=$("input[name='"+fid+"[]']");
-						val=','+val+',';
-						for(j=0;j<ojb.length;j++){
-							if(val.indexOf(','+ojb[j].value+',')>-1)ojb[j].checked=true;
-						}
-					}else if(flx=='graph'){
-						if(form(fid))form(fid).value=val;
-						if(val)$('#graphview_'+fid+'').append('<div><img id="imgqianming_'+fid+'" src="'+val+'"  height="90"></div>');
-					}else if(flx=='checkbox'){
-						form(fid).checked = (val=='1');
-					}else if(flx=='htmlediter' && this.editorobj[fid]){
-						this.editorobj[fid].html(val);
-					}else if(flx.substr(0,6)=='change'){
-						if(form(fid))form(fid).value=val;
-						fid = arr[i].data;
-						if(!isempt(fid)&&form(fid))form(fid).value=da.data[fid];
-					}else{
-						if(form(fid))form(fid).value=val;
-					}
-				}
-			}
+			for(i=0;i<len;i++)this.showvalue(arr[i],da.data);
 			isedit=da.isedit;
 			if(form('base_name'))form('base_name').value=da.user.name;
 			if(form('base_deptname'))form('base_deptname').value=da.user.deptname;
@@ -544,6 +519,7 @@ var c={
 			if(gongsistr.indexOf('AmountInWords')>-1)js.importjs('js/rmb.js');
 			if(gongsistr.indexOf('js.')>-1)js.importjs('js/jsrock.js');
 		}
+		this.tempkey = ''+moders.num+'tempdata';
 	},
 	getsubdata:function(i){
 		var d=[];
@@ -729,7 +705,95 @@ var c={
 		o.show();
 		o.prev().show();
 	},
-	
+	savezhan:function(){
+		var d = js.getformdata();
+		var len = arr.length,i,fid;
+		for(i=0;i<len;i++){
+			if(arr[i].iszb!='0')continue;
+			fid = arr[i].fields;
+			if(arr[i].islu=='1' && arr[i].fieldstype=='htmlediter' && this.editorobj[fid]){
+				d[fid] = this.editorobj[fid].html();
+			}
+		}
+		for(i=0;i<this.subcount;i++)d['subdata'+i+''] = this.getsubdata(i);
+		this.savezhans(jm.base64encode(JSON.stringify(d)));
+		js.msgok('暂存保存成功');
+	},
+	savezhans:function(str){
+		if(!str)str='';
+		js.ajax(geturlact('savezhan'),{flownum:moders.num,contstr:str},function(ret){
+			if(!str){
+				js.msgok('暂存已删除');
+				js.reload();
+			}
+		}, 'post');
+	},
+	showvalue:function(fa,da){
+		var fid,flx,val,ojb,j,fb=[];
+		fid = fa.fields;
+		flx = fa.fieldstype;
+		if(fa.islu=='1' && fa.iszb=='0' && fid.indexOf('temp_')!=0){
+			val=da[fid];
+			if(val==null)val='';
+			fb.push(fid);
+			if(flx=='checkboxall'){
+				ojb=$("input[name='"+fid+"[]']");
+				val=','+val+',';
+				for(j=0;j<ojb.length;j++){
+					if(val.indexOf(','+ojb[j].value+',')>-1)ojb[j].checked=true;
+				}
+			}else if(flx=='graph'){
+				if(form(fid))form(fid).value=val;
+				if(val)$('#graphview_'+fid+'').append('<div><img id="imgqianming_'+fid+'" src="'+val+'"  height="90"></div>');
+			}else if(flx=='checkbox'){
+				form(fid).checked = (val=='1');
+			}else if(flx=='htmlediter' && this.editorobj[fid]){
+				this.editorobj[fid].html(val);
+			}else if(flx.substr(0,6)=='change'){
+				if(form(fid))form(fid).value=val;
+				fid = fa.data;
+				if(!isempt(fid)&&form(fid)){
+					form(fid).value=da[fid];
+					fb.push(fid);
+				}
+			}else{
+				if(form(fid))form(fid).value=val;
+			}
+		}
+		return fb;
+	},
+	loadzhan:function(){
+		var dstr = tempdata;
+		if(dstr){
+			var da = js.decode(jm.base64decode(dstr));
+			c.loadzhanshow(da);
+		}
+	},
+	loadzhanshow:function(da){
+		var i,zn,j,sub,len;
+		for(i=0;i<this.subcount;i++){
+			sub = da['subdata'+i+''];
+			if(sub){
+				zn = sub.length;
+				for(j=0;j<zn;j++){
+					if(form('xuhao'+i+'_'+j+'')){
+						this.setrowdata(i,j, sub[j]);
+					}else{
+						this.insertrow(i,sub[j],true);
+					}
+				}
+			}
+		}
+		var len=arr.length,fda=['id'];
+		for(i=0;i<len;i++)fda= fda.concat(this.showvalue(arr[i],da));
+		for(i in da){
+			if(fda.indexOf(i)==-1 && i.indexOf('0_')==-1){
+				if(form(i))form(i).value = da[i];
+			}
+		}
+		js.msg('success','当前记录读取暂存的，<a href="javascript:;" onclick="c.savezhans()" class="zhu">[删除暂存]</a>', 10);
+		this.zhanbool = true;
+	},
 	
 	//----强大公式计算函数处理start-----
 	inputblur:function(o1,zb){

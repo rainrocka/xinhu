@@ -34,6 +34,7 @@ var reim={
 		//数秒
 		setInterval('reim.timeload()', 1000);
 		var fse=js.getoption('loginface');
+		token  =js.getoption('admintoken');
 		if(fse)get('myface').src=fse;
 
 		nwjs.createtray(document.title+'-'+adminname, 1);

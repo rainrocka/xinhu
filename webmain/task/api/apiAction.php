@@ -36,7 +36,7 @@ class apiAction extends ActionNot
 		$this->adminname = '';
 		$boss = (M == 'login|api');
 		if(!$boss){
-			if($this->isempt($this->token))$this->showreturn('','token invalid', 199);
+			if(isempt($this->token))$this->showreturn('','token invalid', 199);
 			$lodb = m('login');
 			$onto = $lodb->getone("`uid`='$this->adminid' and `token`='$this->token' and `online`=1");
 			if(!$onto)$this->showreturn('','登录失效，请重新登录', 199);

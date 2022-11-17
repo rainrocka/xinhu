@@ -100,7 +100,7 @@
 			var s = '',a=can.items,i,i1,style='padding:10px';
 			if(can.bodyheight!=0)style+=';height:'+can.bodyheight+'px';
 			s+='<div align="center"  style="'+style+';overflow-y:auto" >';
-			s+='<form id="form_'+rand+'" name="form_'+rand+'" style="padding:0px;maring:0px">';
+			s+='<form id="form_'+rand+'" name="form_'+rand+'" autocomplete="off" style="padding:0px;maring:0px">';
 			s+='<input name="id" value="0" type="hidden">';
 			s+='<table width="'+can.bodywidth+'">';
 			for(i=0; i<a.length; i++){

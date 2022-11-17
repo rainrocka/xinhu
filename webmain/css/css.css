@@ -101,3 +101,5 @@ a.webbtn:link,a.webbtn:visited,.webbtn{color:#ffffff; background-color:#1389D3;b
 .r-tabs .r-tabs-item:last-child{border-top-right-radius:5px;border-right-width:1px}
 .r-tabs .r-tabs-item:not(:first-child):not(:last-child){border-radius:0}
 .r-tabs .r-tabs-item.r-tabs-item.active{color:#1389D3;color:var(--main-color);}
+
+.list-itemv:hover{color:var(--main-color);cursor:pointer}

@@ -95,6 +95,10 @@
 				js.msg('msg','文件不能超过'+this.maxsize+'MB,当前文件'+a.filesizecn+'');
 				return;
 			}
+			
+			var nstr 	 = this.onchangebefore(f);
+			if(nstr){js.msg('msg',nstr);return;}
+			
 			var filename = f.name;
 			var fileext	 = filename.substr(filename.lastIndexOf('.')+1).toLowerCase();
 			if(!this.uptype)this.uptype='*';
@@ -107,8 +111,6 @@
 					return;
 				}
 			}
-			var nstr 	 = this.onchangebefore(f);
-			if(nstr){js.msg('msg',nstr);return;}
 			
 			a.fileext	 = fileext;
 			a.isimg		 = js.isimg(fileext);
@@ -302,8 +304,8 @@
 		};
 		this._onsuccess=function(o){
 			this.upbool = false;
-			var bstr 	= o.response; 
-			if(bstr.indexOf('id')<0 || o.status!=200){
+			var bstr 	= o.response;
+			if(bstr.indexOf('id')<0 || o.status!=200 || bstr.indexOf('"success":false')>-1){
 				this._error(bstr);
 			}else{
 				this.onsuccessa(this.filearr,bstr,o);

@@ -86,3 +86,5 @@ a.webbtn:link,a.webbtn:visited,.webbtn{color:#ffffff;opacity:0.8; background-col
 .upload_items img.imgs{width:50px;height:50px;margin:5px}
 .upload_items_items{padding:5px;text-align:center}
 .upload_items_meng{ background:rgba(0,0,0,0.5);position:absolute;left:0px;top:0px;height:60px;overflow:hidden;line-height:60px;text-align:center;width:100%;color:white}
+
+.list-itemv:active{color:var(--main-color);cursor:pointer}

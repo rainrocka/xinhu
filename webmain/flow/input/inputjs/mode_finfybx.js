@@ -13,7 +13,7 @@ function initbodys(){
 	addchengesss();
 	
 	if(mid=='0'){
-		if(form('cardid'))js.ajax(geturlact('getlast'),{},function(d){
+		if(!c.zhanbool && form('cardid'))js.ajax(geturlact('getlast'),{},function(d){
 			if(d){
 				if(form('paytype'))form('paytype').value=d.paytype;
 				if(form('cardid'))form('cardid').value=d.cardid;

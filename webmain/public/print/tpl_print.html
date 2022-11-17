@@ -88,7 +88,7 @@ var prt = {
 		<div>
 			<table width="100%" style="" cellspacing="0" cellpadding="0" border="0" id="tablelist"></table>
 		</div>
-		<div style="font-size:12px" align="left">打印者：<?=$da['adminname']?> <a class="noprint blue" style="font-size:12px" href="javascript:;" onclick="prt.print()">打印</a><span style="float:right">时间：<?=$rock->now?></span></div>
+		<div style="font-size:12px" align="left"><a class="noprint blue" style="font-size:12px" href="javascript:;" onclick="$(this).parent().remove()">×</a>打印者：<?=$da['adminname']?> <a class="noprint blue" style="font-size:12px" href="javascript:;" onclick="prt.print()">打印</a><span style="float:right">时间：<?=$rock->now?></span></div>
 	</div>
 </div>
 

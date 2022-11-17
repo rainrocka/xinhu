@@ -367,7 +367,7 @@ return array(
 		if(getconfig('systype')=='demo')return '演示不要改';
 		$stype = (int)$this->post('stype','0');
 		$msg  = 'ok';
-		if($stype==0)$msg = $this->saveconfig('title,imgcompress,watertype,video_bool,flowchehuitime,saasmode',',video_bool,');
+		if($stype==0)$msg = $this->saveconfig('title,imgcompress,watertype,video_bool,flowchehuitime,saasmode,hoemtimeout',',video_bool,');
 	
 		return $msg;
 	}
@@ -413,5 +413,73 @@ return array(
 		$bo = @file_put_contents($path,$strs);
 		if(!$bo)return '无权限写入：'.$path.'';
 		return 'ok';
+	}
+	
+	public function getmodeAjax()
+	{
+		$modearr = m('mode')->getmodearr('all');
+		return array(
+			'modearr' => $modearr
+		);
+	}
+	
+	public function savemodeAjax()
+	{
+		if(getconfig('systype')=='demo')return '演示不要改';
+		$dbs    = m('mode');
+		$allnum = $this->post('allnum');
+		$allarr = explode(',', $allnum);
+		$allstr = "'".str_replace(',',"','", $allnum)."'";
+		$dbs->update('status=0', "`type`<>'系统' and `num` not in($allstr)");
+		$dbs->update('status=1', "`num` in($allstr)");
+		
+		//菜单更新
+		$menuarr = $dbs->menulist();
+		$mdb 	 = m('menu');
+		$cdid	 = '';
+		foreach($menuarr as $bh=>$vs){
+			if($bh=='wxgzh' || $bh=='ding' || $bh=='weixinqy')continue;
+			$zt = 0;
+			if(contain($allstr,"'".$bh."'")){
+				$zt = 1;
+				$cdid.=','.$vs.'';
+			}
+			$mdb->update('`status`='.$zt.'', '`id` in('.$vs.')');
+		}
+		
+		$menuarr = $dbs->yinglist();
+		$mdb 	 = m('im_group');
+		foreach($menuarr as $bh=>$vs){
+			$zt = 1;
+			if(!contain($allstr,"'".$bh."'")){
+				$zt = 0;
+			}
+			$mdb->update('`valid`='.$zt.'', '`id` in('.$vs.')');
+		}
+		
+		$tdb= m('task');
+		$hdb= m('homeitems');
+		
+		$zt = contain($allstr,"'kqdkjl'") ? 1 : 0;
+		$tdb->update("`status`='$zt'", "`fenlei`='考勤'");
+		$hdb->update("`status`='$zt'", "`num` in('kqdk','kqtotal')");
+		
+		$zt = contain($allstr,"'userract'") ? 1 : 0;
+		$tdb->update("`status`='$zt'", "`fenlei`='人事'");
+		
+		$zt = contain($allstr,"'officic'") ? 1 : 0;
+		$hdb->update("`status`='$zt'", "`num` in('officic')");
+		
+		$zt = contain($allstr,"'meet'") ? 1 : 0;
+		$hdb->update("`status`='$zt'", "`num` in('meet')");
+		
+		$zt = contain($allstr,"'bianjian'") ? 1 : 0;
+		$hdb->update("`status`='$zt'", "`num` in('bianjian')");
+		
+		$zt = contain($allstr,"'gong'") ? 1 : 0;
+		$hdb->update("`status`='$zt'", "`num` in('gong')");
+		
+		
+		return '保存成功';
 	}
 }

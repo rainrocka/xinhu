@@ -43,7 +43,7 @@ js.wx.prompt=function(tit,msg,fun,nr){
 	function func(lx){
 		if(lx=='yes')fun(get('prompttxt').value);
 	}
-	var msg = '<div align="left">'+msg+'</div><div align="left"><input value="'+nr+'" class="r-input" id="prompttxt" type="text"></div>';
+	var msg = '<div align="left">'+msg+'</div><div align="left"><input autocomplete="off" value="'+nr+'" class="r-input" id="prompttxt" type="text"></div>';
 	this.alert(msg,func,tit, 1);
 }
 js.apiurl = function(m,a,cans){

@@ -11,6 +11,8 @@ class dayClassAction extends runtAction
 		
 		if($this->moderock('meet'))m('flow')->initflow('meet')->createmeet(); //会议生成
 		
+		$this->crmrun();
+		
 		return 'success';
 	}
 	
@@ -18,5 +20,20 @@ class dayClassAction extends runtAction
 	public function getitleAction()
 	{
 		return TITLE;
+	}
+	
+	public function crmrun()
+	{
+		//客户提醒
+		if($this->moderock('custract'))m('flow')->initflow('custract')->custractdaoqi();
+		
+		//自动放入公海
+		if($this->moderock('customer'))m('flow')->initflow('customer')->addgonghai();
+		
+		//计划跟进提醒
+		if($this->moderock('custplan'))m('flow')->initflow('custplan')->plantodo();
+		
+		//车辆提醒
+		if($this->moderock('carms'))m('flow')->initflow('carms')->todocarms('');
 	}
 }

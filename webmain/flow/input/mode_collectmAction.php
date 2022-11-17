@@ -15,9 +15,10 @@ class mode_collectmClassAction extends inputAction{
 	protected function savebefore($table, $arr, $id, $addbo){
 		$rows['type'] = 2; //必须为2
 		
-		$dbs = m('admin');
-		$rows['leixing'] = $dbs->rows($dbs->gjoin($arr['runrenid'], 'ud', 'where'));
-
+		if($arr['fenlei']=='0'){
+			$dbs = m('admin');
+			$rows['leixing'] = $dbs->rows($dbs->gjoin($arr['runrenid'], 'ud', 'where'));
+		}
 		return array(
 			'rows' => $rows
 		);
@@ -34,6 +35,20 @@ class mode_collectmClassAction extends inputAction{
 		
 	}
 	
+	public function beizhustring()
+	{
+		return '<span style="color:gray">类型是外部收集，字段类型仅支持文本框，文本域，日期类型，单选框，复选框的类型。</span>';
+	}
 	
+	public function createouturlAjax()
+	{
+		header("Content-type:image/png");
+		$urls= $this->rock->getouturl();
+		$id  = (int)$this->get('id');
+		m('planm')->update('`state`=1', $id);
+		$url = ''.$urls.'?m=login&a=collect&mid='.$id.'';
+		$img = c('qrcode')->show($url);
+		echo $img;
+	}
 }	
 			

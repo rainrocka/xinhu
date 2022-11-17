@@ -111,16 +111,25 @@ class beifenClassAction extends Action
 			$total 	= $ida[$len-1];
 			$tab 	= str_replace('_'.$fieldshu.'_'.$total.'.json','', $id); //表
 			
-			if(!in_array($tab, $alltabls))continue; //表不存在
-			
 			$filepath = ''.UPDIR.'/data/'.$folder.'/'.$id.'';
 			if(!file_exists($filepath))continue;
 			
 			$data 	  = m('beifen')->getbfdata('',$filepath);
 			if(!$data)continue;
 			
+			$dataarr	= $data[$tab];
+
+			//表不存在
+			if(!in_array($tab, $alltabls)){
+				$createsql = arrvalue($dataarr, 'createsql');
+				if($createsql){
+					$this->db->query($createsql, false);
+				}else{
+					continue;
+				}
+			}
 			
-			$dataall 	= $data[$tab]['data'];
+			$dataall 	= $dataarr['data'];
 			if(count($dataall)<=0)continue; //没有数据
 			
 			$allfields 	= $this->db->getallfields($tab);
@@ -142,9 +151,9 @@ class beifenClassAction extends Action
 			}
 			
 			$sql1 	= "delete from `$tab`";
-			$sql2 	= "alter table `$tab` AUTO_INCREMENT=1";
+			//$sql2 	= "alter table `$tab` AUTO_INCREMENT=1";
 			$bo 	= $this->db->query($sql1, false);
-			$bo 	= $this->db->query($sql2, false);
+			//$bo 	= $this->db->query($sql2, false);
 			foreach($uparr as $k=>$upas){
 				$bo = $this->db->record($tab, $upas);
 			}

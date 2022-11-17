@@ -141,5 +141,13 @@ class mode_userClassAction extends inputAction{
 		m('admin')->updateinfo(); //更新
 		return 'ok';
 	}
+	
+	public function rankingdata()
+	{
+		$arr 	= array();
+		$rows 	= $this->db->getall('select `ranking` from `[Q]admin` group by `ranking`');
+		foreach($rows as $k=>$rs)$arr[] = array('name'=>$rs['ranking'],'value'=>'');
+		return $arr;
+	}
 }	
 			

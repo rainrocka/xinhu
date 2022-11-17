@@ -186,6 +186,7 @@ function loginsubmit(lx){
 }
 function loginsuccess(a){
 	$('#mindivshows').hide();
+	js.setoption('admintoken', a.token);
 	if(nwjsgui){
 		rewinheight(600, 900);
 	}
@@ -279,7 +280,7 @@ function changlogin(){
 		<div id="topblank" style="height:5px;overflow:hidden"></div>
 		<div style="user-select:none;-webkit-user-select: none;" align="center"><img onclick="location.reload()" title="<?=URL?>" src="images/logo.png" id="myface" style="border-radius:50%;" align="absmiddle" height="80" width="80"></div>
 		<div class="blank10"></div>
-		<form style="padding:10px;" name="myform">
+		<form style="padding:10px;" name="myform" autocomplete="off">
 			<?php if($loginyzm!=3){?>
 			<div id="loginview0">
 				<div>

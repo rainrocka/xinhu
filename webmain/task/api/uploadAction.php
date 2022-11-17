@@ -24,7 +24,7 @@ class uploadClassAction extends apiAction
 		$upses	= $upimg->up('file');
 		if(!is_array($upses))exit($upses);
 		$arr 	= c('down')->uploadback($upses);
-		$arr['autoup'] = getconfig('qcloudCos_autoup') ? 1 : 0; //是否上传其他平台
+		$arr['autoup'] = (getconfig('qcloudCos_autoup') || getconfig('alioss_autoup')) ? 1 : 0; //是否上传其他平台
 		$this->returnjson($arr);
 	}
 	

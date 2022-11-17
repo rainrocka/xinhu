@@ -123,6 +123,9 @@ class inputChajian extends Chajian
 		if($lens>0)$lenstr=' maxlength="'.$lens.'"';
 		$onblue = ' onblur="c.inputblur(this, '.$iszb.')"';
 		$iszhang= false;
+		if($type=='text' && !isempt($data)){
+			$attr.=' onkeyup="c.autocomplete(this,\''.$data.'\','.$a['id'].', '.$iszb.',event)" onclick="this.onkeyup()"';
+		}
 		$str 	= '<input class="inputs" type="text" value="'.$val.'" '.$attr.''.$onblue.''.$styles.''.$lenstr.' name="'.$fname.'">';
 		
 		

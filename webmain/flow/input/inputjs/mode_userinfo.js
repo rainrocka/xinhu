@@ -4,7 +4,7 @@ function initbodys(){
 	if(js.request('optlx')=='my'){
 		for(var i=0;i<disarr.length;i++)if(form(disarr[i]))form(disarr[i]).disabled=true;
 	}
-	form('jiguan').readOnly=false;
+	if(form('jiguan'))form('jiguan').readOnly=false;
 }
 
 function changesubmit(){

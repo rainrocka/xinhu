@@ -55,8 +55,9 @@ if(file_exists($paths))include_once($paths);
 
 <script>
 $(document).ready(function(){
-	var optdt = '',loadci=0, taskarr={}, miao=200,reimtitle='REIM';
+	var optdt = '',loadci=0, taskarr={}, miao=200,reimtitle='REIM',chaoshi=0;
 	var c= {
+		kshit:0,
 		itot:function(rlx){
 			clearTimeout(this.tims);
 			var nums = '',i;
@@ -79,6 +80,7 @@ $(document).ready(function(){
 				nust = homenums[i];
 				if(homeobject[''+nust+'_init'])homeobject[''+nust+'_init']();
 			}
+			$('body').mouseover(function(){c.kshit=0});
 		},
 		refresh:function(){
 			this.itot();
@@ -95,6 +97,16 @@ $(document).ready(function(){
 				this.tims = setTimeout(function(){c.shumiao(oi-1)},1000);
 			}
 			if(homeobject.showtime)homeobject.showtime();
+			this.kshit++;
+			if(chaoshi>0 && this.kshit>=chaoshi)this.showchaoshi();
+		},
+		showchaoshi:function(){
+			chaoshi = 0;
+			clearTimeout(this.tims);
+			js.alert(this.bd2('55m75b2V5bey6LaF5pe277yM6K!36YeN5paw55m75b2V'),'', function(){
+				var url1 = '?m=login&a=exit';
+				js.location(url1);
+			});
 		},
 		auther:function(a){
 			if(HOST==this.bd2('MTI3LjAuMC4x') || HOST==this.bd2('bG9jYWxob3N0'))return;
@@ -109,6 +121,7 @@ $(document).ready(function(){
 			miao = a.miaoshu;
 			if(a.tanwidth)js.winiframewidth=a.tanwidth;
 			this.shumiao(miao);
+			if(a.htimeout)chaoshi = a.htimeout * 60;
 			loadci++;
 			optdt = a.optdt;
 			if(loadci==1){

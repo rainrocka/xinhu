@@ -1,15 +1,15 @@
 <?php
 /**
-*	模块：collects.信息收集表
+*	模块：yqhealthy.健康报备
 *	说明：自定义区域内可写你想要的代码
-*	来源：流程模块→表单元素管理→[模块.信息收集表]→生成列表页
+*	来源：流程模块→表单元素管理→[模块.健康报备]→生成列表页
 */
 defined('HOST') or die ('not access');
 ?>
 <script>
 $(document).ready(function(){
 	{params}
-	var modenum = 'collects',modename='信息收集表',isflow=1,modeid='136',atype = params.atype,pnum=params.pnum,modenames='',listname='cGxhbm0:';
+	var modenum = 'yqhealthy',modename='健康报备',isflow=0,modeid='142',atype = params.atype,pnum=params.pnum,modenames='',listname='eXVxaW5nbQ::';
 	if(!atype)atype='';if(!pnum)pnum='';
 	var fieldsarr = [],fieldsselarr= [],chufarr= [];
 	
@@ -19,9 +19,18 @@ $(document).ready(function(){
 	
 //[自定义区域start]
 
-var plid = params.leixingid;
-if(plid)bootparams.url+='&leixingid='+plid+'';
-$('#tdleft_{rand}').hide();
+c.setcolumns('tupian',{
+	renderer:function(v){
+		if(!v)return '&nbsp;';
+		return '<img src="'+v+'" onclick="$.imgview({\'url\':this.src})" height="60">';
+	}
+});
+c.setcolumns('tupian1',{
+	renderer:function(v){
+		if(!v)return '&nbsp;';
+		return '<img src="'+v+'" onclick="$.imgview({\'url\':this.src})" height="60">';
+	}
+});
 
 //[自定义区域end]
 	c.initpagebefore();
@@ -40,9 +49,9 @@ $('#tdleft_{rand}').hide();
 		
 		<td><select class="form-control" style="width:110px;border-top-right-radius:0;border-bottom-right-radius:0;padding:0 2px" id="fields_{rand}"></select></td>
 		<td><select class="form-control" style="width:60px;border-radius:0px;border-left:0;padding:0 2px" id="like_{rand}"><option value="0">包含</option><option value="1">等于</option><option value="2">大于等于</option><option value="3">小于等于</option><option value="4">不包含</option></select></td>
-		<td><select class="form-control" style="width:130px;border-radius:0;border-left:0;display:none;padding:0 5px" id="selkey_{rand}"><option value="">-请选择-</option></select><input class="form-control" style="width:130px;border-radius:0;border-left:0;padding:0 5px" id="keygj_{rand}" placeholder="关键词"><input class="form-control" style="width:130px;border-radius:0;border-left:0;padding:0 5px;display:none;" id="key_{rand}" placeholder="关键字/申请人/单号">
+		<td><select class="form-control" style="width:130px;border-radius:0;border-left:0;display:none;padding:0 5px" id="selkey_{rand}"><option value="">-请选择-</option></select><input class="form-control" style="width:130px;border-radius:0;border-left:0;padding:0 5px" id="keygj_{rand}" placeholder="关键词"><input class="form-control" style="width:130px;border-radius:0;border-left:0;padding:0 5px;display:none;" id="key_{rand}" placeholder="关键字">
 		</td>
-		<td><select class="form-control" style="width:120px;border-left:0;border-radius:0;" id="selstatus_{rand}"><option value="">-全部状态-</option><option style="color:blue" value="0">待处理</option><option style="color:green" value="1">已审核</option><option style="color:red" value="2">不同意</option><option style="color:#888888" value="5">已作废</option><option style="color:#17B2B7" value="23">退回</option></select></td>
+		
 		<td>
 			<div style="white-space:nowrap">
 			<button style="border-right:0;border-radius:0;border-left:0" class="btn btn-default" click="searchbtn" type="button">搜索</button><button class="btn btn-default" id="downbtn_{rand}" type="button" style="padding-left:8px;padding-right:8px;border-top-left-radius:0;border-bottom-left-radius:0"><i class="icon-angle-down"></i></button> 
@@ -57,5 +66,5 @@ $('#tdleft_{rand}').hide();
 	</table>
 </div>
 <div class="blank10"></div>
-<div id="viewcollects_{rand}"></div>
+<div id="viewyqhealthy_{rand}"></div>
 <!--HTMLend-->

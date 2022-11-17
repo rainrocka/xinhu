@@ -29,7 +29,7 @@ c.setcolumns('recename',{
 c.setcolumns('fengmian',{
 	renderer:function(v){
 		if(!v)return '&nbsp;';
-		return '<img src="'+v+'" height="60">';
+		return '<img src="'+v+'" onclick="$.imgview({\'url\':this.src})" height="60">';
 	}
 });
 c.setcolumns('title',{
