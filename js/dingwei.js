@@ -118,6 +118,8 @@ js.dw = {
 			js.dw.ondwerr(msg);
 		}else{
 			this.wait('浏览器定位中...');
+			//本地虚拟定位
+			if(HOST=='127.0.0.1'){this.showPosition({coords:{latitude:24.51036967,longitude:118.178837299,accuracy:100}});return;}
 			navigator.geolocation.getCurrentPosition(this.showPosition,this.showError,{
 				enableHighAccuracy: true,
 				timeout: 19000,

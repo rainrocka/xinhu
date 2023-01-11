@@ -372,9 +372,15 @@
 		};
 		this._loaddatashow=function(ret){
 			if(isempt(this.changerange) && isempt(this.changerangeno)){
-				js.setoption('deptjson', ret.deptjson);
-				js.setoption('userjson', ret.userjson);
-				js.setoption('groupjson', ret.groupjson);
+				if(ret.iscache=='1'){
+					js.setoption('deptjson', '');
+					js.setoption('userjson', '');
+					js.setoption('groupjson', '');
+				}else{
+					js.setoption('deptjson', ret.deptjson);
+					js.setoption('userjson', ret.userjson);
+					js.setoption('groupjson', ret.groupjson);
+				}
 			}
 			this.userarr = js.decode(ret.userjson);
 			this.deptarr = js.decode(ret.deptjson);
@@ -519,8 +525,11 @@
 		this.showdata=function(a,inb){
 			if(!a)a=[];
 			this.showselectdata(a.selectdata);
+			var len = 0;
+			if(a.totalCount)len=a.totalCount;
 			if(a.rows)a = a.rows;
-			var s='',len=a.length,s1='';
+			if(len==0)len=a.length;
+			var s='',s1='';
 			if(len==0){
 				s='<div align="center" style="margin-top:30px;color:#cccccc;font-size:16px">无记录</div>';
 			}else{
@@ -603,13 +612,21 @@
 			});
 		};
 		this._searchkeys=function(e){
-			clearTimeout(this._searchkeystime);
-			this._searchkeystime=setTimeout(function(){
-				me._searchkey(false);
-			},500);
+			if(!this.searchajax){
+				clearTimeout(this._searchkeystime);
+				this._searchkeystime=setTimeout(function(){
+					me._searchkey(false);
+				},500);
+			}else{
+				if(e.keyCode==13)this._searchkey(false);
+			}
 		};
 		this._searchkey = function(bo){
 			var key = $('#changekey_'+this.rand+'').val(),a=[],d=[],d1,len,i,oi=0,s;
+			if(this.searchajax){
+				this.loaddata(''+this.selvalue+'&key='+jm.base64encode(key)+'');
+				return;
+			}
 			a=this.data;
 			if(a.rows)a=a.rows;
 			len=a.length;if(len==0)return;

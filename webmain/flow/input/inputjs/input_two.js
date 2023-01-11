@@ -137,7 +137,7 @@ var inputtwo={
 	},
 	initupss:function(sna){
 		if(isedit==0 || this.initupssa[sna])return;
-		var o,o1,sna,tsye,uptp='image';
+		var o,o1,tsye,uptp='image';
 		o1 = get('filed_'+sna+'');tsye=$(o1).attr('tsye');tdata=$(o1).attr('tdata');
 		if(tsye=='file'){
 			uptp='*';
@@ -223,13 +223,49 @@ var inputtwo={
 		}
 	},
 	//多文件点击上传
-	uploadfilei:function(sna){
+	outusebool:false,
+	uploadfilei:function(sna,ssi){
 		if(isedit==0)return;
 		var ts = this.uploadfileibefore(sna);
 		if(ts){js.msg('msg',ts);return;}
 		if(this.upfbo){js.msg('msg','请等待上传完成在添加');return;}
-		this.initupss(sna);
-		get('filed_'+sna+'_inp').click();
+		if(!this.outusebool && ssi!='onlychange'){
+			js.alert('<button onclick="c.uploadfileis(\''+sna+'\',0)" type="button" style="border-radius:5px;background:#d9534f" class="webbtn">选择本地文件上传</button><br><br><button onclick="c.uploadfileis(\''+sna+'\',1)" type="button" style="border-radius:5px;" class="webbtn">从文件库中选择</button>');
+			return;
+		}
+		this.uploadfileis(sna,0);
+		
+	},
+	uploadfileis:function(sna,lx){
+		js.tanclose('confirm');
+		if(lx==0){
+			this.initupss(sna);
+			get('filed_'+sna+'_inp').click();
+		}else if(!this.outusebool){
+			var o1,tsye,uptp='image';
+			o1 = get('filed_'+sna+'');tsye=$(o1).attr('tsye');tdata=$(o1).attr('tdata');
+			if(tsye=='file'){
+				uptp='*';
+				if(!isempt(tdata))uptp=tdata;
+			}
+			$.selectdata({
+				title:'文件库中选择',fid:sna,tsye:tsye,searchajax:true,checked:false, 
+				url:'api.php?m=upload&a=changedata&uptp='+uptp+'&tsye='+tsye+'',
+				onselect:function(seld,sna,sid){
+					if(seld){
+						if(this.tsye=='img'){
+							get('imgview_'+this.fid+'').src = seld.filepath;
+							form(this.fid).value=seld.filepath;
+						}else{
+							c.showfileup(this.fid, seld);
+							c.showupid(this.fid);
+						}
+					}
+				}
+			});
+		}else{
+			js.msg('msg','无法操作');
+		}
 	},
 	//上传完成
 	showupid:function(sna){
@@ -258,7 +294,7 @@ var inputtwo={
 				if(jg=='yes'){
 					o.remove();
 					c.showupid(sna);
-					$.get(js.getajaxurl('delfile','upload','public',{id:fid}));
+					if(!f.xuanbool)$.get(js.getajaxurl('delfile','upload','public',{id:fid}));
 				}
 			});
 		}

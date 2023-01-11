@@ -891,6 +891,7 @@ class inputAction extends Action
 
 		$souarr 	= array();
 		$this->input= c('input');
+		$this->flow = $flow;
 		foreach($flow->fieldsarra as $k=>$rs){
 			
 			if($rs['issou']==1){

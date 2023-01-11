@@ -128,7 +128,7 @@ class deptClassAction extends Action
 						$bo = $this->contain($val, $ars['did']);
 					}
 					$ars['checked']=$bo;
-				}	
+				}	 
 			}
 			$rows[]	= $ars;
 		}
@@ -137,7 +137,14 @@ class deptClassAction extends Action
 	
 	public function deptuserjsonAjax()
 	{
-		$udarr 		= m('dept')->getdeptuserdata(1);
+		$udarr = m('dept')->getdeptuserdata(1);
+		$bool  = false;
+		if(!ISMORECOM && !$udarr['uarr'] && $udarr['isall']){
+			$udarrs = c('cache')->get('deptuserjson');
+			if($udarrs)$udarr = $udarrs;
+			$bool  = true;
+		}
+		
 		$userarr 	= $udarr['uarr'];
 		$deptarr 	= $udarr['darr'];
 		$grouparr 	= $udarr['garr'];
@@ -145,6 +152,8 @@ class deptClassAction extends Action
 		$arr['deptjson']	= json_encode($deptarr);
 		$arr['userjson']	= json_encode($userarr);
 		$arr['groupjson']	= json_encode($grouparr);
+		$arr['iscache']		= getconfig('usercache');
+		if(!ISMORECOM && $udarr['isall'] && !$bool)c('cache')->set('deptuserjson', $udarr);
 		$this->showreturn($arr);
 	}
 }

@@ -45,7 +45,7 @@ $(document).ready(function(){
 			}
 			this.xuannum = [];
 			var xues = ',gong,vcard,remind,tovoid,';
-			var less = ',公文,进销存,客户,工程,考勤,物品,车辆,学校,';
+			var less = ',公文,进销存,客户,工程,考勤,物品,车辆,学校,物业,';
 			
 			var d,i1,i2=0,i3=0,dis='',bh='',zs=0;
 			for(i in typarr){
@@ -163,6 +163,9 @@ $(document).ready(function(){
 			
 			<tr><td align="right" style="color:gray">PC端首页登录超时：</td><td><input name="hoemtimeout" type="number" value="<?=getconfig('hoemtimeout')?>" onfocus="js.focusval=this.value" onblur="js.number(this)" min="0" style="width:200px" placeholder="单位分钟" class="form-control"></select>
 			<span style="color:#aaaaaa;">单位分钟，默认是0没有限制</span></td></tr>
+			<tr><td height="10"></td></tr>
+			
+			<tr><td align="right" style="color:gray">读取人员缓存方式：</td><td><select style="width:200px" name="usercache" class="form-control"><option value="">默认本地浏览器缓存</option><option <?php if(getconfig('usercache')=='1')echo 'selected';?> value="1">不缓存本地浏览器</option></select></td></tr>
 			<tr><td height="10"></td></tr>
 			
 			<tr>

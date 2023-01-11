@@ -66,7 +66,10 @@ class mode_userinfoClassAction extends inputAction{
 			unset($uarr['quitdt']);
 		}
 		
-		if($uarr)m('admin')->update($uarr, $id);
+		if($uarr){
+			m('admin')->update($uarr, $id);
+			c('cache')->del('deptuserjson');
+		}
 	}
 	
 	//获取打开记录

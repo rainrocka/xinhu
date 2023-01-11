@@ -222,13 +222,15 @@ class inputChajian extends Chajian
 			$str = '<input name="'.$fname.'" '.$chk.' '.$attr.''.$styles.' type="checkbox" value="1"> ';
 		}
 		if($type=='uploadimg'){
+			$str1= '<a href="javascript:;" onclick="c.uploadfileis(\''.$fname.'\',1)">库中选</a>&nbsp;';
+			if(M=='login' || $this->adminid==0 || $a['attr']=='onlychange')$str1='';
 			$str = '<input name="'.$fname.'" value="'.$val.'" type="hidden">';
 			$str.= '<img src="images/noimg.jpg" onclick="c.showviews(this)" id="imgview_'.$fname.'" height="100">';
-			$str.= '<div style="display:" tsye="img" tnam="'.$fname.'" id="filed_'.$fname.'"><a href="javascript:;" onclick="c.uploadimgclear(\''.$fname.'\')">删</a>&nbsp;<input onclick="c.initupss(\''.$fname.'\');" type="file" style="width:120px" accept="image/jpg,image/jpeg,image/png" id="filed_'.$fname.'_inp"></div>';
+			$str.= '<div style="display:" tsye="img" tnam="'.$fname.'" id="filed_'.$fname.'"><a href="javascript:;" onclick="c.uploadimgclear(\''.$fname.'\')">删</a>&nbsp;'.$str1.'<input onclick="c.initupss(\''.$fname.'\');" type="file" style="width:120px" accept="image/jpg,image/jpeg,image/png" id="filed_'.$fname.'_inp"></div>';
 		}
 		if($type=='uploadfile'){
 			$str = '<input name="'.$fname.'" value="'.$val.'" type="hidden">';
-			$str.= '<div style="display:inline-block" id="fileview_'.$fname.'"><div onclick="c.uploadfilei(\''.$fname.'\')" style="display:;border:dashed 1px #cccccc" id="'.$fname.'_divadd" class="upload_items"><img class="imgs" src="images/jia.png"></div></div>';
+			$str.= '<div style="display:inline-block" id="fileview_'.$fname.'"><div onclick="c.uploadfilei(\''.$fname.'\',\''.$a['attr'].'\')" style="display:;border:dashed 1px #cccccc" id="'.$fname.'_divadd" class="upload_items"><img class="imgs" src="images/jia.png"></div></div>';
 			$str.= '<div style="display:none" tsye="file" tnam="'.$fname.'" tdata="'.$data.'" id="filed_'.$fname.'"><input type="file" style="width:120px" multiple="multiple" id="filed_'.$fname.'_inp"></div>';
 		}
 		if($type=='graph'){

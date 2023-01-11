@@ -13,5 +13,11 @@ class mode_jiabanClassAction extends inputAction{
 		
 		$this->returnjson(array($sj, '', $jiafee));
 	}
+	
+	
+	protected function savebefore($table, $arr, $id, $addbo){
+		$msg 	= m('kaoqin')->leavepan($arr['uid'], '', $arr['stime'], $arr['etime'], 0, $id,'加班');
+		return $msg;
+	}
 }	
 			

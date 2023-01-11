@@ -43,7 +43,8 @@ class hrClassModel extends Model
 					'quitdt' => $rs['quitdt']
 				), $rs['uid']);
 				m('admin')->update(array(
-					'quitdt' => $rs['quitdt']
+					'quitdt' => $rs['quitdt'],
+					'status' => '0'
 				), $rs['uid']);
 				if($bo)$db->update("`isover`=1", $rs['id']);
 			}

@@ -95,7 +95,8 @@ class sysfileClassAction extends Action
 		if($str=$this->iscaozuo())return $str;
 		$path = $this->jm->base64decode($this->get('path'));
 		if(isempt($path))return '无效路径';
-		if(!file_exists($path))return '文件不存在';
+		
+		if(!file_exists(ROOT_PATH.'/'.$path))return '文件不存在';
 		$pathinfo=pathinfo($path);
 		
 		$filename = $pathinfo['basename'];

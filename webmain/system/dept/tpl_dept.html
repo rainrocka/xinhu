@@ -55,15 +55,21 @@ var c = {
 		$('#showtype').css('height',''+he+'px');
 	},
 	loaddata:function(iscs){
-		var url = js.getajaxurl('deptuserjson','dept','system',{'changerange':this.changerange});
+		var url = js.getajaxurl('deptuserjson','dept','system',{'changerange':this.changerange,'gtype':'change'});
 		$('#showdiv_0').html('<div align="center" style="margin-top:30px"><img src="images/mloading.gif"></div>')
 		$.get(url,function(ret){
 			var d = js.decode(ret);
 			ret = d.data;
 			if(c.changerange==''){
-				js.setoption('deptjson', ret.deptjson);
-				js.setoption('userjson', ret.userjson);
-				js.setoption('groupjson', ret.groupjson);
+				if(ret.iscache=='1'){
+					js.setoption('deptjson', '');
+					js.setoption('userjson', '');
+					js.setoption('groupjson', '');
+				}else{
+					js.setoption('deptjson', ret.deptjson);
+					js.setoption('userjson', ret.userjson);
+					js.setoption('groupjson', ret.groupjson);
+				}
 			}
 			
 			c.userarr = js.decode(ret.userjson);

@@ -11,11 +11,11 @@ class installClassAction extends ActionNot{
 	{
 		$this->tpltype	= 'html';
 		$this->title	= TITLE.'_安装';
-		$dbdiz = '127.0.0.1';
+		$dbdiz = '';
 		$paths = '../../mysql5.6.10/my.ini';
 		if(@file_exists($paths)){
 			$_conts = @file_get_contents($paths);
-			if($_conts && contain($_conts,'3307'))$dbdiz.=':3307';
+			if($_conts && contain($_conts,'3307'))$dbdiz='3307';
 		}
 		$this->assign('dbdiz', $dbdiz);
 	}
@@ -48,6 +48,7 @@ class installClassAction extends ActionNot{
 		$dbtype 	= $this->post('dbtype');
 		$host 		= $this->post('host');
 		$user 		= $this->post('user');
+		$duankou 	= $this->post('duankou');
 		$pass 		= $this->post('pass');
 		$base 		= $this->post('base');
 		$xinhukey 	= $this->post('xinhukey');
@@ -59,7 +60,7 @@ class installClassAction extends ActionNot{
 		$paths 		= ''.P.'/'.P.'Config.php';
 		$paths1 	= ''.P.'/'.P.'Config.php1';
 		$inpaths	= ROOT_PATH.'/'.$paths.'';
-		
+		if($duankou)$user.=':'.$duankou.'';
 		
 		$msg  		= '';
 		

@@ -426,6 +426,7 @@ class adminClassModel extends Model
 	public function getuser($lx=0, $uid=0)
 	{
 		$fields = '`id`,`name`,`deptid`,`deptname`,`deptpath`,`groupname`,`deptallname`,`mobile`,`ranking`,`tel`,`face`,`sex`,`email`,`pingyin`,`deptids`,`isvcard`';
+		$this->allshow = false;
 		if($uid==0){
 			$uid  	= $this->adminid;
 			$where	= m('view')->viewwhere('user', $uid, 'id');
@@ -474,6 +475,10 @@ class adminClassModel extends Model
 			//读取我可查看权限
 			if(contain($where,'1=1')){
 				$where = '';
+				if($this->rock->get('gtype')=='change'){
+					//$this->allshow = true;
+					//if(!ISMORECOM && c('cache')->get('deptuserjson'))return array();
+				}
 			}else{
 				$where = 'and ((1 '.$where.') or (`id`='.$uid.'))';
 			}
@@ -541,6 +546,7 @@ class adminClassModel extends Model
 	*/
 	public function updateinfo($where='')
 	{
+		if($where)c('cache')->del('deptuserjson');
 		$rows	= $this->db->getall("select * from `[Q]admin` a where id>0 $where");
 		$total	= $this->db->count;
 		$cl		= 0;

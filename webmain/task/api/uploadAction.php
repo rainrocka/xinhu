@@ -523,4 +523,59 @@ class uploadClassAction extends apiAction
 	
 		return returnsuccess($uarr);
 	}
+	
+	/**
+	*	文库选择文件
+	*/
+	public function changedataAction()
+	{
+		$rows  	= array();
+		$uptp 	= $this->get('uptp');
+		$tsye 	= $this->get('tsye');
+		$key 	= $this->get('key');
+		$selv 	= (int)$this->get('selvalue','0');
+		$where 	= '`optid`='.$this->adminid.'';
+		if($selv==1){
+			$str   =  m('admin')->getjoinstrs('`shateid`', $this->adminid, 1);
+			$where = '`id` in(select `fileid` from `[Q]word` where `type`=0 '.$str.' )';
+		}
+		if($key){
+			$key = $this->jm->base64decode($key);
+			$where.=" and `filename` like '%".$key."%'";
+		}
+		if($uptp && $uptp!='*'){
+			if($uptp=='image')$uptp='jpg,png,gif,jpeg';
+			$uptp  = str_replace(',', "','", $uptp);
+			$where.=" and `fileext` in('".$uptp."')";
+		}
+		$db 	= m('file');
+		$rows	= $db->getall($where,'id,filename,filesizecn,fileext,thumbpath,filepath,filepathout','`id` desc limit 10');
+		foreach($rows as $k=>$rs){
+			$rows[$k]['value'] 	= $rs['id'];
+			$rows[$k]['name'] 	= $rs['filename'];
+			$rows[$k]['subname']= $rs['filesizecn'];
+			$rows[$k]['xuanbool']= true;
+			if($tsye=='img'){
+				if(!isempt($rs['filepathout']))$rows[$k]['filepath'] = $rs['filepathout'];
+			}else{
+				unset($rows[$k]['filepath']);
+			}
+			unset($rows[$k]['filepathout']);
+			if(!isempt($rs['thumbpath'])){
+				$rows[$k]['iconsimg'] = $rs['thumbpath'];
+			}else{
+				$flx = $rs['fileext'];
+				if(!contain($db->fileall,','.$flx.','))$flx='wz';
+				$rows[$k]['iconsimg'] = 'web/images/fileicons/'.$flx.'.gif';
+			}
+		}
+		$count 	= $db->rows($where);
+		$selectdata[] = array('value'=>'','name'=>'选自己上传');
+		$selectdata[] = array('value'=>'1','name'=>'共享给我的');
+		return array(
+			'rows' 		 => $rows,
+			'totalCount' => $count,
+			'selectdata' => $selectdata
+		);
+	}
 }

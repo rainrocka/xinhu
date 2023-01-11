@@ -358,7 +358,7 @@
 				s+='<div><input type="'+flx+'" style="width:'+wss+'px" id="inputedit_'+rand+'" '+attr+' class="input" value="'+v+'"></div>';
 			}
 			s+='	<div class="blank10"></div>';
-			if(!can.cellautosave)s+='	<div><a  id="inputeditsave_'+rand+'" href="javascript:"><i class="icon-ok"></i> 确定</a >&nbsp;  &nbsp; <a href="javascript:" class="hui" onclick="$(\'#edittable_'+rand+'\').remove()"><i class="icon-remove"></i> 取消</a></div>';
+			if(!can.cellautosave || b.noautosave)s+='	<div><a  id="inputeditsave_'+rand+'" href="javascript:"><i class="icon-ok"></i> 确定</a >&nbsp;  &nbsp; <a href="javascript:" class="hui" onclick="$(\'#edittable_'+rand+'\').remove()"><i class="icon-remove"></i> 取消</a></div>';
 			s+='</div>';
 			s+='<div align="center"><div class="arrow-down"></div></div>';
 			s+='</div>';
@@ -372,12 +372,12 @@
 				if(e.keyCode==13)this.blur();
 			});
 			var arr = {oldvalue:v,fields:fields,type:b.type,id:a.id,obj:o,row:row}
-			if(can.cellautosave){
-				$(o3).blur(function(){
+			if(!can.cellautosave || b.noautosave){
+				$('#inputeditsave_'+rand+'').click(function(){
 					me._editforcuschen(this, arr, b);
 				});
 			}else{
-				$('#inputeditsave_'+rand+'').click(function(){
+				$(o3).blur(function(){
 					me._editforcuschen(this, arr, b);
 				});
 			}

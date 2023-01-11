@@ -798,13 +798,15 @@ class kaoqinClassModel extends Model
 	/**
 	*	判断这段时间是否可以申请请假
 	*/
-	public function leavepan($uid, $qjkind, $start, $end, $totals, $id=0)
+	public function leavepan($uid, $qjkind, $start, $end, $totals, $id=0, $kind='')
 	{
 		$msg 	= '';
-		$sdf 	= $this->db->rows('[Q]kqinfo',"`uid`='$uid' and `status`<>5 and ((`stime`<='$start' and `etime`>='$start') or (`stime`<='$end' and `etime`>='$end') or (`stime`>='$start' and `etime`<='$end')) and `kind`='请假' and `id`<>'$id' ");
+		if($kind=='')$kind = '请假';
+		$sdf 	= $this->db->rows('[Q]kqinfo',"`uid`='$uid' and `status`<>5 and ((`stime`<='$start' and `etime`>='$start') or (`stime`<='$end' and `etime`>='$end') or (`stime`>='$start' and `etime`<='$end')) and `kind`='$kind' and `id`<>'$id' ");
 		if($sdf > 0){
 			$msg = '该时间段已申请过了';
 		}
+		if($kind=='加班')return $msg;
 		$tsjia	= '事假,病假';
 		$tsjia	= m('option')->getval('kqsqtype', $tsjia); //读取选项
 		if($msg == '' && !$this->contain(','.$tsjia.',', ','.$qjkind.',')){

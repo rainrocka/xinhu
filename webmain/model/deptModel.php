@@ -122,6 +122,7 @@ class deptClassModel extends Model
 			'uarr' => $userarr,
 			'darr' => $deptarr,
 			'garr' => $garr,
+			'isall'=> $admindb->allshow
 		);
 	}
 	

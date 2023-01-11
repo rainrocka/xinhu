@@ -103,6 +103,7 @@ class adminClassAction extends Action
 	
 	public function updatedataAjax()
 	{
+		c('cache')->del('deptuserjson');
 		$a = $this->updatess();
 		m('imgroup')->updategall();
 		echo '总'.$a[0].'条记录,更新了'.$a[1].'条';
