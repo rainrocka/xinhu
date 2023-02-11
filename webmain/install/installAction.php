@@ -60,7 +60,7 @@ class installClassAction extends ActionNot{
 		$paths 		= ''.P.'/'.P.'Config.php';
 		$paths1 	= ''.P.'/'.P.'Config.php1';
 		$inpaths	= ROOT_PATH.'/'.$paths.'';
-		if($duankou)$user.=':'.$duankou.'';
+		if($duankou)$host.=':'.$duankou.'';
 		
 		$msg  		= '';
 		

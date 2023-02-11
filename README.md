@@ -16,7 +16,7 @@
 
 
 ### 安装说明
-1、环境要求：可以运行在Win/Linux系统下，php5.2~7.3，mysql5.3~5.7  
+1、环境要求：可以运行在Win/Linux系统下，php5.2—7.3，mysql5.3—5.7  
 2、测试环境搭建详见：http://www.rockoa.com/view_install.html  
 3、自己手动安装详见：http://www.rockoa.com/view_anzz.html  
 4、配置文件：webmain/webmainConfig.php，也可到【系统→系统工具→系统设置】下修改  
