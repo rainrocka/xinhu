@@ -26,6 +26,7 @@ c.view=function(){
 	var d=a.changedata;
 	openxiangs('详情',d.modenumshow,d.mid,'opegs{rand}');
 }
+$('#tdleft_{rand}').hide();
 
 //[自定义区域end]
 	c.initpagebefore();

@@ -90,6 +90,15 @@ function initbody(){
 			history.pushState(null, null, document.URL);
 		});
 	}catch(e){}
+	
+	/*
+	var o1 = $('#index-navbar-center');
+	var hei = $('#index-navbar-left').width()+$('#index-navbar-right').width();
+	var wid = winWb()-hei;
+	if(o1.width()>wid){
+		o1.css({width:''+(wid-30)+'px',height:''+$('#index-navbar-right').height()+'px'});
+		$('#index-navbar-right').prepend('<li><a href="javascript:;" onclick="openmobile()"><i class="icon-chevron-down"></i></a></li>');
+	}*/
 }
 
 

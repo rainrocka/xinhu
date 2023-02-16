@@ -1,15 +1,15 @@
 <?php
 /**
-*	模块：yqhealthy.健康报备
+*	模块：custgys.供应商
 *	说明：自定义区域内可写你想要的代码
-*	来源：流程模块→表单元素管理→[模块.健康报备]→生成列表页
+*	来源：流程模块→表单元素管理→[模块.供应商]→生成列表页
 */
 defined('HOST') or die ('not access');
 ?>
 <script>
 $(document).ready(function(){
 	{params}
-	var modenum = 'yqhealthy',modename='健康报备',isflow=0,modeid='142',atype = params.atype,pnum=params.pnum,modenames='',listname='eXVxaW5nbQ::';
+	var modenum = 'custgys',modename='供应商',isflow=0,modeid='142',atype = params.atype,pnum=params.pnum,modenames='',listname='Y3VzdG9tZXI:';
 	if(!atype)atype='';if(!pnum)pnum='';
 	var fieldsarr = [],fieldsselarr= [],chufarr= [];
 	
@@ -19,18 +19,7 @@ $(document).ready(function(){
 	
 //[自定义区域start]
 
-c.setcolumns('tupian',{
-	renderer:function(v){
-		if(!v)return '&nbsp;';
-		return '<img src="'+v+'" onclick="$.imgview({\'url\':this.src})" height="60">';
-	}
-});
-c.setcolumns('tupian1',{
-	renderer:function(v){
-		if(!v)return '&nbsp;';
-		return '<img src="'+v+'" onclick="$.imgview({\'url\':this.src})" height="60">';
-	}
-});
+
 
 //[自定义区域end]
 	c.initpagebefore();
@@ -51,7 +40,7 @@ c.setcolumns('tupian1',{
 		<td><select class="form-control" style="width:60px;border-radius:0px;border-left:0;padding:0 2px" id="like_{rand}"><option value="0">包含</option><option value="1">等于</option><option value="2">大于等于</option><option value="3">小于等于</option><option value="4">不包含</option></select></td>
 		<td><select class="form-control" style="width:130px;border-radius:0;border-left:0;display:none;padding:0 5px" id="selkey_{rand}"><option value="">-请选择-</option></select><input class="form-control" style="width:130px;border-radius:0;border-left:0;padding:0 5px" id="keygj_{rand}" placeholder="关键词"><input class="form-control" style="width:130px;border-radius:0;border-left:0;padding:0 5px;display:none;" id="key_{rand}" placeholder="关键字">
 		</td>
-		
+		<td><select class="form-control" style="width:120px;border-left:0;border-radius:0;" id="selstatus_{rand}"><option value="">-全部状态-</option><option style="color:blue" value="0">停用</option><option style="color:green" value="1">启用</option><option style="color:#888888" value="5">已作废</option></select></td>
 		<td>
 			<div style="white-space:nowrap">
 			<button style="border-right:0;border-radius:0;border-left:0" class="btn btn-default" click="searchbtn" type="button">搜索</button><button class="btn btn-default" id="downbtn_{rand}" type="button" style="padding-left:8px;padding-right:8px;border-top-left-radius:0;border-bottom-left-radius:0"><i class="icon-angle-down"></i></button> 
@@ -66,5 +55,5 @@ c.setcolumns('tupian1',{
 	</table>
 </div>
 <div class="blank10"></div>
-<div id="viewyqhealthy_{rand}"></div>
+<div id="viewcustgys_{rand}"></div>
 <!--HTMLend-->

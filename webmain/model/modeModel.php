@@ -346,6 +346,7 @@ $rstr 	= "".$hstart."
 		$arr['crm'] = '18,17,56,19,34,35,36';
 		$arr['bianjian'] = '59';
 		$arr['gong'] = '3';
+		$arr['wyxiaoqu'] = '67,68,69,70';
 		return $arr;
 	}
 }

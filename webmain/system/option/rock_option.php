@@ -29,8 +29,8 @@ $(document).ready(function(){
 	});
 	
 	var a = $('#view_{rand}').bootstable({
-		tablename:'option',celleditor:true,sort:'sort',dir:'asc',modedir:'{mode}:{dir}',storeafteraction:'downshuafter',
-		autoLoad:false,where:'and pid=-1',bodyStyle:'height:'+(viewheight-72)+'px;overflow:auto',
+		tablename:'option',celleditor:true,sort:'sort',dir:'asc',modedir:'{mode}:{dir}',storeafteraction:'downshuafter',storebeforeaction:'downshubefore',
+		autoLoad:false,params:{pid:-1},bodyStyle:'height:'+(viewheight-72)+'px;overflow:auto',
 		columns:[{
 			text:'名称',dataIndex:'name',sortable:true,editor:true
 		},{
@@ -54,9 +54,10 @@ $(document).ready(function(){
 				return s;
 			}
 		}],
-		load:function(){
+		load:function(d){
 			get('add_{rand}').disabled=false;
 			get('del_{rand}').disabled=true;
+			c.showdownlist(d.darr);
 		},
 		itemclick:function(){
 			get('del_{rand}').disabled=false;
@@ -72,8 +73,19 @@ $(document).ready(function(){
 	var c = {
 		zhankai:function(ad){
 			$('#downshow_{rand}').html('<b>['+ad.id+'.'+ad.name+']</b>的下级选项');
-			nowid = ad.id;
-			a.search("and `pid`="+ad.id+"");
+			this.showdown(ad.id);
+		},
+		showdownlist:function(dl){
+			var str='<b>路径：</b>';
+			for(var i=0;i<dl.length;i++){
+				if(i>0)str+=' <font color="#cccccc">&gt;</font> ';
+				str+=' <a href="javascript:;" onclick="option{rand}.showdown('+dl[i].id+')">'+dl[i].name+'</a> ';
+			}
+			$('#downshow_{rand}').html(str);
+		},
+		showdown:function(id1){
+			nowid = id1;
+			a.setparams({'pid':id1}, true);
 		},
 		search:function(){
 			var s = get('key_{rand}').value;
@@ -95,7 +107,8 @@ $(document).ready(function(){
 			var ad = this.optdata;
 			if(d.lx==0){
 				$('#downshow_{rand}').html('<b>['+ad.id+'.'+ad.name+']</b>的下级选项');
-				a.search("and `pid`="+ad.id+"");
+				//a.search("and `pid`="+ad.id+"");
+				a.setparams({'pid':ad.id}, true);
 			}
 			if(d.lx==1){
 				c.xiajili();
@@ -123,9 +136,9 @@ $(document).ready(function(){
 			this.showdwon(num);
 		},
 		clickwin:function(o, lx){
-			var a = this.clicktypewin(false, 0);
+			var as = this.clicktypewin(false, 0);
 			optlx = 1;
-			a.setValue('pid', nowid);
+			as.setValue('pid', nowid);
 		},
 		clicktypeeidt:function(){
 			var d = at.changedata;
@@ -165,6 +178,8 @@ $(document).ready(function(){
 	};
 	js.initbtn(c);
 	$('#optionview_{rand}').css('height',''+(viewheight-142)+'px');
+	
+	option{rand} = c;
 });
 </script>
 

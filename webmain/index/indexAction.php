@@ -3,9 +3,14 @@ class indexClassAction extends Action{
 	
 	public $homestylebool = false;
 	
+	
+	
 	public function defaultAction()
 	{
 		if(strlen(getconfig('randkey'))!=26)exit('配置文件randkey不正确，请重新设置为：'.$this->jm->getRandkey().'');
+		
+		$notuserids = getconfig('notuserids');
+		$this->pannouser();
 		
 		$homestyle		= getconfig('homestyle');
 		if($homestyle>=1 && !$this->homestylebool){
@@ -247,6 +252,7 @@ class indexClassAction extends Action{
 	*/
 	public function getshtmlAction()
 	{
+		$this->pannouser();
 		$surl = $this->jm->base64decode($this->get('surl'));
 		$num  = $this->get('num');
 		$menuname  = $this->jm->base64decode($this->get('menuname'));

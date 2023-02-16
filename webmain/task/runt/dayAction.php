@@ -11,6 +11,8 @@ class dayClassAction extends runtAction
 		
 		if($this->moderock('meet'))m('flow')->initflow('meet')->createmeet(); //会议生成
 		
+		if($this->moderock('wysnwork'))m('flow')->initflow('wysnwork')->creatework();//物业维保生成
+		
 		$this->crmrun();
 		
 		return 'success';

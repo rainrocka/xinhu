@@ -165,7 +165,7 @@ $(document).ready(function(){
 			<span style="color:#aaaaaa;">单位分钟，默认是0没有限制</span></td></tr>
 			<tr><td height="10"></td></tr>
 			
-			<tr><td align="right" style="color:gray">读取人员缓存方式：</td><td><select style="width:200px" name="usercache" class="form-control"><option value="">默认本地浏览器缓存</option><option <?php if(getconfig('usercache')=='1')echo 'selected';?> value="1">不缓存本地浏览器</option></select></td></tr>
+			<tr><td align="right" style="color:gray">读取人员本地缓存方式：</td><td><select style="width:200px" name="usercache" class="form-control"><option value="">默认本地浏览器缓存</option><option <?php if(getconfig('usercache')=='1')echo 'selected';?> value="1">不缓存本地浏览器</option></select></td></tr>
 			<tr><td height="10"></td></tr>
 			
 			<tr>

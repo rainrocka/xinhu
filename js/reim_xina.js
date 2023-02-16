@@ -786,6 +786,7 @@ var reim={
 		if(video_bool && type=='user')s+='	<span title="音视频通话" tools="tonghua" class="cursor"><i class="icon-facetime-video"></i></span>';
 		s+='	<span title="收藏消息" tools="star" class="cursor"><i class="icon-star"></i></span>';
 		s+='	<span title="消息记录" tools="jilu" class="cursor"><i class="icon-time"></i></span>';
+		if(type=='gout')s+='	<span title="@信呼客服" tools="atkf" class="cursor"><i class="icon-headphones"></i></span>';
 		s+='</div>';
 		
 		s+='<div style="height:80px;overflow:hidden;"><div style="height:70px;margin:5px"><textarea onpaste="im.readclip(\''+num+'\',event)"  class="content" style="background:none;"  id="input_content_'+num+'"></textarea></div></div>';
@@ -1612,6 +1613,10 @@ function chatcreate(cans){
 		}
 		if(this.rightqipaoobj)this.rightqipaoobj.hide();
 	};
+	this.kefuat=function(){
+		this.atid = 2;
+		this.addinput('@信呼客服 ');
+	};
 	this.exitgroups=function(){
 		js.msg('wait','退出中...');
 		reim.ajax(this.getapiurl('reim','exitgroup'),{gid:this.gid,aid:this.sendinfo.id}, function(da){
@@ -1801,6 +1806,7 @@ function chatcreate(cans){
 		if(lx=='sou0' || lx=='sou1' || lx=='sou2')this.recordsearch(lx);
 		if(lx=='sou3')this.searchjilu();
 		if(lx=='star')this.showstar();
+		if(lx=='atkf')this.kefuat();
 	};
 	this.getemts=function(o){
 		if(!get('aemtsdiv')){

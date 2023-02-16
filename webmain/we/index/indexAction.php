@@ -8,6 +8,7 @@ class indexClassAction extends ActionNot{
 	
 	public function defaultAction()
 	{
+		$this->pannouser();
 		$this->title = getconfig('apptitle',$this->bd6('5L!h5ZG8T0E:'));
 		if(COMPANYNUM){
 			$companyinfo = m('company')->getone(1);

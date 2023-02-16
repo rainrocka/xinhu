@@ -376,7 +376,10 @@ var inputtwo={
 				var sna = d1.sna;
 				if(form(sna))form(sna).value=d1.address+'|'+d1.lat+','+d1.lng+'';
 				var sna1 = d1.snall;
-				if(sna1 && form(sna1))form(sna1).value=''+d1.lat+','+d1.lng+','+d1.zoom+'';
+				if(sna1 && form(sna1)){
+					form(sna1).value=''+d1.lat+','+d1.lng+','+d1.zoom+'';
+					form(sna).value=d1.address;
+				}
 				c.onselectmap(sna,d1);
 			});
 			this.geocoderObj.setError(function() {

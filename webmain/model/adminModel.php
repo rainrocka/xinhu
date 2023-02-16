@@ -475,9 +475,9 @@ class adminClassModel extends Model
 			//读取我可查看权限
 			if(contain($where,'1=1')){
 				$where = '';
-				if($this->rock->get('gtype')=='change'){
-					//$this->allshow = true;
-					//if(!ISMORECOM && c('cache')->get('deptuserjson'))return array();
+				if($this->rock->get('gtype')=='change' && getconfig('userhoucache')=='1'){
+					$this->allshow = true;
+					if(!ISMORECOM && c('cache')->get('deptuserjson'))return array();
 				}
 			}else{
 				$where = 'and ((1 '.$where.') or (`id`='.$uid.'))';

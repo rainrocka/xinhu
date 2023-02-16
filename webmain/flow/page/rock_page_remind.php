@@ -36,6 +36,7 @@ c.setcolumns('modenum',{
 c.clickwin=function(){
 	js.msg('msg','不能从这里新增提醒');
 }
+$('#tdleft_{rand}').hide();
 
 //[自定义区域end]
 	c.initpagebefore();

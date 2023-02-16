@@ -72,6 +72,13 @@ class optionClassAction extends Action
 		}
 	}
 	
+	public function downshubefore()
+	{
+		$pid = (int)$this->post('pid','0');
+		$this->pid = $pid;
+		return 'and `pid`='.$pid.'';
+	}
+	
 	public function downshuafter($table, $rows)
 	{
 		$db = m($table);
@@ -79,8 +86,26 @@ class optionClassAction extends Action
 			$dcount = $db->rows('pid='.$rs['id'].'');
 			if($dcount>0)$rows[$k]['dcount'] = $dcount;
 		}
+		$darr = array();
+		if($this->pid>0){
+			$this->getdonwds($db,$this->pid);
+			$darr = $this->downarr;
+		}
 		return array(
-			'rows' => $rows
+			'rows' => $rows,
+			'darr' => $darr
 		);
+	}
+	
+	private $downarr = array();
+	private function getdonwds($db,$id)
+	{
+		if($id>1){
+			$rs = $db->getone('`id`='.$id.'','id,pid,name,num');
+			if($rs){
+				$this->getdonwds($db, $rs['pid']);
+				$this->downarr[] = $rs;
+			}
+		}
 	}
 }

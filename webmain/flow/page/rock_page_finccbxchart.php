@@ -62,6 +62,7 @@ $(document).ready(function(){
 			if(tlx!='pie'){
 				option.xAxis={data: xAxis};
 				option.yAxis={type : 'value'};
+				option.tooltip.formatter="{b} : {c}元";
 			}
 			myChart[oi].setOption(option);
 		},

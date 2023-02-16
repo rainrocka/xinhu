@@ -6,6 +6,7 @@ class kaoqinClassAction extends runtAction
 	*/
 	public function todoAction()
 	{
+		if(getconfig('systype')=='demo')return 'success';
 		$dt 	= date('Y-m-d', time()-3600*20);//昨天
 		$sql  	= "SELECT a.uid FROM `[Q]kqanay` a left join `[Q]userinfo` b on a.uid=b.id where a.dt='$dt' and b.iskq=1 and a.state<>'正常' and a.states is null and a.iswork=1 group by a.uid;";
 		$rows 	= $this->db->getall($sql);
@@ -38,6 +39,7 @@ class kaoqinClassAction extends runtAction
 	//分析工作日报统计
 	public function dailyfxAction()
 	{
+		if(getconfig('systype')=='demo')return 'success';
 		$dt 	= c('date')->adddate($this->rock->date, 'd', -1);
 		$flow 	= m('flow')->initflow('daily');
 		$flow->dailyanay(0, $dt);

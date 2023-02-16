@@ -39,6 +39,12 @@ class Action extends mainAction
 		$this->rock->adminuser	= $user;
 	}
 	
+	public function pannouser()
+	{
+		$nots = getconfig('notuserids');
+		if($nots && contain(','.$nots.',',','.$this->adminid.','))exit('无效用户登录');
+	}
+	
 	//免登录验证，用于订阅报表的
 	private function loginsubscribe()
 	{
@@ -93,6 +99,7 @@ class Action extends mainAction
 	
 	private function iszclogin()
 	{
+		$this->pannouser();
 		if($this->loginsubscribe())return;//免验证
 		$token = $this->admintoken;
 		if(isempt($token))exit('sorry1');

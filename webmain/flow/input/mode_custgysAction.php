@@ -1,8 +1,8 @@
 <?php
 /**
-*	此文件是流程模块【yqhealthy.健康报备】对应控制器接口文件。
+*	此文件是流程模块【custgys.供应商】对应控制器接口文件。
 */ 
-class mode_yqhealthyClassAction extends inputAction{
+class mode_custgysClassAction extends inputAction{
 	
 	/**
 	*	重写函数：保存前处理，主要用于判断是否可以保存
@@ -13,7 +13,10 @@ class mode_yqhealthyClassAction extends inputAction{
 	*	return array('msg'=>'错误提示内容','rows'=> array()) 可返回空字符串，或者数组 rows 是可同时保存到数据库上数组
 	*/
 	protected function savebefore($table, $arr, $id, $addbo){
-		
+		$rows['isgys'] = '1';//不能去掉
+		return array(
+			'rows'=>$rows
+		);
 	}
 	
 	/**
