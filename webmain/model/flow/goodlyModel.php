@@ -1,6 +1,8 @@
 <?php
 class flow_goodlyClassModel extends flowModel
 {
+	
+	public $goodsobj;
 	public function initModel()
 	{
 		$this->goodsobj = m('goods');

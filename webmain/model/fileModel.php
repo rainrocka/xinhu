@@ -1,6 +1,7 @@
 <?php
 class fileClassModel extends Model
 {
+	public $fileall,$mimitype;
 	
 	public function initModel()
 	{
@@ -23,6 +24,15 @@ class fileClassModel extends Model
 		$uarr['web'] 	= $this->rock->web;
 		$uarr['optdt'] 	= $this->rock->now;
 		return m('files')->insert($uarr);
+	}
+	
+	/**
+	*	添加所选的文件提示
+	*/
+	public function addxuan($fids,$xfids,$mknum)
+	{
+		if(!$xfids)return;
+		$this->db->insert('[Q]files','`fileid`,`type`,`optname`,`optid`,`optdt`,`ip`',"select `id`,3,'{$this->adminname}','{$this->adminid}','{$this->rock->now}','{$mknum}' from `[Q]file` where `id` in($xfids) and `id` in($fids) and `mid`>0", true);
 	}
 	
 	public function getmime($lx)
@@ -264,7 +274,7 @@ class fileClassModel extends Model
 			if(!$this->isempt($path) && substr($path,0,4)!='http' && file_exists($path))unlink($path);
 			
 			if(!isempt($rs['filenum']))c('rockqueue')->push('flow,uptodelete', array('filenum'=>$rs['filenum']));//发送同步删除
-
+			m('files')->delete('`fileid`='.$rs['id'].'');
 		}
 		$this->delete($where);
 	}
@@ -330,11 +340,14 @@ class fileClassModel extends Model
 					return;
 				}
 				
-				if($filesize > 10*1024*1024 && 1==1){
+				if($filesize > 10*1024*1024 && 1==1 && $fileext!='pdf'){
 					header('location:'.$filepath.'');
 				}else{
-					//echo file_get_contents($filepath);
-					ob_clean();flush();readfile($filepath);
+					ob_clean();flush();
+					//$fileo = fopen($filepath,'rb');
+					//while(!feof($fileo))echo fread($fileo, 1024*20);
+					//fclose($fileo);
+					readfile($filepath);
 				}
 			}
 		}

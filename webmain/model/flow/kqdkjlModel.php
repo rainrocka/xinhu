@@ -3,6 +3,7 @@ class flow_kqdkjlClassModel extends flowModel
 {
 	
 	protected $flowcompanyidfieds	= 'uid'; //多单位用这个关联 
+	public $dateobj,$typearr;
 	
 	public function initModel()
 	{

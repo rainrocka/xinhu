@@ -260,6 +260,7 @@ class loginClassAction extends apiAction
 		$mobile = $this->get('mobile');
 		if(!$openid || !$mobile)return returnerror('err');
 		$mobile = $this->jm->base64decode($mobile);
+		if(!c('check')->iscnmobile($mobile))return returnerror('err2');
 		$where  = "`mobile`='$mobile'";
 		if(m('admin')->rows($where)==0 && m('customer')->rows($where)==0 )return retuenerror('此手机号没在我们系统登记过');
 		$na =  getconfig('titleout');

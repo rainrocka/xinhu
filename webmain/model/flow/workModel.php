@@ -2,6 +2,7 @@
 class flow_workClassModel extends flowModel
 {
 	private $absfile = false;
+	private $statearr;
 
 	public function initModel()
 	{

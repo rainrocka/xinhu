@@ -67,6 +67,7 @@ class beifenClassAction extends Action
 		if(getconfig('systype')=='demo')exit('演示请勿操作');
 		$rows = array();
 		$folder = $this->post('folder');
+		$folder	= str_replace('../','', $folder);
 		$path 	= ''.UPDIR.'/data/'.$folder.'';
 		$carr 	= c('file')->getfilerows($path);
 		foreach($carr as $k=>$rs){

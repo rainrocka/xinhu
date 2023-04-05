@@ -3,6 +3,7 @@ class whereClassModel extends Model
 {
 	private $moders	= array();
 	private $ursarr	= array();
+	private $admindbs;
 	
 	public function initModel()
 	{

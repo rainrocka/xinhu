@@ -2,7 +2,7 @@
 //客户收付款单
 class flow_custfinaClassModel extends flowModel
 {
-	
+	public $statearrs,$statearrf;
 	public function initModel(){
 		$this->statearrs		= c('array')->strtoarray('未收款|red,已收款|green');
 		$this->statearrf		= c('array')->strtoarray('未付款|red,已付款|green');

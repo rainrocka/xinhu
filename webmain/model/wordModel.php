@@ -1,7 +1,7 @@
 <?php
 class wordClassModel extends Model
 {
-	private $optionobj;
+	private $optionobj,$pathss;
 	
 	public function initModel()
 	{
@@ -295,6 +295,7 @@ class wordClassModel extends Model
 	}
 		
 	//获取文件夹,获取对应子目录
+	private $getfoldersa;
 	public function getfolders($cid, $typeid=0)
 	{
 		$rows = $this->getall('`cid`='.$cid.' and `type`=1','`id`,`name`,`typeid`','`sort`');

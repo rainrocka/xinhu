@@ -65,12 +65,23 @@ class uploadClassAction extends Action{
 	}
 	
 	/**
-	*	删除文件
+	*	删除文件(可能有引入的文件)
 	*/
 	public function delfileAjax()
 	{
 		$id		= (int)$this->request('id','0');
-		m('file')->delfile($id);
+		$mid	= (int)$this->get('mid','0');
+		$num	= $this->get('num');
+		$bo 	= true;
+		if($num && $mid>0){
+			$where 	= '`fileid`='.$id.' and `type`=3 and `ip`=\''.$num.'|'.$mid.'\'';
+			$srs 	= m('files')->getall($where);
+			if($srs){
+				$bo = false;
+				m('files')->delete($srs[0]['id']);
+			}
+		}
+		if($bo)m('file')->delfile($id);
 	}
 	
 	public function showAction()

@@ -1,7 +1,7 @@
 <?php
 class goodsClassAction extends Action
 {
-	
+	public $goodsobj;
 	public function initAction()
 	{
 		$this->goodsobj = m('goods');

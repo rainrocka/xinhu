@@ -1,6 +1,7 @@
 <?php
 class flow_dailyClassModel extends flowModel
 {
+	public $typearr,$logobj;
 	public function initModel()
 	{
 		$this->typearr = explode(',','日报,周报,月报,年报');

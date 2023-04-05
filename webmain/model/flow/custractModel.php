@@ -2,6 +2,8 @@
 
 class flow_custractClassModel extends flowModel
 {
+	public $typearr,$typesarr,$statearr,$dtobj,$crmobj,$goodmobj;
+	
 	public function initModel(){
 		$this->typearr		= array('收款合同','付款合同');
 		$this->typesarr		= array('收','付');

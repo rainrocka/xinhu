@@ -2,6 +2,7 @@
 class flow_custxiaoClassModel extends flowModel
 {
 	public $minwidth	= 600;//子表最小宽
+	public $goodsobj,$custractobj,$crmobj;
 	
 	public function initModel()
 	{

@@ -1,7 +1,7 @@
 <?php
 class flow_scheduleClassModel extends flowModel
 {
-
+	public $ratearr;
 	protected function flowinit(){
 		$this->ratearr		 = array('d'=>'天','w'=>'周','m'=>'月');
 	}

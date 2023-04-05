@@ -120,7 +120,16 @@ $(document).ready(function(){
 
 <div align="left">
 <div>请下面表格格式在Excel中添加数据，并复制到下面文本框中，也可以手动输入，<a click="downxz" href="javascript:;">[下载Excel模版]</a>。<br>多行代表多记录，整行字段用	分开，<a click="insrtss" href="javascript:;">插入间隔符</a></div>
-<div style="padding:5px 0px"><input type="button" id="upbtn{rand}" click="addfile" class="btn btn-primary" value="选择Excel文件..."></div>
+<div style="padding:5px 0px">
+<?php 
+if(version_compare(PHP_VERSION, '7.5.0','>')){
+	echo '<font color=red>PHP'.PHP_VERSION.'版本不支持选Excel文件，请使用打开文件复制粘贴。</font>';
+}else{
+	echo '<input type="button" id="upbtn{rand}" click="addfile" class="btn btn-primary" value="选择Excel文件...">';
+}	
+?>
+
+</div>
 <div><textarea style="height:250px;" id="maincont_{rand}" class="form-control"></textarea></div>
 
 <div id="showview_{rand}"></div>

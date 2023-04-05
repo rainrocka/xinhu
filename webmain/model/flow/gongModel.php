@@ -2,6 +2,7 @@
 class flow_gongClassModel extends flowModel
 {
 	private $readunarr = array();//未读人员
+	private $logobj;
 	
 	public function initModel()
 	{

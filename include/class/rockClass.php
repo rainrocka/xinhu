@@ -25,6 +25,9 @@ final class rockClass
 	public $adminid;
 	public $adminuser;
 	public $adminname;
+	
+
+	public $HTTPweb,$isqywx,$lvlaras,$lvlaraa,$lvlarab;
 
 	public function __construct()
 	{		
@@ -127,7 +130,7 @@ final class rockClass
 	//get和post参数处理$lx=1:rockjm，6:basejm, 3:判断是否rockjm
 	public function jmuncode($s, $lx=0, $na='')
 	{
-		$jmbo = false;
+		$jmbo = false;$s = (string)$s;
 		if($lx==3)$jmbo = $this->isjm($s);
 		if(substr($s, 0, 7)=='rockjm_' || $lx == 1 || $jmbo){
 			$s = str_replace('rockjm_', '', $s);

@@ -1,7 +1,7 @@
 <?php
 class kaoqinClassAction extends Action
 {
-	
+
 
 	public function kqdkjlaftershow($table, $rows)
 	{
@@ -22,25 +22,37 @@ class kaoqinClassAction extends Action
 		$dt1	= $this->post('dt1');
 		$dt2	= $this->post('dt2');
 		$msg 	= '获取成功';
-		if($reimbo->installwx(1)){
-			$barr 	= m('weixinqy:daka')->getrecord($uids, $dt1, $dt2, 1);
-			//加入异步
-			$send = 0;
-			if($uids=='' && $barr['errcode']==0 && $barr['maxpage']>1){
-				for($i=1;$i<=$barr['maxpage'];$i++){
-					if($i>1)$reimbo->asynurl('asynrun','wxdkjl', array(
-						'dt1' 		=> $dt1,
-						'dt2' 		=> $dt2,
-						'page' 		=> $i
-					));
-				}
-				$send++;
-			}
-			if($barr['errcode']!=0){
-				$msg .= ',企业微信('.$barr['msg'].')';
+		$daka 	= $this->option->getval('qywxplat_daka');
+		if($daka=='1'){
+			$barr = c('rockqywx')->getcheckindata($uids, $dt1, $dt2, 1);
+			if(!$barr['success']){
+				$msg = $barr['msg'];
 			}else{
-				if(isset($barr['zongts']))$msg .= ',微信打卡(共'.$barr['zongts'].'条,新增'.$barr['okload'].'条)';
-				if($send>0)$msg .= ',并发送异步请求'.$send.'条';
+				$data = $barr['data'];
+				$msg .= ',从代建中应用获取打卡(共'.$data['zongts'].'条,新增'.$data['okload'].'条)';
+				if($data['maxpage']>1)$msg.=',并发送异步请求1条';
+			}
+		}else{
+			if($reimbo->installwx(1)){
+				$barr 	= m('weixinqy:daka')->getrecord($uids, $dt1, $dt2, 1);
+				//加入异步
+				$send = 0;
+				if($uids=='' && $barr['errcode']==0 && $barr['maxpage']>1){
+					for($i=1;$i<=$barr['maxpage'];$i++){
+						if($i>1)$reimbo->asynurl('asynrun','wxdkjl', array(
+							'dt1' 		=> $dt1,
+							'dt2' 		=> $dt2,
+							'page' 		=> $i
+						));
+					}
+					$send++;
+				}
+				if($barr['errcode']!=0){
+					$msg .= ',企业微信('.$barr['msg'].')';
+				}else{
+					if(isset($barr['zongts']))$msg .= ',微信打卡(共'.$barr['zongts'].'条,新增'.$barr['okload'].'条)';
+					if($send>0)$msg .= ',并发送异步请求'.$send.'条';
+				}
 			}
 		}
 		
@@ -142,7 +154,7 @@ class kaoqinClassAction extends Action
 	
 	
 	
-	
+	public $rows;
 	public function kqsjgzdataAjax()
 	{
 		$this->rows = array();
@@ -461,6 +473,7 @@ class kaoqinClassAction extends Action
 	
 	
 	//考勤统计
+	public $months;
 	public function kqtotalbeforeshow($table)
 	{
 		$dt1			= $this->post('month', date('Y-m'));

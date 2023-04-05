@@ -1,6 +1,7 @@
 <?php
 class sysfileClassAction extends Action
 {
+	public $notedit,$isdelmu;
 	public function initAction()
 	{
 		$this->isdelmu = array(''.UPDIR.'/logs', ''.UPDIR.'/sqllog',''.UPDIR.'/cache', ''.UPDIR.'/data/'.(date('Y')-1).'');

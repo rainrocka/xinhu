@@ -99,6 +99,7 @@ if($showheader==1)echo '<div id="header_title" style="padding-top:'.$cenghei.'px
 	<div class="status"></div>
 	<form name="myform" autocomplete="off">
 		<input name="id" type="hidden" value="<?=$da['mid']?>">
+		<input name="sxuanfileid" type="hidden" value="">
 		<?php 
 		for($i=0;$i<$da['zbshu'];$i++)echo '<input value="0" type="hidden" name="sub_totals'.$i.'">';
 		?>

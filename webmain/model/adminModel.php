@@ -2,7 +2,7 @@
 class adminClassModel extends Model
 {
 	private $_getjoinstr = array();
-	public $nowurs;
+	public $nowurs,$allshow,$getsuperarrba;
 	
 	public function gjoin($joinid, $glx='', $blx='bxl')
 	{

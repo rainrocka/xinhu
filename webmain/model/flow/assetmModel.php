@@ -1,6 +1,7 @@
 <?php
 class flow_assetmClassModel extends flowModel
 {
+	public $statearr;
 	public function initModel()
 	{
 		$this->statearr = c('array')->strtoarray('blue|闲置,#ff6600|在用,red|维修,gray|报废,gray|丢失');

@@ -5,6 +5,7 @@
 class curlChajian extends Chajian{
 	
 	private $TIMEOUT	= 30;
+	private $ResponseHeaders;
 	
 	private function strurl($url)
 	{

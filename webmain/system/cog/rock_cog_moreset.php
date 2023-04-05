@@ -168,6 +168,9 @@ $(document).ready(function(){
 			<tr><td align="right" style="color:gray">读取人员本地缓存方式：</td><td><select style="width:200px" name="usercache" class="form-control"><option value="">默认本地浏览器缓存</option><option <?php if(getconfig('usercache')=='1')echo 'selected';?> value="1">不缓存本地浏览器</option></select></td></tr>
 			<tr><td height="10"></td></tr>
 			
+			<tr><td align="right" style="color:gray">详情页处理记录：</td><td><select style="width:200px" name="xiangrecord" class="form-control"><option value="">默认是关闭的</option><option <?php if(getconfig('xiangrecord')=='1')echo 'selected';?> value="1">展开处理记录</option></select></td></tr>
+			<tr><td height="10"></td></tr>
+			
 			<tr>
 				<td  align="right"></td>
 				<td align="left"><button click="savecog,0" class="btn btn-success" type="button"><i class="icon-save"></i>&nbsp;保存</button>&nbsp;<span id="msgview0_{rand}"></span>

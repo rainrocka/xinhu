@@ -1,7 +1,7 @@
 <?php
 class mode_dailyClassAction extends inputAction{
 	
-	
+	public $months;
 	protected function savebefore($table, $arr, $id, $addbo){
 		
 		$type 	= arrvalue($arr, 'type');

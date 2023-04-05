@@ -3,6 +3,7 @@
 class cityClassModel extends Model
 {
 	//获取城市路径
+	public $pathss;
 	public function getpath($id)
 	{
 		$this->pathss = array();

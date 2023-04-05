@@ -1,6 +1,7 @@
 <?php
 class fworkClassAction extends Action
 {
+	public $atypess,$modeids;
 	
 	/**
 	*	流程申请获取数组

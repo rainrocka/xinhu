@@ -324,7 +324,7 @@ if($da['arr']['isplview']=='1'){
 	$logcount= count($logarr);
 	?>
 	<div onclick="c.changeshow(0)" class="r-subtitle">&nbsp;&nbsp;处理记录(<?=$logcount?>) <img align="absmiddle" height="16" width="16" src="images/xiangyou1.png"> </div>
-	<div id="showrecord0" class="pinglun r-border-t" style="background:white;display:none">
+	<div id="showrecord0" class="pinglun r-border-t" style="background:white;display:<?php if(getconfig('xiangrecord')!='1')echo 'none';?>">
 	<table width="100%">
 	<?php 
 	foreach($logarr as $k=>$rs){

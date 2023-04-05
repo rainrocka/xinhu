@@ -1,7 +1,7 @@
 <?php 
 class minute5ClassAction extends runtAction
 {
-	
+	public $startdt,$enddt,$enddtss;
 	public function runAction()
 	{
 		$time 	= time();

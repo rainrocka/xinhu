@@ -63,7 +63,7 @@ class runtAction extends ActionNot
 		if($this->runid > 0){
 			$state	= 2;
 			$cont  	= ob_get_contents();	
-			if($cont=='success')$state=1;
+			if(contain($cont,'success'))$state=1;
 			m('task')->update(array(
 				'lastdt'	=> $this->rock->now,
 				'lastcont' 	=> $cont,

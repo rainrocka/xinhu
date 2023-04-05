@@ -2,6 +2,7 @@
 //车辆管理模块接口
 class flow_carmClassModel extends flowModel
 {
+	public $statearr,$publiarr,$carms;
 	public function initModel()
 	{
 		$this->statearr = c('array')->strtoarray('blue|办理中,green|可用,red|维修中,gray|报废');

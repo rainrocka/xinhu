@@ -5,7 +5,7 @@ class flow_knowtikuClassModel extends flowModel
 		$this->rs['content'] = c('html')->replace($this->rs['content']);
 		
 	}
-	
+	public $logobj,$typearr;
 	public function initModel()
 	{
 		$this->logobj = m('log');

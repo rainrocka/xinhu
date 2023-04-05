@@ -260,12 +260,20 @@ var inputtwo={
 							c.showfileup(this.fid, seld);
 							c.showupid(this.fid);
 						}
+						c.showxuanfile(seld);
 					}
 				}
 			});
 		}else{
 			js.msg('msg','无法操作');
 		}
+	},
+	showxuanfile:function(xda){
+		var ob = form('sxuanfileid'),st1;
+		st1 = ob.value;
+		if(st1)st1+=',';
+		st1+=''+xda.id+'';
+		ob.value = st1;
 	},
 	//上传完成
 	showupid:function(sna){
@@ -294,7 +302,7 @@ var inputtwo={
 				if(jg=='yes'){
 					o.remove();
 					c.showupid(sna);
-					if(!f.xuanbool)$.get(js.getajaxurl('delfile','upload','public',{id:fid}));
+					if(!f.xuanbool)$.get(js.getajaxurl('delfile','upload','public',{id:fid,mid:mid,num:moders.num}));
 				}
 			});
 		}

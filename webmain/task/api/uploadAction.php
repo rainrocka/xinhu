@@ -540,7 +540,7 @@ class uploadClassAction extends apiAction
 			$where = '`id` in(select `fileid` from `[Q]word` where `type`=0 '.$str.' )';
 		}
 		if($key){
-			$key = $this->jm->base64decode($key);
+			$key = $this->rock->xssrepstr($this->jm->base64decode($key));
 			$where.=" and `filename` like '%".$key."%'";
 		}
 		if($uptp && $uptp!='*'){

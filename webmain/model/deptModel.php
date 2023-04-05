@@ -1,6 +1,8 @@
 <?php
 class deptClassModel extends Model
 {
+	public $firstpid,$groupids,$temparaa;
+	
 	/**
 	*	$uarr 相应人员才能查看对应部门数据
 	*/

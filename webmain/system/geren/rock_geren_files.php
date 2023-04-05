@@ -19,6 +19,7 @@ $(document).ready(function(){
 				if(v=='0')s='预览';
 				if(v=='1')s='下载';
 				if(v=='2')s='在线编辑';
+				if(v=='3')s='引入';
 				return s;
 			}
 		},{

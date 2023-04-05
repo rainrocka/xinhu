@@ -2,6 +2,7 @@
 class scheduleClassModel extends Model
 {
 	private $datarows = array();
+	private $dtobj;
 	
 	public function initModel()
 	{

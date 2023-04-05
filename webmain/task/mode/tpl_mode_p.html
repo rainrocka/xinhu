@@ -176,7 +176,7 @@ if($stype!=''){
 		<img align="absmiddle" height="16" width="16" src="images/xiangyou1.png"> <a temp="clo" href="javascript:;" onclick="$('#recordss').remove();">×</a>
 		<?php }?>
 		</div>
-		<div id="showrecord0" style="display:none">
+		<div id="showrecord0" style="display:<?php if(getconfig('xiangrecord')!='1')echo 'none';?>">
 			<table border="0"  class="tabled2" style="border-collapse:collapse;" width="100%" cellspacing="0" cellpadding="0">
 				<tr bgcolor="#E1F4F0">
 					<td>序号</td>

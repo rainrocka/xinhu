@@ -66,6 +66,22 @@ $(document).ready(function(){
 		},
 		reload:function(){
 			a.reload();
+		},
+		addmodyy:function(){
+			js.prompt('请输入模块编号','模块编号可以到【流程模块→流程模块列表】下查看', function(jg,txt){
+				if(jg=='yes' && txt)c.addmodyyss(txt);
+			});
+		},
+		addmodyyss:function(bh){
+			js.loading('处理中...');
+			js.ajax(js.getajaxurl('createying','{mode}','{dir}'),{bh:bh},function(ret){
+				if(ret.success){
+					a.reload();
+					js.msgok('创建成功');
+				}else{
+					js.msgerror(ret.msg);
+				}
+			},'get,json');
 		}
 	}
 	
@@ -84,6 +100,7 @@ $(document).ready(function(){
 <ul class="floats">
 	<li class="floats50">
 		<button class="btn btn-primary" click="clickwin,0" type="button"><i class="icon-plus"></i> 新增应用</button> &nbsp; 
+		<button class="btn btn-primary" click="addmodyy,0" type="button"><i class="icon-plus"></i> 新增模块应用(推荐)</button> &nbsp; 
 	</li>
 	<li class="floats50" style="text-align:right">
 		

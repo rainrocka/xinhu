@@ -1,6 +1,8 @@
 <?php
 class emailmClassModel extends Model
 {
+	private $adminobj,$optionobj,$upfileobj,$recehost,$receyumi;
+	
 	public function initModel()
 	{
 		$this->adminobj 	= m('admin');

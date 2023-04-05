@@ -2,7 +2,7 @@
 class flow_kqdwClassModel extends flowModel
 {
 	protected $flowcompanyidfieds	= 'uid'; //多单位用这个关联 
-	
+	public $dateobj,$typearr;
 	public function initModel()
 	{
 		$this->dateobj = c('date');

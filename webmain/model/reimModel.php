@@ -6,7 +6,7 @@ class reimClassModel extends Model
 	public $serverpushurl 	= '';
 	public $serverhosturl 	= '';
 	public $servertitle		= '';
-	
+	private $hisobj,$option,$optiondb;
 	
 	
 	public function initModel()
@@ -344,8 +344,8 @@ class reimClassModel extends Model
 		if($mr=='')$mr 	= 'images/noface.png';
 		$url = URL;
 		if(!$url)$url = getconfig('outurl');
-		if(substr($mr,0,4)!='http')$mr = $url.''.$mr.'';
-		if(substr($face,0,4)!='http' && !$this->isempt($face))$face = $url.''.$face.'';
+		if(substr((string)$mr,0,4)!='http')$mr = $url.''.$mr.'';
+		if(substr((string)$face,0,4)!='http' && !$this->isempt($face))$face = $url.''.$face.'';
 		$face 			= $this->rock->repempt($face, $mr);
 		return $face;
 	}

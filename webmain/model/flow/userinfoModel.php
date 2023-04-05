@@ -4,6 +4,7 @@ class flow_userinfoClassModel extends flowModel
 	public  $uidfields = 'id';
 	protected  $flowviewufieds = 'id';
 	protected  $flowcompanyidfieds = 'companyid';
+	public $statearr,$statearrs,$birtypearr;
 	
 	public function flowsearchfields()
 	{

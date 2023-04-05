@@ -2,6 +2,7 @@
 //模块 hrcheck.考核评分
 class flow_hrcheckClassModel extends flowModel
 {
+	public $dtobj;
 	//审核完成处理
 	protected function flowcheckfinsh($zt){
 		//最后得分计算，

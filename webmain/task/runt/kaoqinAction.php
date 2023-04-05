@@ -64,19 +64,32 @@ class kaoqinClassAction extends runtAction
 		$dt1	= '';
 		$dt2	= '';
 		$msg 	= 'success';
-		if($reimbo->installwx(1)){
-			$barr 	= m('weixinqy:daka')->getrecord($uids, $dt1, $dt2, 1);
-			//加入异步
-			if($uids=='' && $barr['errcode']==0 && $barr['maxpage']>1){
-				for($i=1;$i<=$barr['maxpage'];$i++){
-					if($i>1)$reimbo->asynurl('asynrun','wxdkjl', array(
-						'dt1' 		=> $dt1,
-						'dt2' 		=> $dt2,
-						'page' 		=> $i
-					));
-				}
+		
+		$daka 	= $this->option->getval('qywxplat_daka');
+		if($daka=='1'){
+			$barr = c('rockqywx')->getcheckindata($uids, $dt1, $dt2, 1);
+			if(!$barr['success']){
+				$msg .= ','.$barr['msg'];
+			}else{
+				$data = $barr['data'];
+				$msg .= ',从代建中应用获取打卡(共'.$data['zongts'].'条,新增'.$data['okload'].'条)';
+				if($data['maxpage']>1)$msg.=',并发送异步请求1条';
 			}
-			if($barr['errcode']!=0)$msg .= ',企业微信('.$barr['msg'].')';
+		}else{
+			if($reimbo->installwx(1)){
+				$barr 	= m('weixinqy:daka')->getrecord($uids, $dt1, $dt2, 1);
+				//加入异步
+				if($uids=='' && $barr['errcode']==0 && $barr['maxpage']>1){
+					for($i=1;$i<=$barr['maxpage'];$i++){
+						if($i>1)$reimbo->asynurl('asynrun','wxdkjl', array(
+							'dt1' 		=> $dt1,
+							'dt2' 		=> $dt2,
+							'page' 		=> $i
+						));
+					}
+				}
+				if($barr['errcode']!=0)$msg .= ',企业微信('.$barr['msg'].')';
+			}
 		}
 		
 		//钉钉

@@ -2,6 +2,7 @@
 //维修报备
 class flow_repairClassModel extends flowModel
 {
+	public $iswxarr;
 	public function initModel()
 	{
 		$this->iswxarr		 = c('array')->strtoarray('否|#888888,是|#ff6600');

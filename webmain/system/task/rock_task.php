@@ -106,12 +106,7 @@ $(document).ready(function(){
 			var url='task.php?m='+ase[0]+'|runt&a='+ase[1]+'&runid='+a.changeid+'';
 			js.ajax(url,{},function(s){
 				if(s.indexOf('success')>=0){
-					if(s!='success'){
-						js.msg();
-						js.alert(jm.base64decode('6L!Q6KGM5oiQ5Yqf77yM6ICM5L2g5Y!v6IO955So6K6w5LqL5pys5L!u5pS557O757uf5paH5Lu25LqG77yM6K!35Yiw5L!h5ZG85a6Y572R5pCc57Si4oCc6K6w5LqL5pys4oCd5p!l55yL5biu5Yqp'));
-					}else{
-						js.msg('success','运行成功');
-					}
+					js.msg('success','运行成功');
 					a.reload();
 				}else{
 					js.msg('msg','运行失败：'+s+'');

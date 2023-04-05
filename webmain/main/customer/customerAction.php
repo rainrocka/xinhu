@@ -1,6 +1,7 @@
 <?php
 class customerClassAction extends Action
 {
+	public $month;
 	public function custtotalbefore($table)
 	{
 		$where 	= '';

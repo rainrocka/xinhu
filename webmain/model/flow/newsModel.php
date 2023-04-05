@@ -2,7 +2,7 @@
 class flow_newsClassModel extends flowModel
 {
 	private $readunarr = array();//未读人员
-	
+	public $logobj,$htmlobj;
 	public function initModel()
 	{
 		$this->logobj = m('log');

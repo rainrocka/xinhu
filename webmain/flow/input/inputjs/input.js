@@ -37,6 +37,10 @@ function initbody(){
 		for(var oi in inputtwo)c[oi]=inputtwo[oi];
 		initbody_tmp();
 	});
+	if(get('flow5div'))js.importjs('webmain/flow/input/inputjs/input_twp.js?'+Math.random()+'', function(){
+		for(var oj in inputtwp)c[oj]=inputtwp[oj];
+		c.flow5init();
+	});
 }
 function initbody_tmp(){
 	initother();
@@ -292,6 +296,15 @@ var c={
 			return false;
 		}
 		
+		if(this.flow5get){
+			var d1 = this.flow5get();
+			if(d1.length==0){
+				this.showtx('请先设置审核流程');
+				return false;
+			}
+			d.sysflow5str = JSON.stringify(d1);
+		}
+		
 		var s=changesubmit(d);
 		if(typeof(s)=='string'&&s!=''){
 			this.showtx(s);
@@ -443,6 +456,7 @@ var c={
 				}
 			}
 			c.initinput();
+			if(c.flow5initdata)c.flow5initdata();
 			initbodys(form('id').value);
 			if(isedit==0){
 				this.formdisabled();

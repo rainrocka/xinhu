@@ -39,7 +39,7 @@ class yingyongClassAction extends Action
 		return array('msg'=>$msg);
 	}
 	
-	
+	public $rows;
 	public function menudataAjax()
 	{
 		$this->rows	= array();
@@ -93,5 +93,62 @@ class yingyongClassAction extends Action
 		return array(
 			'rows' => $rows
 		);
+	}
+	
+	public function createyingAjax()
+	{
+		$bh 	= $this->get('bh');
+		$mrs	= m('flow_set')->getone("`num`='$bh'");
+		if(!$mrs)return returnerror('编号为“'.$bh.'”的模块不存在');
+		$wherrows = m('flow_where')->getall('`setid`='.$mrs['id'].' and ifnull(`num`,\'\')<>\'\'','*','`sort`');
+		if(!$wherrows)return returnerror('模块“'.$mrs['name'].'”未创建流程模块条件');
+		
+		$db 	= m('im_group');
+		$dbs 	= m('im_menu');
+		if($db->rows("`num`='$bh' and `type`=2")>0)return returnerror('编号为“'.$bh.'”的应用已经存在了');
+		$sort	= 100*$mrs['id'];
+		$dsrs 	= $db->getone("`types`='".$mrs['type']."'",'*','`sort` desc');
+		if($dsrs)$sort = (int)$dsrs['sort']+1;
+		
+		$udb['name']  = $mrs['name'];
+		$udb['types'] = $mrs['type'];
+		$udb['num']   = $mrs['num'];
+		$udb['url']   = 'auto';
+		$udb['type']   = 2;
+		$udb['face']  = 'images/logo.png';
+		$udb['sort']   = $sort;
+		$mid 	= $db->insert($udb);
+		
+		$xdar0	  = $xdar1 = array();
+		foreach($wherrows as $k=>$rs){
+			if(!$xdar0 && isempt($rs['pnum']))$xdar0 = $rs;
+			if(!$xdar1 && !isempt($rs['pnum']))$xdar1 = $rs;
+		}
+		$iar['mid']  = $mid;
+		if($xdar0){
+			$iar['name'] = $xdar0['name'];
+			$iar['url']  = $xdar0['num'];
+			$iar['type'] = 0;
+			$iar['sort'] = 0;
+			$dbs->insert($iar);
+		}
+		if($xdar1){
+			$iar['name'] = $xdar1['name'];
+			$iar['url']  = $xdar1['num'];
+			$iar['receid']  = 'u'.$this->adminid.'';
+			$iar['recename']  = $this->adminname;
+			$iar['type'] = 0;
+			$iar['sort'] = 1;
+			$dbs->insert($iar);
+		}
+		$iar['name'] = '＋新增';
+		$iar['url']  = 'add';
+		$iar['receid']  = '';
+		$iar['recename']  = '';
+		$iar['type'] = 1;
+		$iar['sort'] = 2;
+		$dbs->insert($iar);
+		
+		return returnsuccess();
 	}
 }

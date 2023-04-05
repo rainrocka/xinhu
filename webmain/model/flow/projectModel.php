@@ -4,7 +4,7 @@
 */
 class flow_projectClassModel extends flowModel
 {
-	
+	public $workobj;
 	public function initModel()
 	{
 		$this->workobj = m('work');

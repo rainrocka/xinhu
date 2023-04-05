@@ -7,6 +7,8 @@ class kaoqinClassModel extends Model
 	private $userarr 	= array();
 	private $_pipeiarr 	= array();
 	
+	public $admindb,$sjoindb,$dtobj,$_dkarr,$tempsbstatus;
+	
 	public function initModel()
 	{
 		$this->settable('kqdist');
@@ -285,7 +287,7 @@ class kaoqinClassModel extends Model
 		$utid  	= $dtid  =  array();$allars=false;$dttime = 0;
 		if($dt!='')$dttime	= strtotime($dt);
 		foreach($garrs as $k=>$rs){
-			$artid = explode(',', $rs['receid']);
+			$artid = explode(',', (string)$rs['receid']);
 			if($dttime>0){
 				if(!isset($rs['starttime'])){
 					$rs['starttime'] 	= strtotime($rs['startdt']);

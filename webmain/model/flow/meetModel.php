@@ -2,6 +2,8 @@
 
 class flow_meetClassModel extends flowModel
 {
+	public $hyarra,$hyarrb,$dbobj,$reatearr;
+	
 	public function initModel()
 	{
 		$this->hyarra 	= array('正常','会议中','结束','取消');

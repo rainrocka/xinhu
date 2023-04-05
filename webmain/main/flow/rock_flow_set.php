@@ -26,6 +26,7 @@ $(document).ready(function(){
 				if(v=='2')s='顺序前置';
 				if(v=='3')s='自由流程';
 				if(v=='4')s='选择流程';
+				if(v=='5')s='自定义流程';
 				return s;
 			}
 		},{

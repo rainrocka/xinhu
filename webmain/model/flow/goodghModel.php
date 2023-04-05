@@ -2,6 +2,7 @@
 //物品归还
 class flow_goodghClassModel extends flowModel
 {
+	public $goodsobj;
 	public function initModel()
 	{
 		$this->goodsobj = m('goods');

@@ -2,6 +2,7 @@
 //考核项目
 class flow_hrkaohemClassModel extends flowModel
 {
+	public $pinlva = array();
 	public function initModel()
 	{
 		$this->pinlva['d'] = '每天';

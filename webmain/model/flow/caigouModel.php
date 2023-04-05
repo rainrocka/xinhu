@@ -3,6 +3,9 @@ class flow_caigouClassModel extends flowModel
 {
 	public $minwidth	= 600;//子表最小宽
 	
+	
+	private $goodsobj;
+	
 	public function initModel()
 	{
 		$this->goodsobj = m('goods');

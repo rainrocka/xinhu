@@ -6,6 +6,8 @@ class viewClassModel extends Model
 	
 	private $ursarr	= array();
 	
+	private $addb,$whereobj,$urs,$modrs;
+	
 	public function initModel()
 	{
 		$this->settable('flow_extent');

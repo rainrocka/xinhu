@@ -11,6 +11,7 @@ class rockqueueChajian extends Chajian
 	//队列服务端口，数字类型，为0从服务器设置上读取
 	private $rockqueue_port = 0;	
 	
+	private $cmdshell;
 	
 	//初始化配置读取
 	protected function initChajian()

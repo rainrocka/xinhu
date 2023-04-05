@@ -4,6 +4,7 @@ class inputAction extends Action
 	public $mid = 0;
 	public $flow;
 	public $rs 	= array();
+	public $gongsiarr,$actclss,$fieldarrall,$inputobj,$subfielsa,$checkobj,$mdb;
 	
 	public function initAction()
 	{
@@ -241,8 +242,13 @@ class inputAction extends Action
 		if(!$bo)$this->backmsg($this->db->lasterror());
 		
 		if($id==0)$id = $this->db->insert_id();
-		m('file')->addfile($this->post('fileid'), $table, $id, $modenum);
-		if($this->otherfileid!='')m('file')->addfile(substr($this->otherfileid,1), '', $id, $modenum);
+		$fobj = m('file');
+		$fobj->addfile($this->post('fileid'), $table, $id, $modenum);
+		if($this->otherfileid!=''){
+			$ofid1 = substr($this->otherfileid,1);
+			$fobj->addxuan($ofid1,$this->post('sxuanfileid'),''.$modenum.'|'.$id.'');
+			$fobj->addfile($ofid1, '', $id, $modenum);
+		}
 		$newrs 	= $db->getone($id);
 		$this->companyid 	= isset($newrs['companyid']) ? (int)$newrs['companyid'] : (int)arrvalue($newrs, 'comid', '0');
 		if($this->companyid==0)$this->companyid = m('admin')->getcompanyid();
@@ -529,7 +535,7 @@ class inputAction extends Action
 		if(file_exists($path))$pclucont 	= file_get_contents($path);
 		
 		$isupfile		= 0;
-		$nameaas 		= explode(',', $moders['names']); //子表名
+		$nameaas 		= explode(',', (string)$moders['names']); //子表名
 		
 		//PC端
 		if($this->ismobile==0){
@@ -808,6 +814,8 @@ class inputAction extends Action
 	/**
 	*	公共读取数据之前处理
 	*/
+	public $atypearr;
+	public $modeid;
 	public function storebeforeshow($table)
 	{
 		$this->atypearr	= false;
@@ -1181,6 +1189,21 @@ class inputAction extends Action
 			c('cache')->del($key);
 		}
 		return returnsuccess();
+	}
+	
+	public function flow5importAjax()
+	{
+		$modeid = (int)$this->get('modeid');
+		$msg 	 = '没有找到相应记录';
+		$onrs 	 = m('flowbill')->getone('`modeid`='.$modeid.' and `uid`='.$this->adminid.' and ifnull(flow5str,\'\')<>\'\'','*','id desc');
+		$flow5str= '';
+		if($onrs){
+			$flow5str = $onrs['flow5str'];
+			$msg = '引入成功';
+		}
+		$barr = returnsuccess($flow5str);
+		$barr['msg'] = $msg;
+		return $barr;
 	}
 }
 

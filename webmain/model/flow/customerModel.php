@@ -1,6 +1,7 @@
 <?php
 class flow_customerClassModel extends flowModel
 {
+	public $statearr,$statarr;
 	public function initModel()
 	{
 		$this->statearr		 = c('array')->strtoarray('停用|#888888,启用|green');

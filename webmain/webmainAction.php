@@ -29,6 +29,8 @@ class Action extends mainAction
 		if($agid!='')$this->rock->savesession(array('wxqyagentid' => $agid));
 		$platsign= $this->rock->get('platsign');
 		if($platsign!='')$this->rock->savesession(array('platsign' => $platsign));
+		$olaizhi= $this->rock->get('olaizhi');
+		if($olaizhi!='')$this->rock->savesession(array('olaizhi' => $olaizhi));
 		if($lx==0)$this->logincheck();
 	}
 

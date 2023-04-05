@@ -24,14 +24,18 @@ $(document).ready(function(){
 		},{
 			text:'',dataIndex:'opt',renderer:function(v,d,oi){
 				if(d.ishui=='1')return '已删';
-				return '<a href="javascript:;" onclick="showvies{rand}('+oi+',0)">预览</a>&nbsp;<a href="javascript:;" onclick="showvies{rand}('+oi+',1)"><i class="icon-arrow-down"></i></a>';
+				var str = '<a href="javascript:;" onclick="showvies{rand}('+oi+',0)">预览</a>&nbsp;<a href="javascript:;" onclick="showvies{rand}('+oi+',1)"><i class="icon-arrow-down"></i></a>';
+				if(c.atype=='shatewfx')str+='&nbsp;<a href="javascript:;" title="取消共享" onclick="showvies{rand}('+oi+',2)"><i class="icon-remove-circle"></i></a>';
+				return str;
 			}
 		}]
 	});
 	showvies{rand}=function(oi,lx){
 		var d=a.getData(oi);
 		if(lx==1){
-			js.downshow(d.fileid)
+			js.downshow(d.fileid);
+		}else if(lx==2){
+			c.cancelshate(d.id, false);
 		}else{
 			js.yulanfile(d.fileid,d.fileext,d.filepath,d.filename);
 		}
@@ -47,11 +51,23 @@ $(document).ready(function(){
 			$("button[id^='state{rand}']").removeClass('active');
 			$('#state{rand}_'+lx+'').addClass('active');
 			var as = ['shateall','shatewfx'];
+			this.atype = as[lx];
 			a.setparams({'atype':as[lx]},true);
 		},
 		search:function(){
 			var s=get('key_{rand}').value;
 			a.setparams({key:s},true);
+		},
+		cancelshate:function(id1,bxs){
+			if(!bxs){
+				js.confirm('确定要取消共享此文件吗？', function(jg){
+					if(jg=='yes')c.cancelshate(id1, true);
+				});
+			}else{
+				js.ajax(publicmodeurl('worc','sharefile'),{'ids':id1},function(s){
+					a.reload();
+				},'post',false, '取消共享中...,取消成功');
+			}
 		}
 	};
 	js.initbtn(c);

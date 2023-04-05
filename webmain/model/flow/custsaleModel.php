@@ -2,6 +2,7 @@
 
 class flow_custsaleClassModel extends flowModel
 {
+	public $statearr;
 	public function initModel(){
 		$this->statearr		 = c('array')->strtoarray('跟进中|blue,已成交|green,已丢失|#888888,暂缓|#ff6600');
 	}

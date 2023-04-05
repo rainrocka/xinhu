@@ -2,6 +2,7 @@
 class loginClassModel extends Model
 {
 	private $loginrand = '';
+	private $admintoken;
 	
 	public function initModel()
 	{

@@ -36,7 +36,7 @@ class JPushChajian extends Chajian{
 		$xharr = array(
 			'uids'  => $uids,
 			'title' => $this->rock->jm->base64encode($title),
-			'cont'  => $this->rock->jm->base64encode($cont),
+			//'cont'  => $this->rock->jm->base64encode($cont),
 			'desc'  => $desc,
 			'systype'=> getconfig('systype')
 		);

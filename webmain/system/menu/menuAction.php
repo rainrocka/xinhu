@@ -1,7 +1,7 @@
 <?php
 class menuClassAction extends Action
 {
-
+	public $rows,$alldata;
 	public function dataAjax()
 	{
 		$this->rows		= array();

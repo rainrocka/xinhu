@@ -3,6 +3,7 @@
 class flow_diaoboClassModel extends flowModel
 {
 	public $minwidth	= 600;//子表最小宽
+	public $goodsobj,$cangobj;
 	
 	public function initModel()
 	{

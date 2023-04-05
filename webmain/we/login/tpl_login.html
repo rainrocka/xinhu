@@ -317,7 +317,7 @@ if($iskj>0){
 	if($iskj==3){
 		echo '<div onclick="dingdengl()" style="text-align:center;padding-top:10px;color:#1389D3">钉钉快捷登录</div>';
 	}else{
-		echo '<div onclick="yanzdengl('.$iskj.')" style="text-align:center;padding-top:10px;color:#1389D3">'.(($iskj==2)?'企业':'').'微信'.(($iskj==4)? '公众号':'快捷').'登录</div>';
+		echo '<div onclick="yanzdengl('.$iskj.')" style="text-align:center;padding-top:10px;color:#1389D3">'.(($iskj==2 || $iskj==5)?'企业':'').'微信'.(($iskj==4)? '公众号':'快捷').'登录</div>';
 	}
 }
 if($da['platsign'])echo '<div onclick="reimplatlogin(this)" style="text-align:center;padding-top:10px;color:#336699">快捷登录</div>';

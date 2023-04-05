@@ -2,6 +2,7 @@
 //服务端设置
 class xinhuClassAction extends Action
 {
+	public $xinhuobj;
 	public function initAction()
 	{
 		$this->xinhuobj = c('xinhuapi');

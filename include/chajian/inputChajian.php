@@ -10,6 +10,8 @@ class inputChajian extends Chajian
 	public $urs 		= array();
 	public $mid 		= 0;
 	
+	public $date,$now,$option;
+	
 	protected function initChajian()
 	{
 		$this->date = $this->rock->date;

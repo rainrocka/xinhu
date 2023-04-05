@@ -3,6 +3,7 @@ class agent_meetClassModel extends agentModel
 {
 	
 	private $joinwhere='';
+	public $dtobj;
 	
 	public function initModel()
 	{

@@ -1,6 +1,7 @@
 <?php
 class flow_rewardClassModel extends flowModel
 {
+	public $typearr;
 	
 	public function initModel(){
 		$this->typearr		= array('<font color=green>奖励</font>','<font color=red>处罚</font>');

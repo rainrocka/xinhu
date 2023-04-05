@@ -220,7 +220,7 @@ var reim={
 			if(ret.code==200){
 				fun(ret);
 			}else if(ret.code==199){
-				js.confirm(ret.msg, function(){
+				if(!get('confirm_main'))js.confirm(ret.msg, function(){
 					reim.exitlogin(true);
 				});
 			}else{

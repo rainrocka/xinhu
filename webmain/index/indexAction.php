@@ -2,6 +2,7 @@
 class indexClassAction extends Action{
 	
 	public $homestylebool = false;
+	private $menuwhere,$addmenu;
 	
 	
 	

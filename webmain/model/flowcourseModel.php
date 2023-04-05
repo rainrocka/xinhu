@@ -5,6 +5,7 @@
 class flowcourseClassModel extends Model
 {
 	private $courserows = array();
+	private $getCoursedatasarr,$getTreedatada;
 	
 	public function initModel()
 	{

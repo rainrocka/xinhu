@@ -172,7 +172,7 @@ PRIMARY KEY (`id`),KEY `mid` (`mid`)
 		if(!$alltabls)$alltabls 	= $this->db->getalltable();
 		if($isflow==0){
 			if(!in_array(''.PREFIX.''.$tab.'', $alltabls)){
-				$sql = "CREATE TABLE `[Q]".$tab."` (`id` int(11) NOT NULL AUTO_INCREMENT,`comid` smallint(6) DEFAULT '0' COMMENT '对应单位id',`optid` int(11) DEFAULT '0' COMMENT '操作人id',`optname` varchar(20) DEFAULT NULL COMMENT '操作人',`optdt` datetime DEFAULT NULL COMMENT '操作时间',PRIMARY KEY (`id`))ENGINE=MyISAM  AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='$name';";
+				$sql = "CREATE TABLE `[Q]".$tab."` (`id` int(11) NOT NULL AUTO_INCREMENT,`comid` smallint(6) DEFAULT '0' COMMENT '对应单位id',`uid` int(11) DEFAULT '0',`optid` int(11) DEFAULT '0' COMMENT '操作人id',`optname` varchar(20) DEFAULT NULL COMMENT '操作人',`optdt` datetime DEFAULT NULL COMMENT '操作时间',PRIMARY KEY (`id`))ENGINE=MyISAM  AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='$name';";
 				$bo = $this->db->query($sql);
 			}else{
 				$fields = $this->db->getallfields(''.PREFIX.''.$tab.'');
@@ -251,6 +251,7 @@ PRIMARY KEY (`id`),KEY `mid` (`mid`)
 		);
 	}
 	
+	public $mid;
 	public function elementbefore($table)
 	{
 		$mid = (int)$this->post('mid');
@@ -494,7 +495,7 @@ PRIMARY KEY (`id`),KEY `mid` (`mid`)
 		
 		$rs 	= m('flow_set')->getone("`id`='$setid'");
 		if(!$rs)exit('sorry!');
-		$rs['zibiaoshu'] = count(explode(',', $rs['tables']));
+		$rs['zibiaoshu'] = count(explode(',', (string)$rs['tables']));
 		$this->smartydata['rs'] = $rs;
 		$this->title  = $rs['name'].'_录入页面设置';
 		$fleftarr 	= m('flow_element')->getrows("`mid`='$setid'",'*','`iszb`,`sort`');

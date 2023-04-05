@@ -4,6 +4,7 @@
 */
 class flow_knowtraimClassModel extends flowModel
 {
+	public $statearr;
 	public function initModel()
 	{
 		$this->statearr = explode(',','<font color=#ff6600>还未开始</font>,<font color=green>进行中</font>,<font color=#888888>已结束</font>');

@@ -28,17 +28,17 @@ class loginClassAction extends ActionNot{
 			if($this->rock->isqywx){
 				if(!isempt($qycrid))$iskj=2;
 			}else{
-				//$coppid = $this->option->getval('weixin_corpid');
-				//if(!isempt($coppid))$iskj=1;
-				if($iskj==0 && !isempt($qycrid))$iskj=2;
+				if(!isempt($qycrid))$iskj=2;
 				if($iskj==0 && $this->option->getval('wxgzh_tplmess')=='1')$iskj=4;	
 			}
+			$kjdl = $this->option->getval('qywxplat_kjdl');
+			if($this->getsession('olaizhi') || $kjdl=='1')$iskj = 5;
 		}
 		return $iskj;
 	}
 	
 	/**
-	*	微信快捷登录
+	*	企业微信快捷登录
 	*/
 	public function wxloginAction()
 	{
@@ -48,8 +48,10 @@ class loginClassAction extends ActionNot{
 			m('weixinqy:oauth')->login();
 		}else if($iskj==4){
 			m('wxgzh:oauth')->oauthto('we','login');	
+		}else if($iskj==5){
+			c('rockqywx')->authlogin($this->getsession('olaizhi'));
 		}else{
-			m('weixin:oauth')->login();
+			return 'wuxiaoopen';
 		}
 	}
 	
@@ -61,10 +63,15 @@ class loginClassAction extends ActionNot{
 		if($iskj==2){
 			m('weixinqy:oauth')->logincode();
 		}else{
-			m('weixin:oauth')->logincode();
+			//m('weixin:oauth')->logincode();
 		}
 	}
 	
+	public function wxqybackAction()
+	{
+		$this->display= false;
+		c('rockqywx')->authloginback($this->get('userid'), $this->get('errmsg'));
+	}
 	
 	/**
 	*	微信授权绑定
