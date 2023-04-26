@@ -46,6 +46,7 @@ td.tdys1{border:1px #e5e5e5 solid;text-align:center;padding:0px 5px}
 .createtable{width:90%}
 .menulls{position:absolute;left:1px;top:10px}
 .menullss{position:absolute;left:1px;top:32px; background-color:white; border:1px #cccccc solid;border-bottom:0px;display:none}
+.menullss ul{list-style-type:none}
 .menullss li{padding:5px 10px;border-bottom:1px #dddddd solid;cursor:pointer}
 .menullss li:hover{ background-color:#f1f1f1}
 .pcont{line-height:27px;}
@@ -77,7 +78,7 @@ if($stype!=''){
 <body style="background:white">
 <div align="center">
 <div style="width:<?=$da['xiangwidth']?>px;position:relative;background:white" class="noprint" id="maindiv" align="left">
-	<?php if($stype==''){?>
+	<?php if($stype=='' && $printlx!='none'){?>
 	<div class="menulls"><input id="showmenu" style="background-color:#888888;font-size:12px;border-radius:5px" class="webbtn" value="操作V" type="button"></div>
 	<div class="menullss"><ul><li lx="0">打印全部...</li>
 	<li lx="9">回到详情页</li>

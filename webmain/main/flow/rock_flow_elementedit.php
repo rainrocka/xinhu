@@ -16,7 +16,7 @@ $(document).ready(function(){
 		},
 		submitcheck:function(d){
 			if(d.fieldstype.indexOf('change')==0){
-				if(d.data=='')return '此字段元素类型时，数据源必须填写用来存储选择来的Id，如填写为：'+d.fields+'id';
+				if(d.data=='' || d.data==d.fields)return '此字段元素类型时，数据源必须填写用来存储选择来的Id，请填写为：'+d.fields+'id';
 			}
 			if(d.islu=='1' && d.fields=='id')return 'id字段是不可以做录入项字段';
 		}

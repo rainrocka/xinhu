@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>设置php.ini</title>
+<link rel="stylesheet" type="text/css" href="<?=$da['p']?>/css/css.css"/>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/js.js"></script>
+<style>
+
+</style>
+<script>
+var path = '';
+function showinit(str){
+	str = strreplace(str);
+	$('#phpinipath').html(str);
+	path = str;
+}
+
+function save(o1){
+	var da = js.getformdata();
+	da.path = path;
+	js.setmsg('保存中...');
+	o1.disabled = true;
+	js.ajax('?m=cogini&a=phpinisave&d=system', da, function(ret){
+		if(ret.success){
+			js.setmsg('保存成功，需要重启服务才能生效','green');
+		}else{
+			js.setmsg(ret.msg);
+		}
+		o1.disabled = false;
+	},'post,json');
+	
+}
+function changeval(o1,lx){
+	var val = o1.value;
+	if(val)form(lx).value = val;
+}
+</script>
+</head>
+
+
+<body>
+
+<div align="center" style="padding:10px">
+	<form name="myform">
+	<table>
+		<tr>
+			<td colspan="2" align="center"><b>设置php.ini谨慎设置</b></td>
+		</tr>
+		<tr><td height="10"></td></tr>
+		<tr>
+			<td align="right" style="padding-right:8px;color:#888888">php.ini的路径</td>
+			<td align="left" id="phpinipath"></td>
+		</tr>
+		
+		<tr><td height="10"></td></tr>
+		<tr>
+			<td align="right" style="padding-right:8px;color:#888888">上传大小<br>upload_max_filesize</td>
+			<td align="left">
+			<input class="input" name="upload_max_filesize" style="width:100px" value="<?=ini_get('upload_max_filesize')?>"><select class="input" onchange="changeval(this,'upload_max_filesize')">
+			<option value="">选择</option>
+			<option value="128M">128M</option>
+			<option value="512M">512M</option>
+			<option value="1024M">1024M</option>
+			<option value="2048M">2048M</option>
+			<option value="4056M">4056M</option>
+			<option value="8112M">8112M</option>
+			<option value="16224M">16G</option>
+			</select>
+			</td>
+		</tr>
+		
+		<tr><td height="10"></td></tr>
+		<tr>
+			<td align="right" style="padding-right:8px;color:#888888">最大提交大小<br>post_max_size</td>
+			<td align="left"><input class="input" name="post_max_size" style="width:100px" value="<?=ini_get('post_max_size')?>"><select class="input" onchange="changeval(this,'post_max_size')">
+			<option value="">选择</option>
+			<option value="128M">128M</option>
+			<option value="512M">512M</option>
+			<option value="1024M">1024M</option>
+			<option value="2048M">2048M</option>
+			<option value="4056M">4056M</option>
+			<option value="8112M">8112M</option>
+			<option value="16224M">16G</option>
+			</select>
+			</td>
+		</tr>
+		
+		<tr><td height="10"></td></tr>
+		<tr>
+			<td align="right" style="padding-right:8px;color:#888888">运行内存大小<br>memory_limit</td>
+			<td align="left"><input class="input" name="memory_limit" style="width:100px" value="<?=ini_get('memory_limit')?>"><select class="input" onchange="changeval(this,'memory_limit')">
+			<option value="">选择</option>
+			<option value="128M">128M</option>
+			<option value="512M">512M</option>
+			<option value="1024M">1024M</option>
+			<option value="2048M">2048M</option>
+			<option value="4056M">4056M</option>
+			<option value="8112M">8112M</option>
+			<option value="16224M">16G</option>
+			</select>
+			</td>
+		</tr>
+		
+		<tr><td height="10"></td></tr>
+		<tr>
+			<td align="right" style="padding-right:8px;color:#888888">运行超时时间<br>max_execution_time</td>
+			<td align="left"><input class="input" name="max_execution_time" style="width:80px" value="<?=ini_get('max_execution_time')?>"> 秒</td>
+		</tr>
+		
+		<tr><td height="10"></td></tr>
+		<tr>
+			<td align="right" style="padding-right:8px;color:#888888">最大POST参数<br>max_input_vars</td>
+			<td align="left"><input class="input" name="max_input_vars" style="width:80px" value="<?=ini_get('max_input_vars')?>"> 个</td>
+		</tr>
+		
+		<tr><td height="10"></td></tr>
+		<tr>
+			<td align="right" style="padding-right:8px;color:#888888">记录php错误文件<br>error_log</td>
+			<td align="left"><textarea class="textarea" style="height:60px" name="error_log"  value=""><?=ini_get('error_log')?></textarea> </td>
+		</tr>
+		
+		
+		<tr><td height="10"></td></tr>
+		<tr>
+			<td align="right" style="padding-right:8px;color:#888888">上传文件临时目录<br>upload_tmp_dir</td>
+			<td align="left"><textarea class="textarea" style="height:50px" name="upload_tmp_dir"  value=""><?=ini_get('upload_tmp_dir')?></textarea> </td>
+		</tr>
+		
+		
+		<tr><td height="10"></td></tr>
+		<tr>
+			<td align="right" style="padding-right:8px;color:#888888"></td>
+			<td align="left"><input class="webbtn" onclick="save(this)" value="保存" type="button">&nbsp;<span id="msgview"></span></td>
+		</tr>
+		
+	</table>
+	</form>
+	
+</div>
+<iframe style="display:none" src="?m=cogini&a=phpinishow&d=system"></iframe>
+</body>
+</html>

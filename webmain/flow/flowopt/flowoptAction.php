@@ -203,4 +203,26 @@ class flowoptClassAction extends Action
 		
 		return c('html')->createrows($rows,'fieldsname,字段,left@oldval,原来值,left@newval,新值,left','#888888');
 	}
+	
+	/**
+	*	保存列宽
+	*/
+	public function savecolumsAction()
+	{
+		$modenum= $this->get('modenum');
+		$fields = $this->get('fields');
+		$alig1  = $this->get('align');
+		$align	= '0';
+		if($alig1=='left')$align='1';
+		if($alig1=='right')$align='2';
+		$mrs 	= m('flow_set')->getone("`num`='$modenum'");
+		$modeid = $mrs['id'];
+		$sarr['width'] 	 = $this->get('width');
+		$sarr['isalign'] = $align;
+		$where			 = "`mid`='$modeid' and `fields`='$fields' and `iszb`=0";
+		$dbs 			 = m('flow_element');
+		if($dbs->rows($where)==0)return returnerror('fields not found',202);
+		$dbs->update($sarr, $where);
+		return returnsuccess();
+	}
 }

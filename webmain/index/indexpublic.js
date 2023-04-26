@@ -374,9 +374,12 @@ function highsearchclass(options){
 		if(this.type==1){
 			js.tanbody('searchhigh','自定义列显示', 300,350,{
 				html:'<div id="searchhighhtml" class="select-list" style="height:300px;overflow:auto;"></div>',
-				btn:[{text:'确定'}]
+				btn:[{text:'确定'},{text:'清空',bgcolor:'#d9534f'}]
 			});
 			this.initfields();
+			$('#searchhigh_btn1').click(function(){
+				me.clearcolumn();
+			});
 		}
 		$('#searchhigh_btn0').click(function(){
 			me.queding();
@@ -489,17 +492,23 @@ function highsearchclass(options){
 				if(this.checked)d+=','+this.value+'';
 			});
 			if(d!='')d=d.substr(1);
-			this.setmsg('保存中...');
-			js.ajax(js.getajaxurl('savecolunms','flow','main'),{num:this.columnsnum,str:d,modeid:this.modeid},function(s){
-				if(s=='ok'){
-					js.msg('success','保存成功');
-					me.oncallback(d);
-					js.tanclose('searchhigh');
-				}else{
-					me.setmsg(s);
-				}
-			},'post');
+			this.savecolunms(d);
 		}
+	};
+	this.savecolunms=function(d){
+		this.setmsg('保存中...');
+		js.ajax(js.getajaxurl('savecolunms','flow','main'),{num:this.columnsnum,str:d,modeid:this.modeid},function(s){
+			if(s=='ok'){
+				js.msg('success','保存成功');
+				me.oncallback(d);
+				js.tanclose('searchhigh');
+			}else{
+				me.setmsg(s);
+			}
+		},'post');
+	};
+	this.clearcolumn=function(){
+		this.savecolunms('');
 	};
 	this.saveformdata=function(){
 		var d = js.getformdata('highform');

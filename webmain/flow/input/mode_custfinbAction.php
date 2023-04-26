@@ -69,6 +69,10 @@ class mode_custfinbClassAction extends inputAction{
 		}
 		$rows = m('crm')->getmyract($this->adminid, $htid, 1);
 		$arr  = array();
+		$arr[] = array(
+			'value' => '0',
+			'name' 	=> '不选择',
+		);
 		foreach($rows as $k=>$rs){
 			$arr[] = array(
 				'value' => $rs['id'],
@@ -100,6 +104,38 @@ class mode_custfinbClassAction extends inputAction{
 			$cars['money'] = $cars['money']-$omoney;
 		}
 		$this->returnjson($cars);
+	}
+	
+	protected function storeafter($table, $rows)
+	{
+		$money 	 = 0;
+		if($rows){
+			foreach($rows as $k1=>$rs1){
+				$money+=floatval($rs1['money']);
+			}
+			$carr['money'] 	= $this->rock->number($money); 
+			$carr['htnum'] 	= '合计'; 
+			$carr['id']		= 0;
+			$rows[] = $carr;
+		}
+		$zhangarr = false;
+		if($this->loadci==1 && $this->get('pnum')=='finall'){
+			$zhangarr = m('fina')->getzhangtao();
+			$zhangarrs= array();
+			foreach($zhangarr as $k=>$rs){
+				$zhangarrs[] = array('optgroup'=>'start','name'=>$rs['name']);
+				$arows = m('fina')->getaccount($rs['value']);
+				if($arows)foreach($arows as $k1=>$rs1){
+					$zhangarrs[] = $rs1;
+				}
+				$zhangarrs[] = array('optgroup'=>'end','name'=>$rs['name']);
+			}
+			$zhangarr = $zhangarrs;
+		}
+		return array(
+			'rows' => $rows,
+			'zhangarr'=> $zhangarr
+		);
 	}
 }	
 			

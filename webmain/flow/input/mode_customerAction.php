@@ -31,7 +31,7 @@ class mode_customerClassAction extends inputAction{
 			$atype = 'allskd'; //所有收款单的
 		}
 		if($ind==4){
-			$bh='custfina';
+			$bh='custfinb';
 			$atype = 'allfkd';//所有付款单！
 		}
 		if($ind==5){

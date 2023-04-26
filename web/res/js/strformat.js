@@ -16,39 +16,41 @@ var strformat = {
 		return url;
 	},
 	emotspath:'',
+	openurl:function(dz){
+		js.location(dz);
+	},
+	urlpipei:function(str){
+		urlpipeiarr = [];
+		var strv = this.urlpipeiss(str,'http://');
+		strv = this.urlpipeiss(strv,'https://');
+		var i,len = urlpipeiarr.length,sv;
+		if(len>0)for(i=0;i<len;i++){
+			sv   = urlpipeiarr[i];
+			strv = strv.replace('{URL'+i+'}','<a onclick="return strformat.openurl(\''+sv+'\')" href="javascript:;">'+sv+'</a>');
+		}
+		return strv;
+	},
+	urlpipeiss:function(str,gz){
+		var s1 = str.toLowerCase();
+		var xu = s1.indexOf(gz);
+		if(xu==-1)return str;
+		var len = gz.length,zlen = s1.length;
+		var jg = 0,s2,i,ym,tsx=',./?&=#@*()_-+;!|:%',cd;
+		for(i=0;i<zlen-len;i++){
+			s2 = s1.substr(xu+len+i,1);
+			if(!s2 || (tsx.indexOf(s2)==-1 && !/[a-zA-Z0-9]{1,}/.test(s2)))break;
+			jg++;
+		}
+		ym = str.substr(xu,len+jg);
+		cd = urlpipeiarr.push(ym);
+		var strv= str.replace(ym,'{URL'+(cd-1)+'}');
+		return this.urlpipeiss(strv,gz);
+	},
 	strcont:function(nr){
 		var str = unescape(nr),patt1,emu,i,st1,oi;
 		
-		if(str.indexOf('<img')==-1){
-			var strRegex = "((https|http)?://){1}" 
-				 + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@ 
-				  + "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184 
-				  + "|" // 允许IP和DOMAIN（域名）
-				  + "([0-9a-z_!~*'()-]+\.)*" // 域名- www. 
-				  + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\." // 二级域名 
-				  + "[a-z]{2,6})" // first level domain- .com or .museum 
-				  + "(:[0-9]{1,4})?" // 端口- :80 
-				  + "((/?)|" // a slash isn't required if there is no file name 
-				  + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)"; 
-			patt1	= new RegExp(strRegex, 'gi'); 
-			emu		= str.match(patt1);
-			if(emu!=null){
-				for(i=0;i<emu.length; i++){
-					st1 = emu[i];
-					if(st1.indexOf('http')==0){
-						str = str.replace(st1, '{URL'+i+'}');
-					}
-				}
-				for(i=0;i<emu.length; i++){
-					st1 = emu[i];
-					if(st1.indexOf('http')==0){
-						str = str.replace('{URL'+i+'}', '<a onclick="return strformat.openurl(\''+st1+'\')" href="javascript:;">'+st1+'</a>');
-					}
-				}
-			}
-		}
-		
-		
+		if(str.indexOf('<img')==-1)str = this.urlpipei(str);
+	
 		patt1	= new RegExp("\\[(.*?)\\](.*?)", 'gi');
 		emu		= str.match(patt1);
 		if(emu!=null){

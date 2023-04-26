@@ -1,27 +1,41 @@
+var kexuan = true;
 function initbodys(){
-	$(form('custid')).change(function(){
-		var val = this.value,txt='';
-		if(val!=''){
-			txt = this.options[this.selectedIndex].text;
-		}
-		form('custname').value=txt;
-		form('htid').value = '';
-	});
 	
 	c.onselectdata['custname']=function(){
-		form('htid').value = '';
+		form('htid').value = '0';
 	}
-	
-	$(form('htid')).change(function(){
-		var val = this.value,txt='';
-		salechange(val);
-	});
 	
 	//var defe = js.request('def_htid');
 	//if(defe && defe<0)salechange(defe);
+	
+	if(mid>0){
+		if(data.xgid && data.xgid>0){
+			form('htid').length=2;
+			form('money').readOnly=true;
+			$(form('money')).click(function(){
+				js.alert('关联了其他单据，金额不能修改');
+			})
+			kexuan = false;
+		}
+	}else{
+		form('htid').selectedIndex =1;
+	}
+	
+	if(kexuan){
+		$(form('htid')).change(function(){
+			var val = this.value,txt='';
+			salechange(val);
+		});
+	}
 }
+
+c.onselectdatabefore=function(fid){
+	if(fid=='custname' && !kexuan)return '已关联其他单据不可选择';
+}
+
 function salechange(v){
-	if(v==''){
+	if(!kexuan)return;
+	if(v=='' || v=='0'){
 		form('custid').value='';
 		return;
 	}
@@ -33,4 +47,11 @@ function salechange(v){
 		form('htnum').value=a.num;
 		form('dt').value=a.signdt;
 	},'get,json');
+}
+
+function changesubmit(d){
+	if(d.ispay=='1'){
+		if(form('paytpye') && !d.paytpye)return '已付款了，付款类型不能为空';
+		if(!d.paydt)return '已付款了，付款时间不能为空';
+	}
 }

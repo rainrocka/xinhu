@@ -8,6 +8,8 @@ $(document).ready(function(){
 		tablename:'flow_set',celleditor:true,fanye:true,params:{modeid:0},autoLoad:false,dir:'desc',sort:'id',statuschange:false,
 		url:publicstore('{mode}','{dir}'),storebeforeaction:'viewshowbefore',storeafteraction:'viewshowafter',
 		columns:[{
+			text:'申请人部门',dataIndex:'udeptname'
+		},{
 			text:'操作人',dataIndex:'optname',sortable:true
 		},{
 			text:'摘要',dataIndex:'summary',align:'left'

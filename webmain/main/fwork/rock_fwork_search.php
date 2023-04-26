@@ -12,7 +12,7 @@ $(document).ready(function(){
 				s1 ='<div align="left" style="margin:20px;width:230px" class="list-group">';
 				s1+='<div class="list-group-item  list-group-item-success"><i class="icon-star-empty"></i> '+lx+'('+len+')</div>';
 				for(i=0;i<len;i++){
-					s1+='<a style="TEXT-DECORATION:none" onclick="opencoluske_{rand}(\''+d[i].name+'\',\''+d[i].num+'\',\''+d[i].atype+'\')" class="list-group-item">'+d[i].name+'</a>';
+					s1+='<a style="TEXT-DECORATION:none" onclick="opencoluske_{rand}(\''+d[i].name+'\',\''+d[i].num+'\',\''+d[i].atype+'\','+d[i].isscl+')" class="list-group-item">'+d[i].name+'</a>';
 				}
 				s1+='</div>';
 				strarr[l]+=s1;
@@ -26,9 +26,11 @@ $(document).ready(function(){
 		}
 	}
 	
-	opencoluske_{rand}=function(na,num,ats){
+	opencoluske_{rand}=function(na,num,ats,scl){
 		if(!ats)ats='my';
-		addtabs({name:na,num:'search'+num+'',url:'flow,page,'+num+',atype='+ats+'',icons:'search'});
+		var str = num;
+		if(scl=='2')str='aas,bh='+num+'';
+		addtabs({name:na,num:'search'+num+'',url:'flow,page,'+str+',atype='+ats+'',icons:'search'});
 	}
 	
 	js.ajax(js.getajaxurl('getmodesearcharr','{mode}','{dir}'),{},function(a){

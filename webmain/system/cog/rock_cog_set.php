@@ -91,6 +91,9 @@ $(document).ready(function(){
 			js.tanbody('color','选择主题颜色',310,200,{
 				html:h
 			});
+		},
+		setphpini:function(){
+			js.open('?m=cogini&a=phpini&d=system');
 		}
 	};
 	js.initbtn(c);
@@ -181,6 +184,9 @@ $(document).ready(function(){
 		</div>
 			
 			</td>
+			
+			<td  align="right">php.ini设置：</td>
+			<td class="tdinput"><button click="setphpini" class="btn btn-default" type="button">去设置php.ini</button>&nbsp;<font color=#888888>设置上传大小</font></td>
 			
 		</tr>
 	

@@ -76,25 +76,32 @@
 		};
 		this._create	= function(){
 			var a	= can.columns;
-			var s 	= '',i,len=a.length,val,s1,s2='',cols,s3='',s4='',s5='',le,st,ov,j,j1,na,attr,sty='',hs='',dis,dlen=this.data.length;
+			var s 	= '',i,len=a.length,val,s1,s2='',cols,s3='',s4='',s5='',le,st,ov,j,j1,na,attr,sty='',hs='',dis,dlen=this.data.length,mcol;
 			s+='<table id="tablemain_'+rand+'" class="table table-striped table-bordered table-hover" style="margin:0px">';
 			if(!can.hideHeaders){
-				s+='<thead><tr><th width="40"></th>';
+				mcol = window['maincolor'];
+				if(!mcol)mcol='#3399FF';
+				s+='<thead><tr><th width="40" thxu="-1"></th>';
 				if(can.checked)s+='<th width="40"><div align="center"><input id="seltablecheck_'+rand+'" type="checkbox"></div></th>';
+				var nstr = js.getoption(this.tablekeymd5()),nda={};
+				if(nstr)nda = JSON.parse(nstr);
 				for(i=0;i<len;i++){
-					hs = '';
+					hs   = '';
 					attr = '';
 					cols = a[i].colspan;
-					if(can.sort == a[i].dataIndex)hs='style="color:#3399FF"';
+					na	 = a[i].dataIndex;
+					if(nda[na])for(j in nda[na])a[i][j]=nda[na][j];
+					
+					if(can.sort == na)hs='color:'+mcol+';';
 					if(a[i].width)attr+=' width="'+a[i].width+'"';
 					if(a[i].tooltip)attr+=' title="'+a[i].tooltip+'"';
 					if(cols && cols>1)attr+=' colspan="'+cols+'"';
-					s+='<th nowrap '+attr+'><div '+hs+' align="'+a[i].align+'" lfields="'+a[i].dataIndex+'">';
+					s+='<th nowrap '+attr+' thxu="'+i+'"><div style="'+hs+'" align="'+a[i].align+'" lfields="'+na+'">';
 					if(can.celleditor&&a[i].editor)s+='<i class="icon-pencil"></i>&nbsp;';
 					s+=a[i].text;
 					if(a[i].sortable){
 						s+='&nbsp;';
-						if(can.sort == a[i].dataIndex){
+						if(can.sort == na){
 							s+='<i tempsort="'+i+'" lx="'+((can.dir=='desc')?'asc':'desc')+'" class="icon-sort-'+((can.dir=='desc')?'down':'up')+' cursor"></i>';
 						}else{
 							s+='<i tempsort="'+i+'" lx="desc" class="icon-sort cursor"></i>';
@@ -145,6 +152,9 @@
 			obj.find('i[tempsort]').click(function(){
 				me._clickorder(this);
 			});
+			obj.find('th[thxu]').dblclick(function(){
+				me._dblclickth(this);
+			});
 		};
 		this.insert=function(d, funs,inid){
 			d = js.apply({id:'auto'}, d);
@@ -181,7 +191,7 @@
 				dis = '';
 				if(ov.checkdisabled)dis='disabled';
 				s+='<td align="center" width="40"><input oi="'+j+'" name="tablecheck_'+rand+'" '+dis+' value="'+ov.id+'" type="checkbox"></td>';
-			}	
+			}
 			for(i=0;i<len;i++){
 				na	= a[i].dataIndex;
 				val = ov[na];
@@ -381,6 +391,70 @@
 					me._editforcuschen(this, arr, b);
 				});
 			}
+		};
+		this._dblclickth=function(o1){
+			var o = $(o1),xu = parseFloat(o.attr('thxu'));
+			if(xu==-1){
+				var kes = this.tablekeymd5();
+				if(js.getoption(kes)){
+					js.confirm('是否清空设置列的属性',function(jg){
+						if(jg=='yes'){js.setoption(kes,'');js.msg('success','已清空可F5刷新查看');}
+					});
+				}
+				return;
+			}
+			var d = can.columns[xu],dws=d.width,dw1='',dw2='';
+			if(d.dataIndex=='caozuo')return;
+			if(!dws)dws='';
+			var st2 = ''+dws+'';
+			if(st2.indexOf('%')>0)dw2='%';
+			dw1 = st2.replace('px','').replace('%','');
+			var str = '<div style="padding:10px">';
+			str+='<div>列宽宽度：<input type="number" placeholder="当前'+o.width()+'px" min="0" autocomplete="off" style="width:110px" id="lie_width" class="input" value="'+dw1+'"><select style="width:90px" id="lie_widths" class="input"><option value="px">像素px</option><option value="%" '+((dw2=='%')?'selected':'')+'>百分比%</option></select></div>';
+			str+='<div style="margin-top:10px">对齐方式：<select style="width:200px" id="lie_align"  class="input"><option value="center">居中</option><option value="left" '+((d.align=='left')?'selected':'')+'>居左←</option><option value="right" '+((d.align=='right')?'selected':'')+'>居右→</option></select></div>';
+			str+='</div>';
+			js.tanbody('bootsthcog','设置列['+d.text+']的属性', 300,200,{
+				html:str,
+				btn:[{text:'确定'}]
+			});
+			$('#bootsthcog_btn0').click(function(){
+				me._dblclickthclick(xu);
+			});
+		};
+		this._dblclickthclick=function(xu){
+			var d = can.columns[xu],w1=get('lie_width').value,d1={};
+			d1.align = get('lie_align').value;
+			d.align  = d1.align;
+			if(w1 && w1>0){
+				d1.width = w1+get('lie_widths').value;
+				d.width  = d1.width;
+			}
+			js.tanclose('bootsthcog');
+			this.reload();
+			var sbd = true;
+			if(can.modenum && can.listcreate && window['admintype']=='1'){
+				var da = {modenum:can.modenum,align:d1.align,width:'',fields:d.dataIndex};
+				if(d1.width)da.width = d1.width;
+				js.ajax('index.php?d=flow&m=flowopt&a=savecolums',da,function(ret){
+					if(ret.code==202)me._dblclickthsave(d,d1);
+				},'get,json');
+				sbd=false;
+			}
+			if(sbd)this._dblclickthsave(d,d1);
+		};
+		this._dblclickthsave=function(d,d1){
+			var key = this.tablekeymd5(),str,da={};
+			str = js.getoption(key);
+			if(str)da = JSON.parse(str);
+			da[d.dataIndex] = d1;
+			js.setoption(key,JSON.stringify(da));
+		};
+		this.tablekeymd5=function(){
+			var url = can.url;
+			if(url.indexOf('rnd')>0)url = url.substr(0,url.indexOf('rnd')-1);
+			var str = url+this.tablename+can.storeafteraction+can.storebeforeaction+can.defaultorder+can.onlytablekey;
+			if(can.modenum)str+=can.modenum;
+			return 'table'+md5(str);
 		};
 		this.signature= function(da, url){
 			var time = parseInt(js.now('time')*0.001);
@@ -892,6 +966,7 @@
 			method:'POST', //post请求
 			rendertr:function(){return  ''}, //少用
 			rowsbody:function(){return ''}, //少用
+			onlytablekey:'', //唯一的编号
 			celldblclick:false //没用
 		};
 		if(typeof(bootstableobj)=='undefined')bootstableobj={};

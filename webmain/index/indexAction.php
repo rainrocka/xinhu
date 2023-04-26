@@ -257,10 +257,14 @@ class indexClassAction extends Action{
 		$surl = $this->jm->base64decode($this->get('surl'));
 		$num  = $this->get('num');
 		$menuname  = $this->jm->base64decode($this->get('menuname'));
+		$urlpms    = $this->jm->base64decode($this->get('urlpms'));
 		if(isempt($surl))exit('not found');
 		$file = ''.P.'/'.$surl.'.php';
 		if(!file_exists($file))$file = ''.P.'/'.$surl.'.shtml';
 		if(!file_exists($file))exit('404 not found '.$surl.'');
+		$params	 = array();
+		if($urlpms)$params = json_decode('{'.str_replace('\'','"', $urlpms).'}', true);
+		$this->assign('pageparams', $params);
 		if(contain($surl,'home/index/rock_index'))$this->showhomeitems();//首页的显示
 		$this->displayfile = $file;
 		//记录打开菜单日志

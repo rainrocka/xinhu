@@ -369,7 +369,7 @@ return array(
 		if(getconfig('systype')=='demo')return '演示不要改';
 		$stype = (int)$this->post('stype','0');
 		$msg  = 'ok';
-		if($stype==0)$msg = $this->saveconfig('title,imgcompress,watertype,video_bool,flowchehuitime,saasmode,hoemtimeout,usercache,xiangrecord',',video_bool,');
+		if($stype==0)$msg = $this->saveconfig('title,imgcompress,watertype,video_bool,flowchehuitime,saasmode,hoemtimeout,usercache,xiangrecord,beianhao',',video_bool,');
 	
 		return $msg;
 	}

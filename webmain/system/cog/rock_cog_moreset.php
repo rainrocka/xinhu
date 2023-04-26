@@ -131,7 +131,7 @@ $(document).ready(function(){
 
 	<div style="padding-top:20px">
 		
-		<form  id="tablstal0{rand}" name="form0_{rand}">
+		<form  id="tablstal0{rand}" name="form0_{rand}" autocomplete="off">
 			<table cellspacing="0"  border="0" cellpadding="0">
 			
 			
@@ -169,6 +169,10 @@ $(document).ready(function(){
 			<tr><td height="10"></td></tr>
 			
 			<tr><td align="right" style="color:gray">详情页处理记录：</td><td><select style="width:200px" name="xiangrecord" class="form-control"><option value="">默认是关闭的</option><option <?php if(getconfig('xiangrecord')=='1')echo 'selected';?> value="1">展开处理记录</option></select></td></tr>
+			<tr><td height="10"></td></tr>
+			
+			<tr><td align="right" style="color:gray">登录页ICP/IP备案号：</td><td><input name="beianhao" type="text" value="<?=getconfig('beianhao')?>" style="width:200px" placeholder="不设置显示" class="form-control">
+			</td></tr>
 			<tr><td height="10"></td></tr>
 			
 			<tr>

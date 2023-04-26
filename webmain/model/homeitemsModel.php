@@ -69,19 +69,30 @@ class homeitemsClassModel extends Model
 		if(in_array('flowtodo', $nubar) && !isset($arr['flowtodo']))$arr['flowtodo']	= m('flowtodo')->getwdtotals($uid);
 		if(in_array('cropt', $nubar) && !isset($arr['cropt']))$arr['cropt']			= m('goods')->getdaishu(); //出入库操作数
 		if(in_array('receiptmy', $nubar) && !isset($arr['receiptmy']))$arr['receiptmy']	= m('flow:receipt')->getweitotal($uid);
-		if(in_array('myhong', $nubar) && !isset($arr['myhong']))$arr['myhong'] 		= m('official')->rows('`uid`='.$uid.' and `type`=0 and `status`=1 and `thid`=0');//统计未套红的
-		if(in_array('officidus', $nubar) && !isset($arr['officidus']))$arr['officidus'] = m('officidu')->rows('`status` in(0,3) and `isturn`=1 and '.$this->rock->dbinstr('runrenid',$uid).'');
+		if(in_array('myhong', $nubar) && !isset($arr['myhong']) && $this->iscun('officiahong'))$arr['myhong'] 		= m('official')->rows('`uid`='.$uid.' and `type`=0 and `status`=1 and `thid`=0');//统计未套红的
+		if(in_array('officidus', $nubar) && !isset($arr['officidus']) && $this->iscun('officidu'))$arr['officidus'] = m('officidu')->rows('`status` in(0,3) and `isturn`=1 and '.$this->rock->dbinstr('runrenid',$uid).'');
 		
 		//未完成工作计划
-		if(in_array('myplan', $nubar) && !isset($arr['myplan'])){
+		if(in_array('myplan', $nubar) && !isset($arr['myplan']) && $this->iscun('planm')){
 			$obj = m('flow:planm');
 			if(method_exists($obj,'getwwctotals'))$arr['myplan'] = $obj->getwwctotals($uid);
 		}
 		
+		if($this->iscun('custfina')){
+			$dbss = m('custfina');
+			if(in_array('daifina', $nubar))$arr['daifina'] = $dbss->rows('`ispay`=1 and `jzid`=0 and `type`=0');
+			if(in_array('daifinb', $nubar))$arr['daifinb'] = $dbss->rows('`ispay`=1 and `jzid`=0 and `type`=1');
+		}
 
 		return $arr;
 	}
 	
+	//判断模块是否开启存在
+	public function iscun($num)
+	{
+		$to = $this->db->rows('[Q]flow_set',"`num`='$num' and `status`=1");
+		return $to==1;
+	}
 	
 	//我的申请
 	public function get_apply_arr()

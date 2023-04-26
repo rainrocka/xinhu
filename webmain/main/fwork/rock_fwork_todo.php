@@ -74,6 +74,17 @@ $(document).ready(function(){
 		},
 		del:function(){
 			a.del({checked:true,url:js.getajaxurl('deltodo','{mode}','{dir}')});
+		},
+		searchyidu:function(){
+			var sid = a.getchecked();
+			if(!sid){
+				js.msg('msg','没有选中行记录');
+				return;
+			}
+			js.ajax(js.getajaxurl('deltodoyd','{mode}','{dir}'),{id:sid},function(){
+				a.reload();
+			});
+		
 		}
 	};
 	js.initbtn(c);
@@ -112,7 +123,7 @@ $(document).ready(function(){
 		<button class="btn btn-default" click="search" type="button">搜索</button>
 	</td>
 	<td  width="80%" style="padding-left:10px">
-		
+		<button class="btn btn-default" click="searchyidu" type="button">全部标识已读</button>
 	</td>
 	
 	

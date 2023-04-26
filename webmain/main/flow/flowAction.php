@@ -803,6 +803,18 @@ class mode_'.$modenum.'ClassAction extends inputAction{
 				if($flow->isflow>0){
 					$billrs = $flow->billmodel->getone("`table`='$flow->mtable' and `mid`='".$rs['id']."'");
 					$otehsr = arrvalue($billrs, 'nowcheckname');
+					$narr['udeptname'] 	= arrvalue($billrs, 'udeptname');
+					$narr['optname'] 	= arrvalue($billrs, 'uname');
+				}else{
+					$uid = arrvalue($rs,'uid');
+					if(!$uid)$uid = arrvalue($rs,'optid');
+					if($uid){
+						$urs = $flow->adminmodel->getXinxi($uid);
+						if($urs){
+							$narr['udeptname'] 	= $urs['deptname'];
+							$narr['optname'] 	= $urs['name'];
+						}
+					}
 				}
 				$narr['status']		= $flow->getstatus($rs,'',$otehsr,1);
 				$narr['chushu']		= $flow->flogmodel->rows("`table`='".$flow->mtable."' and `mid`='".$rs['id']."'");
@@ -1168,8 +1180,12 @@ class mode_'.$modenum.'ClassAction extends inputAction{
 		$num 	= $this->post('num');
 		$modeid = (int)$this->post('modeid');
 		$str 	= $this->post('str');
-		$this->option->setval($num.'@'.(-1*$modeid-1000), $str,'模块列定义');
-		$path 	= m('mode')->createlistpage($modeid);
+		if($str){
+			$this->option->setval($num.'@'.(-1*$modeid-1000), $str,'模块列定义');
+		}else{
+			$this->option->delete("`num`='$num'");
+		}
+		//$path 	= m('mode')->createlistpage($modeid);
 		$msg 	= 'ok';
 		//if($path=='')$msg='已保存,但无法从新生成列表页,自定义列将不能生效';
 		echo $msg;

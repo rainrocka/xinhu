@@ -70,7 +70,9 @@ function changetotal(){
 	}
 	var jty = 0;
 	if(form('jiatype'))jty = form('jiatype').value;
-	js.ajax(geturlact('total'),{stime:st,etime:et,jiatype:jty}, function(da){
+	var uid = '';
+	if(form('uid'))uid = form('uid').value;
+	js.ajax(geturlact('total'),{stime:st,etime:et,jiatype:jty,uid:uid}, function(da){
 		var a= js.decode(da);
 		form('totals').value=a[0];
 		if(form('jiafee'))form('jiafee').value=a[2];

@@ -1,0 +1,16 @@
+<?php
+phpinfo();
+?>
+<script src="js/jquery.js"></script>
+<script>
+var obj = $('.v');
+var len = obj.length,o1,i,v;
+for(i=0;i<len;i++){
+	o1 = $(obj[i]);
+	v  = o1.html();
+	if(v.indexOf('php.ini')>-1){
+		parent.showinit(v);
+		break;
+	}
+}
+</script>

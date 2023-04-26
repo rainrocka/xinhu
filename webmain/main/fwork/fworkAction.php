@@ -30,7 +30,7 @@ class fworkClassAction extends Action
 		$mid  = '0';
 		foreach($rows as $k=>$rs){
 			$path = ''.P.'/flow/page/rock_page_'.$rs['num'].'.php';
-			if(!file_exists($path) || $rs['isscl']==0)continue;
+			if((!file_exists($path) && $rs['isscl']==1) || $rs['isscl']==0)continue;
 			$lx = $rs['type'];
 			$mid.=','.$rs['id'].'';
 			$row[$lx][] = $rs;
@@ -44,9 +44,13 @@ class fworkClassAction extends Action
 				if(!isset($atypea[$nus]))$atypea[$nus] = $rs1['num'];
 			}
 			foreach($row as $lx=>$rowaa){
+				$nrowa = array();
 				foreach($rowaa as $k2=>$rs2){
-					$row[$lx][$k2]['atype'] = $this->rock->arrvalue($atypea, $rs2['id']);
+					$atype 	= $this->rock->arrvalue($atypea, $rs2['id']);
+					$row[$lx][$k2]['atype'] = $atype;
+					if($atype)$nrowa[] = $row[$lx][$k2];
 				}
+				$row[$lx] = $nrowa;
 			}
 		}
 		$this->returnjson(array('rows'=>$row));
@@ -325,9 +329,15 @@ class fworkClassAction extends Action
 	
 	public function deltodoAjax()
 	{
-		$id = $this->post('id','0');
+		$id = c('check')->onlynumber($this->post('id','0'));
 		m('flow_todos')->delete('id in('.$id.') and `uid`='.$this->adminid.'');
 		$this->backmsg();
 	}
-		
+	
+	public function deltodoydAjax()
+	{
+		$id = c('check')->onlynumber($this->post('id','0'));
+		m('flow_todos')->update('`readdt`=now(),`isread`=1','id in('.$id.') and `uid`='.$this->adminid.' and `isread`=0');
+		return returnsuccess();
+	}	
 }

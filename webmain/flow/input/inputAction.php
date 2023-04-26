@@ -316,6 +316,7 @@ class inputAction extends Action
 			$sid  = (int)$this->post('sid'.$xu.'_'.$i.'');
 			$bos  = true;
 			$uaarr['id'] = $sid;
+			$wkz  = 0;
 			foreach($farr as $k=>$rs){
 				$fid= $rs['fields'];
 				$flx= $rs['fieldstype'];
@@ -325,6 +326,7 @@ class inputAction extends Action
 				if($bos){
 					$val= $this->post($na);
 					if($rs['isbt']==1 && isempt($val))$bos=false;
+					if(isempt($val))$wkz++;
 				}
 				if($bos){
 					$msy = $this->attrcheck($val,$rs['attr'], $this->checkobj);
@@ -346,6 +348,7 @@ class inputAction extends Action
 				if(!$bos)break;
 			}
 			if(!$bos)continue;
+			//if($wkz==$k+1)continue;
 			$uaarr['sort'] 	= $sort;
 			$sort++;
 			$arr[] = $uaarr;

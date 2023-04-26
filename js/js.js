@@ -36,6 +36,13 @@ $(document).ready(function(){
 		var msg = '文件：'+e.filename+'\n行：'+e.lineno+'\n错误：<font color=red>'+e.message+'</font>';
 		js.alert(msg,'js错误');
 	});
+	setTimeout(function(){
+		if(typeof(api)=='undefined'){
+			var api={};
+			api.systemType='androidnew';
+			api.deviceId='';
+		}
+	},2000);
 });
 var js={path:'index',url:'',bool:false,login:{},initdata:{},openarr:{},scroll:function(){}};
 var isIE=true;
@@ -56,11 +63,7 @@ js.getarropen=function(caa){
 	jsopenararass = caa;
 	js.open('js/array.shtml');
 }
-if(typeof(api)=='undefined'){
-	var api={};
-	api.systemType='android';
-	api.deviceId='';
-}
+
 js.str=function(o){
 	o.value	= strreplace(o.value);
 }

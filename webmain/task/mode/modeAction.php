@@ -124,6 +124,7 @@ class modeClassAction extends ActionNot
 		$stype 			= $this->get('stype');
 		
 		$path 			 = ''.P.'/flow/page/view_'.$num.'_2.html';
+		if(COMPANYNUM && !file_exists($path))$path = ''.P.'/flow/page/view_'.$num.'_'.COMPANYNUM.'_2.html';
 		if(!file_exists($path))return '没有设置打印模版';
 		
 		$arr 	 		= m('flow')->initflow($num, $mid)->getdatalog(0, 2);
@@ -140,6 +141,7 @@ class modeClassAction extends ActionNot
 		$this->smartydata['spagepath']		= $spagepath;
 		$this->smartydata['pagetitle']		= $pagetitle;
 		$this->assign('stype', $stype);
+		$this->assign('printlx', $this->get('printlx'));
 		if($stype=='word'){
 			m('file')->fileheader($arr['modename'].'.doc');
 		}

@@ -26,6 +26,9 @@ c.searchbtn=function(){
 	var dt = get('dt_{rand}').value;
 	this.search({month:dt});
 }
+c.createjizhang=function(d){
+	js.msgerror('请在财务的菜单下操作');
+}	
 
 //[自定义区域end]
 	c.initpagebefore();

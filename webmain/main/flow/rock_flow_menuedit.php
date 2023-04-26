@@ -37,6 +37,18 @@ $(document).ready(function(){
 			h.setValue('upgcont',jm.base64decode(d.upgcont));
 		}
 	}
+	
+	var c = {
+		xuanrenyua:function(){
+			js.changeuser('', 'usercheck', '选择适用人员',{
+				onselect:function(sna,sid){
+					if(sid)h.form.wherestr.value+=' and {uid} in('+sid+')';
+				}
+			})
+		}
+	}
+	
+	js.initbtn(c);
 });
 
 </script>
@@ -110,7 +122,7 @@ $(document).ready(function(){
 	
 		<tr>
 			<td align="right">条件：</td>
-			<td class="tdinput" colspan="3"><textarea  name="wherestr" style="height:60px" class="form-control"></textarea><font color=#888888>为空或者条件满足时显示菜单</font></td>
+			<td class="tdinput" colspan="3"><textarea  name="wherestr" style="height:60px" class="form-control"></textarea><font color=#888888>为空或者条件满足时显示菜单</font>&nbsp;<button click="xuanrenyua" class="btn btn-default btn-xs" type="button">选适用人员</button></td>
 		</tr>
 		
 		<tr>

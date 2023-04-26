@@ -72,7 +72,6 @@ js.dw = {
 			this.wait('原生app定位中...');
 			return;
 		}
-		
 		if(api.startLocation){
 			js.msg();
 			if(api.systemType=='ios'){

@@ -10,7 +10,7 @@
 		},
 		view:function(){
 			var d=a.changedata;
-			openxiangs(modename,modenum,d.id,'opegs{rand}');
+			if(d.id)openxiangs(modename,modenum,d.id,'opegs{rand}');
 		},
 		searchbtn:function(){
 			this.search({});
@@ -118,12 +118,14 @@
 			var das = d.listinfo;
 			if(das){
 				isflow    = das.isflow;
+				modeid    = das.modeid;
 				modename  = das.modename;
 				modenames = das.modenames;
 				fieldsarr = das.fieldsarr;
 				this.fieldzarr = das.fieldzarr; //子表搜索
 				fieldsselarr = das.fieldsselarr;
 				chufarr = das.chufarr;
+				if(das.modetable)a.setCans({tablename:das.modetable});
 				this.initcolumns(true);
 			}
 			this.onloadbefore(d);
@@ -197,6 +199,7 @@
 				if(bok){
 					d2={text:d1.name,dataIndex:d1.fields};
 					if(d1.ispx=='1')d2.sortable=true;
+					if(d1.width)d2.width=d1.width;
 					if(d1.isalign=='1')d2.align='left';
 					if(d1.isalign=='2')d2.align='right';
 					d.push(d2);
@@ -298,8 +301,8 @@
 	};
 	
 	var bootparams = {
-		fanye:true,modenum:modenum,modename:modename,statuschange:false,tablename:jm.base64decode(listname),
-		url:c.storeurl(),storeafteraction:'storeaftershow',storebeforeaction:'storebeforeshow',optobj:c,
+		fanye:true,modenum:modenum,listcreate:true,modename:modename,statuschange:false,tablename:jm.base64decode(listname),
+		url:c.storeurl(),storeafteraction:'storeaftershow',storebeforeaction:'storebeforeshow',optobj:c,syspnum:pnum,
 		params:{atype:atype},
 		columns:[{text:"字段",dataIndex:"face"},{
 			text:'',dataIndex:'caozuo',callback:'opegs{rand}'

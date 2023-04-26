@@ -81,7 +81,7 @@ class modeClassModel extends Model
 		$farr[] = array('name'=>arrvalue($chufarr, 'base_name', '申请人'),'fields'=>'base_name');
 		$farr[] = array('name'=>arrvalue($chufarr, 'base_deptname', '申请人部门'),'fields'=>'base_deptname');
 		$farr[] = array('name'=>arrvalue($chufarr, 'base_sericnum', '单号'),'fields'=>'sericnum');
-		$farrs 	= m('flow_element')->getall("`mid`='$modeid'",'`fields`,`name`,`fieldstype`,`ispx`,`isalign`,`iszb`,`islb`,`issou`,`data`','`iszb`,`sort`');
+		$farrs 	= m('flow_element')->getall("`mid`='$modeid'",'`fields`,`name`,`fieldstype`,`ispx`,`isalign`,`iszb`,`islb`,`issou`,`data`,`width`','`iszb`,`sort`');
 		$inpub  = c('input');
 		$zbarr	= $zbnamea = array();
 		if(!isempt($mors['names']))$zbnamea = explode(',', $mors['names']);
@@ -139,11 +139,13 @@ class modeClassModel extends Model
 		if($glx==1){
 			return array(
 				'isflow' => $isflow,
+				'modeid' => $modeid,
 				'fieldsarr' => $farr,
 				'fieldzarr' => $zbarr,
 				'fieldsselarr' => $fselarr,
 				'chufarr' => $chufarr,
 				'modename' => $name,
+				'modetable'=> $this->rock->jm->encrypt($mors['table']),
 				'modenames' => $this->rock->repempt($mors['names']),
 			);
 		}
@@ -281,7 +283,7 @@ $rstr 	= "".$hstart."
 		
 		$arr['gongwen'] 		= '204,239,289,290,232,256,258,291,292,293,306,205,257,259,294,255,233,206,304,305'; 
 		
-		$arr['crm'] 		= '63,37,64,73,104,105,114,118,126,179,262,299,131,132,75,112,113,123,263,317,110,111,108,109,106,119,115,116,117,107,120,121,122,175,176,177,178,264,302,318,300,301,386,387';
+		$arr['crm'] 		= '63,37,64,73,104,105,114,118,126,179,262,299,131,132,75,112,113,123,263,317,110,111,108,109,106,119,115,116,117,107,120,121,122,175,176,177,178,264,302,318,300,301,386,387,458,459,460';
 		
 		$arr['userinfo'] 		= '85,101,149';
 		$arr['userract'] 		= '95';
@@ -294,10 +296,12 @@ $rstr 	= "".$hstart."
 		$arr['hrtrsalary'] 		= '129';
 		$arr['reward'] 		= '130';
 		
-		$arr['finjishou'] 		= '311,312,316,369';
+		$arr['finjishou'] 		= '311,312,316,369,457';
 		$arr['finzhang'] 		= '308';
 		$arr['finkemu'] 		= '309';
 		$arr['finount'] 		= '310';
+		$arr['finscrip'] 		= '453,454,455';
+		$arr['finscrib'] 		= '456';
 		
 		$arr['finfybx'] 		= '187,191';
 		$arr['finccbx'] 		= '188';

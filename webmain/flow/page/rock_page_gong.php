@@ -38,7 +38,8 @@ c.setcolumns('istop',{
 });
 c.setcolumns('appxs',{
 	type:'checkbox',
-	'editor':isedit
+	'editor':isedit,
+	'tooltip':'手机网页版和APP的首页显示这个记录'
 });
 
 //[自定义区域end]

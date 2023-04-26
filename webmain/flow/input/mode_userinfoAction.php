@@ -61,6 +61,7 @@ class mode_userinfoClassAction extends inputAction{
 		}
 		if(isset($cans['tel']))$uarr['tel'] = $cans['tel'];
 		if(isset($cans['mobile']))$uarr['mobile'] = $cans['mobile'];
+		if(isset($cans['sex']))$uarr['sex'] = $cans['sex'];
 		if($id==1){
 			unset($uarr['status']);
 			unset($uarr['quitdt']);

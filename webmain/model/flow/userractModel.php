@@ -9,9 +9,13 @@ class flow_userractClassModel extends flowModel
 		$this->statearr 	= explode(',','<font color=blue>待执行</font>,<font color=green>生效中</font>,<font color=#888888>已终止</font>,<font color=red>已过期</font>');
 	}
 
-	public function flowrsreplace($rs)
+	public function flowrsreplace($rs, $lx=0)
 	{
 		$rs['state']		= $this->statearr[$rs['state']];
+		if(isset($rs['newname']) && !isempt($rs['newname']) && $rs['newname']!=$rs['uname'])$this->update("`uname`='".$rs['newname']."'",$rs['id']);
+		if($lx==1){
+			$rs['deptname'] = $this->adminmodel->getmou('deptname', $rs['uid']);
+		}
 		return $rs;
 	}
 	public function updatestate()
@@ -31,7 +35,7 @@ class flow_userractClassModel extends flowModel
 		return array(
 			'where' => '',
 			'table'	=> $table,
-			'fields'=> 'a.*,b.deptname',
+			'fields'=> 'a.*,b.deptname,b.`name` as newname',
 			'orlikefields'=>'b.deptname',
 			'order' => 'a.`optdt` desc',
 			'asqom' => 'a.'

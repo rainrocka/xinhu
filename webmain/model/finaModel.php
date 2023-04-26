@@ -68,24 +68,32 @@ class finaClassModel extends Model
 		$rows = m('finzhang')->getall("status=1 ".$where."",'*','sort, startdt desc');
 		$arr  = array();
 		foreach($rows as $k=>$rs){
-			$arr[] = array(
+			$sarr  = array(
 				'value' => $rs['id'],
 				'name' => $rs['name'],
 				'subname' => $rs['startdt'].'→'.$rs['enddt'],
 			);
+			if($lx==2){
+				unset($sarr['subname']);
+				$sarr['name'].='('.$rs['startdt'].')';
+			}
+			$arr[] = $sarr;
 		}
 		return $arr;
 	}
 	//获取财务帐号
-	public function getaccount()
+	public function getaccount($zhid='')
 	{
-		$where= m('admin')->getcompanywhere(3);
+		if(!$zhid)$zhid='0';
+		$where= 'and `zhangid`='.$zhid.'';
 		$rows = m('finount')->getall("status=1 ".$where."",'*','sort');
 		$arr  = array();
 		foreach($rows as $k=>$rs){
+			$name = $rs['name'];
+			if(!isempt($rs['banknum']))$name.='(**'.substr($rs['banknum'],-4).')';
 			$arr[] = array(
 				'value' => $rs['id'],
-				'name' => $rs['name'],
+				'name' => $name,
 			);
 		}
 		return $arr;
@@ -105,4 +113,26 @@ class finaClassModel extends Model
 		if(isempt($accid))$db->update('`money`=0', '`id` not in('.$ids.')');
 	}
 
+	
+	//读取科目数据
+	private $datarows = array();
+	public function kemudata()
+	{
+		$data = m('finkemu')->getall('`status`=1','*','`sort`');
+		$this->kemudatas($data, 0,'');
+		
+		return $this->datarows;
+	}
+	private function kemudatas($data,$pid,$nae)
+	{
+		foreach($data as $k=>$rs){
+			if($pid==$rs['pid']){
+				$this->datarows[] = array(
+					'value' => $rs['id'],
+					'name'  => ''.$rs['num'].' '.$nae.''.$rs['name'].''
+				);
+				$this->kemudatas($data, $rs['id'],$nae.$rs['name'].'-');
+			}
+		}
+	}
 }
