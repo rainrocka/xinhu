@@ -2,7 +2,7 @@
 <script >
 $(document).ready(function(){
 	var a = $('#view_{rand}').bootstable({
-		tablename:'im_group',where:'and type=2',celleditor:true,
+		tablename:'im_group',where:'and type=2',celleditor:(!ISDEMO),
 		modenum:'yingyong',storeafteraction:'yingyongafter',storebeforeaction:'yingyongbefore',modedir:'{mode}:{dir}',
 		columns:[{
 			text:'图标',dataIndex:'face',align:'left',renderer:function(v,d){

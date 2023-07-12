@@ -7,7 +7,7 @@ defined('HOST') or die ('not access');
 ?>
 <script>
 moemyapplylist=function(){
-	addtabs({num:'applymy',url:'main,fwork,bill,atype=my',icons:'align-left',name:'我的申请'});
+	addtabs({num:'applymy',url:'main,fwork,bill,atype=my',icons:'align-left',name:'<?=lang($itemnowname)?>'});
 }
 homeobject.show_apply_list=function(a){
 	var s='',a1,i;
@@ -22,7 +22,7 @@ homeobject.show_apply_list=function(a){
 </script>
 <div align="left" id="myapplylist" style="min-width:300px" class="list-group">
 <div class="list-group-item  list-group-item-info">
-	<i class="icon-align-left"></i> <?=$itemnowname?>(<span id="myapplylisttotal">0</span>)
-	<a style="float:right;TEXT-DECORATION:none" onclick="moemyapplylist()">更多&gt;&gt;</a>
+	<i class="icon-align-left"></i> <?=lang($itemnowname)?>(<span id="myapplylisttotal">0</span>)
+	<a style="float:right;TEXT-DECORATION:none" onclick="moemyapplylist()"><?=lang('更多')?>&gt;&gt;</a>
 </div>
 </div>

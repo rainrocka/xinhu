@@ -7,7 +7,7 @@ defined('HOST') or die ('not access');
 ?>
 <script>
 homeobject.showicons=function(a){
-	a.push({name:'刷新统计中...',icons:'refresh',num:'refresh',color:'#888888'});
+	a.push({name:'<?=lang('刷新统计中')?>...',icons:'refresh',num:'refresh',color:'#888888'});
 	this.menuarr = a;
 	var o = $('.rowaaaa'),s='',cols='';
 	o.html('');

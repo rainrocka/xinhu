@@ -37,6 +37,12 @@ class xmpushChajian extends Chajian{
 		if($this->android_secret=='')return false;
 		return true;
 	}
+	
+	public function setsecret($secret, $package)
+	{
+		$this->android_secret 	= $secret;
+		$this->android_package 	= $package;
+	}
 
 	/**
 	*	安卓推送通知

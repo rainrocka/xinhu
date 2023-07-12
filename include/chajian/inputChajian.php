@@ -81,6 +81,7 @@ class inputChajian extends Chajian
 		$type 	= $a['fieldstype'];
 		$placeholder 	= arrvalue($a, 'placeholder');
 		$isbt 	= arrvalue($a, 'isbt');
+		$zdsm 	= arrvalue($a, 'zdsm');
 		$data 	= $a['data'];
 		$val 	= $a['dev'];
 		if(isset($a['value']))$val=$a['value'];
@@ -221,7 +222,7 @@ class inputChajian extends Chajian
 		if($type=='checkbox'){
 			$chk = '';
 			if($val=='1'||$val=='true')$chk='checked';
-			$str = '<input name="'.$fname.'" '.$chk.' '.$attr.''.$styles.' type="checkbox" value="1"> ';
+			$str = '<label><input name="'.$fname.'" '.$chk.' '.$attr.''.$styles.' type="checkbox" value="1">'.$placeholder.'</label> ';
 		}
 		if($type=='uploadimg'){
 			$str1= '<a href="javascript:;" onclick="c.uploadfileis(\''.$fname.'\',1)">库中选</a>&nbsp;';
@@ -248,6 +249,7 @@ class inputChajian extends Chajian
 				}
 			}
 		}
+		if(!isempt($zdsm))$str.='<br><font color="#888888">'.$zdsm.'</font>';
 		if($iszb>0)return $str;
 		if($isasm==1){
 			$lx  = 'span';if($ism==1)$lx='div';

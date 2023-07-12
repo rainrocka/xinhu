@@ -179,11 +179,13 @@ js.showmenu=function(d){
 	if(!a)return;
 	var h1=$(window).height(),h2=document.body.scrollHeight,s1;
 	if(h2>h1)h1=h2;
-	var col='';
-	var s='<div onclick="$(this).remove();" align="center" id="menulistshow" style="background:rgba(0,0,0,0.6);height:'+h1+'px;width:100%;position:absolute;left:0px;top:0px;z-index:198" >';
-	s+='<div id="menulistshow_s" style="width:'+d.width+'px;margin-top:'+d.top+';position:fixed;-webkit-overflow-scrolling:touch" class="menulist r-border-r r-border-l">';
+	var col='',oix;
+	var s='<div align="center" id="menulistshow" style="background:rgba(0,0,0,0.6);height:'+h1+'px;width:100%;position:absolute;left:0px;top:0px;z-index:198;" >';
+	s+='<div id="menulistshow_s" style="width:'+d.width+'px;margin-top:'+d.top+';position:fixed;-webkit-overflow-scrolling:touch;" class="menulist">';
 	for(var i=0;i<a.length;i++){
-		s+='<div oi="'+i+'" style="text-align:'+d.align+';color:'+a[i].color+'" class="r-border-t">';
+		oix = '0';
+		if(i>0)oix='0.5';
+		s+='<div oi="'+i+'" style="text-align:'+d.align+';color:'+a[i].color+';border-top:'+oix+'px solid #dddddd">';
 		s1=d.renderer(a[i]);
 		if(s1){s+=s1}else{s+=''+a[i].name+'';}
 		s+='</div>';
@@ -307,4 +309,60 @@ js.jssdkwxgzh = function(qxlist,afe){
 			js.jssdkstate = 2;
 		});
 	});
+}
+
+//长按处理
+function touchclass(cans){
+	var me = this;
+	this.onlongclick = function(){}
+	this.onclick	 = function(){}
+	this.onlongmenu	 = function(){}
+	this.initbool 	 = false;
+	this.islongbool	 = false;
+	
+	for(var i in cans)this[i]=cans[i];
+	this.touchstart=function(o1,evt){
+		touchnowobj 	= this;
+		this.islongbool = false;
+		if(!this.initbool){
+			o1.addEventListener('click', function(){
+				me._onclick(this, event);
+			}, false);
+		}
+		this.obj = o1;
+		this.initbool	= true;
+		clearTimeout(this.touchtime);
+		this.touchtime  = setTimeout('touchnowobj=false',1000);
+		return true;
+	}
+	this._onclick=function(o1, evt){
+		if(!this.islongbool)this.onclick(o1, evt);
+	}
+	this.touchstring=function(){
+		var rnd = 'a'+js.getrand();
+		touchnowoba[rnd] = this;
+		var str = ' ontouchstart="return touchnowoba.'+rnd+'.touchstart(this,event)"';
+		return str;
+	}
+	this.reglongmenu=function(){
+		touchnowobj		= false;
+		touchnowoba		= {};
+		document.addEventListener('touchstart', function(){
+			clearTimeout(me.longtapv);
+			me.longtapv = setTimeout(function(){me.longmenu();},300);
+		}, false);
+		document.addEventListener('touchmove', function(){
+			clearTimeout(me.longtapv);
+		}, false);
+		document.addEventListener('touchend', function(){
+			clearTimeout(me.longtapv);
+		}, false);
+	}
+	this.longmenu	 = function(){
+		setTimeout('touchnowobj=false',200);
+		if(!touchnowobj)return;
+		touchnowobj.islongbool = true;
+		touchnowobj.onlongclick();
+		this.onlongmenu();
+	}
 }

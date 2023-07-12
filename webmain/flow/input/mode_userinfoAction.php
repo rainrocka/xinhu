@@ -38,10 +38,30 @@ class mode_userinfoClassAction extends inputAction{
 	
 	public function storeafter($table, $rows)
 	{
+		$deptdata = false;
+		if($this->loadci==1 && $this->post('showdept')=='1'){
+			$drows = m('dept')->getall('1=1','`id`,`name`,`pid`');
+			$deptdata = $this->depttreeshu($drows, '0', '0');
+		}
 		return array(
 			'statearr' => $this->flow->statearrs,
-			'isadd'    => false
+			'isadd'    => false,
+			'deptdata'    => $deptdata,
 		);
+	}
+	
+	//组织结构活动得到树形数据
+	private function depttreeshu($rows, $pid, $fids)
+	{
+		$barr = array();
+		foreach($rows as $k=>$rs){
+			if($rs['pid']==$pid){
+				$rs['children'] = $this->depttreeshu($rows, $rs['id'], $fids);
+				$rs['expanded'] = $pid==$fids;
+				$barr[] = $rs;
+			}
+		}
+		return $barr;
 	}
 	
 	//人员状态切换保存后处理

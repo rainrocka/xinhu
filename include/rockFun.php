@@ -273,19 +273,23 @@ function getparams($key, $dev='')
 /**
 *	多语言返回
 */
-function lang($key)
+function lang($str,$lx='')
 {
-	$data = arrvalue($GLOBALS,'langdata');
-	$val  = '';
-	if(!$data)return $val;
-	if(strpos($key,'.')>0){
-		$skad = explode('.', $key);
-		$key1 = $skad[0];
-		$key2 = $skad[1];
-		$sdat = arrvalue($data[LANG], $key1);
-		if($sdat)$val = arrvalue($sdat, $key2);
+	if(!$str)return $str;
+	$da 	= arrvalue($GLOBALS,'langdata');
+	if(!$da)return $str;
+	$xuhao 	= $da['xuhao'];
+	$key 	= 'data'.$lx.'';
+	if(!isset($da[$key])){
+		$path	= ''.ROOT_PATH.'/include/langlocal/langphp/lang'.$lx.'.php';
+		$data   = array();
+		if(file_exists($path))$data = require($path);
+		$GLOBALS['langdata'][$key] = $data;
 	}else{
-		$val = arrvalue($data[LANG], $key);
+		$data 	= $da[$key];
 	}
-	return $val;
+	if(!isset($data[$str]))return $str;
+	$nstr 	= arrvalue($data[$str], $xuhao);
+	if(!$nstr)$nstr = $str;
+	return $nstr;
 }

@@ -96,7 +96,7 @@ echo 'body{--main-color:'.$maincolor.';--main-border:rgba('.$maincolors.',0.2)}'
 					$stsp = '<div style="padding-top:20px"><table width="100%"><tr><td width="15%" nowrap height="30" align="right">';
 					if($firstrs['checktype']=='change'){
 						$stsp.='<font color=red>*</font>';
-						$placeholder = '必须指定人员';
+						$placeholder = '必须指定人员'.arrvalue($firstrs,'explain').'';
 						$firstrs['isbt'] = 1;
 					}
 					$stsp.= ''.$firstrs['name'].'：</td>';

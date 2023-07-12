@@ -175,7 +175,9 @@ class indexreimClassAction extends apiAction
 		$arr['outunum']   = $this->option->getval('outunum'.$this->adminid.'');
 		$arr['outgroupopen']   = $this->option->getval('outgroupopen'.$this->adminid.'');
 		$arr['tonghuabo'] = getconfig('video_bool') ? '1' : '2';//是否开启音视频
-		$arr['lxrshow'] = ($this->option->getval('appsy_lxrshow')!='否') ? 1 : 2;
+		$arr['lxrshow'] 	= ($this->option->getval('appsy_lxrshow')!='否') ? 1 : 2;
+		
+		$arr['config'] 		= $dbs->getreims();
 		
 		$this->showreturn($arr);
 	}

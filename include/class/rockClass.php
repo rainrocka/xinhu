@@ -682,4 +682,21 @@ final class rockClass
 		if(substr($path,0,4)!='http')$path = ''.$url.''.$path.'';
 		return $path;
 	}
+	
+	/**
+	*	根据value获取name
+	*/
+	public function valtoname($arr, $val, $fid1='',$fid2='')
+	{
+		if($fid1=='')$fid1='value';
+		if($fid2=='')$fid2='name';
+		$nval = $val;
+		foreach($arr as $k=>$rs){
+			if($rs[$fid1]==$val){
+				$nval = $rs[$fid2];
+				break;
+			}
+		}
+		return $nval;
+	}
 }

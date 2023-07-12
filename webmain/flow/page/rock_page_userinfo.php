@@ -31,6 +31,7 @@ if(atype=='all'){
 		});
 	}
 	c.bianjila=function(){
+		if(ISDEMO){js.msg('msg','演示不要操作');return;}
 		var h = $.bootsform({
 			title:'人员状态编辑',height:400,width:400,
 			tablename:bootparams.tablename,isedit:1,
@@ -66,7 +67,29 @@ if(atype=='all'){
 		get('btnbianjila_{rand}').disabled=true;
 	}
 	
-	$('#viewuserinfo_{rand}').after('<div class="tishi">添加人员档案请到[用户管理]那添加，删除档案，需要先删除用户在删除档案。</div>');
+	c.initpage=function(){
+		a.settishi('<div class="tishi">添加人员档案请到[用户管理]那添加，删除档案，需要先删除用户在删除档案。</div>');
+	}
+	
+	var showdept = false;//是否显示左边部门
+	
+	if(showdept){
+		bootparams.params.showdept='1';
+		var shtm = '<table width="100%"><tr valign="top"><td><div style="border:1px #cccccc solid;width:220px"><div id="optionview_{rand}" style="height:'+(viewheight-90)+'px;overflow:auto;"></div></div></td><td width="8" nowrap><div style="width:8px;overflow:hidden"></div></td><td width="95%"><div id="viewuserinfo_{rand}"></div></td></tr></table>';
+		$('#viewuserinfo_{rand}').after(shtm).remove();
+		var at = $('#optionview_{rand}').bootstree({
+			url:false,autoLoad:false,
+			columns:[{
+				text:'部门',dataIndex:'name',align:'left',xtype:'treecolumn'
+			}],
+			itemdblclick:function(d){
+				a.setparams({'search_value':'d'+d.id+'','search_fields':'id'}, true);
+			}
+		});
+		c.onloadbefore=function(d){
+			if(d.deptdata)at.loadData(d.deptdata);
+		}
+	}
 }
 $('#tdleft_{rand}').hide();
 

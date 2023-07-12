@@ -46,12 +46,23 @@ class mode_demoClassAction extends inputAction{
 	//弹出下拉选择单选
 	public function tanxuan()
 	{
-		for($i=1;$i<=1520;$i++)
+		$limit = (int)$this->get('limit', '10');
+		$page  = (int)$this->get('page', '1');
+		$totalCount = 1520;
+		$start = ($page-1)*$limit;
+		for($i=$start;$i<$start + $limit && $i<=$totalCount;$i++){
 			$rows[] = array(
 				'name' => '第'.$i.'个数据',
 				'value'=> ''.$i.''
 			);
-		return $rows;
+		}
+		
+		return array(
+			'rows' => $rows,
+			'totalCount'=> $totalCount,
+			'limit' => $limit,
+			'page'  => $page,
+		);
 	}
 	
 	//弹出下拉选择多选

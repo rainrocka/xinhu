@@ -109,6 +109,9 @@ $(document).ready(function(){
 				}
 				o1.disabled=false;
 			},'post');
+		},
+		shengclang:function(){
+			js.open('?m=cogini&a=langcog&d=system',900,600);
 		}
 	};
 	js.initbtn(c);
@@ -173,6 +176,18 @@ $(document).ready(function(){
 			
 			<tr><td align="right" style="color:gray">登录页ICP/IP备案号：</td><td><input name="beianhao" type="text" value="<?=getconfig('beianhao')?>" style="width:200px" placeholder="不设置显示" class="form-control">
 			</td></tr>
+			<tr><td height="10"></td></tr>
+			
+			<tr><td align="right" style="color:gray">系统语言：</td><td><select style="width:200px" name="locallang" class="form-control">
+			<?php 
+			$arrd = c('lang')->getLocal();
+			foreach($arrd['arr'] as $k1=>$v1){
+				$sel = (LANG == $v1)?'selected':'';
+				echo '<option value="'.$v1.'" '.$sel.'>'.$arrd['arrcn'][$k1].'('.$v1.')</option>';
+			}
+			?>
+			</select>
+			<button click="shengclang" style="display:" class="btn btn-default btn-xs">语言包管理</button></td></tr>
 			<tr><td height="10"></td></tr>
 			
 			<tr>

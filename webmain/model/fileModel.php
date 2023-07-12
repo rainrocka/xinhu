@@ -108,7 +108,7 @@ class fileClassModel extends Model
 		if($this->isimg($ext))return true;
 		if($this->isoffice($ext))return true;
 		if($this->isyulan($ext))return true;
-		return contain(',mp3,ogg,mp4,', ','.$ext.',');
+		return contain(',mp3,ogg,mp4,amr,', ','.$ext.',');
 	}
 	
 	//获取缩略图的路径

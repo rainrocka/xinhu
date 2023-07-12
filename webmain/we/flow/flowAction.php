@@ -22,7 +22,9 @@ class flowClassAction extends ActionNot{
 			}
 			$otyle = $rs['type'];
 			$oi++;
-			$modearr[$rs['type']][]=array('modenum'=>$rs['num'],'url'=>'?a=lum&m=input&d=flow&num='.$rs['num'].'&show=we','name'=>$rs['name'],'title'=>''.$oi.'.'.$rs['name']);
+			if(!isset($modearr[$otyle]))$modearr[$otyle] = array();
+			$len = count($modearr[$otyle])+1;
+			$modearr[$otyle][]=array('modenum'=>$rs['num'],'url'=>'?a=lum&m=input&d=flow&num='.$rs['num'].'&show=we','name'=>$rs['name'],'title'=>''.$len.'.'.$rs['name']);
 		}
 		$this->assign('modearr', $modearr);
 	}

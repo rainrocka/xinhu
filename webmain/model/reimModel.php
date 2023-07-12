@@ -75,7 +75,8 @@ class reimClassModel extends Model
 		return array(
 			'recid' => $this->serverrecid,			
 			'title' => $this->servertitle,			
-			'chehui' => $chehui * 60,			
+			'chehui'=> $chehui * 60,			
+			'appwx' => $this->optiondb->getval('reimappwxsystem'),			
 			'wsurl' => $this->rock->jm->base64encode($this->serverhosturl)			
 		);
 	}
@@ -1060,34 +1061,29 @@ class reimClassModel extends Model
 			}
 		}
 		$uwhere = "$where `status`=1";
-		$rows 	= m('logintoken')->getrows("`uid` in(select id from `[Q]admin` where $uwhere) and `cfrom` in ('appandroid','nppandroid','nppios') and `online`=1",'*','id desc');
-		$alias 	= $uida = $xmalias = $oldalias = $pushuids = $newalias = $alias2019 = $uid2019  =array();
+		$rows 	= m('logintoken')->getrows("`uid` in(select id from `[Q]admin` where $uwhere) and `cfrom` in ('nppandroid','nppios') and `online`=1",'*','id desc');
+		$uida 	= $pushuids = $alias2019 = $uid2019 = array();
 		$uids	= '0';
 		$times  = date('Y-m-d H:i:s', time()-5*60);//5分钟
 		foreach($rows as $k=>$rs){
 			$_uid 	 = $rs['uid'];
 			$_web 	 = $rs['web'];
-			//if(in_array($_uid, $uida))continue;
 			$uida[]  = $_uid;
 			$uids	.= ','.$_uid.'';
-			if($_web=='xiaomi'){
-				$xmalias[] = $rs['token'];
-			}else if(in_array($rs['cfrom'], array('nppandroid','nppios'))){//2019-11-25最新新app
-				$nestr = ''.$rs['token'].'|'.$rs['web'].'|'.$_uid.'|';
-				if(contain($rs['web'],'huawei') && !contain($rs['ip'],'.'))$nestr.=''.$rs['ip'].'';
-				if(contain($rs['web'],'xiaomi'))$nestr.=''.$rs['pushtoken'].'';
-				$alias2019[] = $nestr;
-				$uid2019[]   = $_uid;
-			}else if(substr($_web,0,4)=='app_'){
-				$newalias[] = $rs['token'];	
-			}else if(substr($_web,0,4)=='apk_'){
-				$oldalias[] = $rs['token'];	
-			}else{
-				$alias[] 	= $rs['token'];
+			
+			$nestr  = ''.$rs['token'].'|'.$_web.'|'.$_uid.'|';
+			if(contain($_web,'getui')){
+				$nestr.=''.$rs['pushtoken'].''; //个推
+			}else if(contain($_web,'huawei') && !contain($rs['ip'],'.')){
+				$nestr.=''.$rs['ip'].'';
+			}else if(contain($_web,'xiaomi')){
+				$nestr.=''.$rs['pushtoken'].'';
 			}
+			$alias2019[] = $nestr;
+			if(!in_array($_uid, $uid2019))$uid2019[] = $_uid;
 			if($rs['ispush']=='1')$pushuids[] = $_uid;//可以手机推送的用户
 		}
-		return array('alias' => $alias, 'uids'=>$uids, 'xmalias'=>$xmalias, 'oldalias'=>$oldalias, 'newalias'=>$newalias,'alias2019'=>$alias2019,'uid2019'=>$uid2019,'pushuids'=>$pushuids);
+		return array('uids'=>$uids,'alias2019'=>$alias2019,'uid2019'=>$uid2019,'pushuids'=>$pushuids);
 	}
 	
 	/**
@@ -1105,6 +1101,9 @@ class reimClassModel extends Model
 		foreach($conta as $k=>$v)$contjson.=',"'.$k.'":"'.$v.'"';
 		$contjson 	= '{'.substr($contjson,1).'}';
 		
+		$pushcont = arrvalue($conta,'pushcont');
+		if(!$pushcont)$pushcont = arrvalue($conta,'cont'); //推送的内容已经是base64的
+		
 		//最新webapp也用服务端推送
 		$uid2019	= $alias['uid2019'];
 		$alias2019	= $alias['alias2019'];
@@ -1113,7 +1112,9 @@ class reimClassModel extends Model
 			$reimappwx= $this->option->getval('reimappwxsystem');
 			if($reimtype=='1' && $reimappwx=='1'){
 				$gbarr = $this->pushserver('sendapp', array(
-					'receid' => join(',', $uid2019)
+					'receid' => join(',', $uid2019),
+					'title'	 => $title,
+					'content'=> $pushcont
 				));
 				//服务端返回{"zshu":2,"yfuid":"1,8","wfuid":""}
 				if($gbarr && $gbarr['success'] && $bstr = arrvalue($gbarr, 'data')){
@@ -1131,8 +1132,7 @@ class reimClassModel extends Model
 				}
 			}
 		}
-		$pushcont = arrvalue($conta,'pushcont');
-		if(!$pushcont)$pushcont = arrvalue($conta,'cont'); //推送的内容已经是base64的
+		
 		return c('JPush')->push($title, $pushcont, $contjson, $alias);
 	}
 	

@@ -94,6 +94,9 @@ $(document).ready(function(){
 		},
 		setphpini:function(){
 			js.open('?m=cogini&a=phpini&d=system');
+		},
+		shengclang:function(){
+			js.open('?m=cogini&a=langcog&d=system',900,600);
 		}
 	};
 	js.initbtn(c);
@@ -134,7 +137,8 @@ $(document).ready(function(){
 		</tr>
 		
 		<tr>
-			<td  colspan="4" class="tdinput" ><div align="center" style="line-height:30px">系统版本：<b  id="benquan_{rand}" style="font-size:20px"><font color=red>开源版</font></b><input id="isshou_{rand}" type="hidden" class="form-control">&nbsp;&nbsp;<button click="auther" class="btn btn-success btn-xs">系统签授</button>&nbsp;&nbsp;<button click="moreset" style="display:" class="btn btn-default btn-xs">更多设置</button></div></td>
+			<td  colspan="4" class="tdinput" ><div align="center" style="line-height:30px">系统版本：<b  id="benquan_{rand}" style="font-size:20px"><font color=red>开源版</font></b><input id="isshou_{rand}" type="hidden" class="form-control">&nbsp;&nbsp;<button click="auther" class="btn btn-success btn-xs">系统签授</button>&nbsp;&nbsp;<button click="moreset" style="display:" class="btn btn-default btn-xs">更多设置</button>
+			</div></td>
 		</tr>
 	
 		<tr>
@@ -151,7 +155,7 @@ $(document).ready(function(){
 			
 			<td  align="right"><a target="_blank" href="<?=URLY?>">信呼官网</a>key：</td>
 			<td class="tdinput"><input id="xinhukey_{rand}" class="form-control">
-			<font color="#888888">用于在线升级使用,看<a target="_blank" href="<?=URLY?>view_xhkey.html">[帮助]</a>获取</font></td>
+			<font color="#888888">用于在线升级使用,看<a target="_blank" href="<?=URLY?>view_xhkey.html">[帮助]</a>获取</font>,<a href="javascript:;" onclick="$.imgview({url:'http://www.rockoa.com/images/keyhelp.png'})">[怎么获取?]</a></td>
 		</tr>
 		
 		<tr>
@@ -186,7 +190,9 @@ $(document).ready(function(){
 			</td>
 			
 			<td  align="right">php.ini设置：</td>
-			<td class="tdinput"><button click="setphpini" class="btn btn-default" type="button">去设置php.ini</button>&nbsp;<font color=#888888>设置上传大小</font></td>
+			<td class="tdinput"><button click="setphpini" class="btn btn-default" type="button">去设置php.ini</button>&nbsp;<font color=#888888>设置上传大小</font>
+			<button click="shengclang" style="display:" class="btn btn-default btn-xs">语言包管理</button>
+			</td>
 			
 		</tr>
 	

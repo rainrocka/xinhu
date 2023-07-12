@@ -1,5 +1,6 @@
 //<script>	
 	var c = {
+		optalign:'',
 		reload:function(){
 			a.reload();
 		},
@@ -49,7 +50,7 @@
 		searchuname:function(d){
 			js.getuser({
 				type:'deptusercheck',
-				title:'搜索'+d.name,
+				title:'<?=lang('搜索')?>'+d.name,
 				changevalue:this.search_value,
 				callback:function(sna,sid){
 					c.searchunames(d,sna,sid);
@@ -94,7 +95,7 @@
 			this.initpage();
 			this.soudownobj = $('#downbtn_{rand}').rockmenu({
 				width:120,top:35,donghua:false,
-				data:[{name:'高级搜索',lx:0}],
+				data:[{name:'<?=lang('高级搜索')?>',lx:0}],
 				itemsclick:function(d, i){
 					if(d.lx==0)c.searchhigh();
 					if(d.lx==1)c.printlist();
@@ -133,7 +134,7 @@
 		loaddata:function(d){
 			this.setdownsodata(d.souarr);
 			if(d.modeid)modeid = d.modeid;
-			if(modeid>101 && d.loadci==1 && (!d.atypearr || d.atypearr.length==0))js.confirm('列表页没设置好，数据无法显示，没有可切换选择卡，去看帮助设置',function(){window.open('<?=URLY?>view_columns.html')});
+			if(modeid>101 && d.loadci==1 && (!d.atypearr || d.atypearr.length==0))js.confirm('<?=lang('notcolumns','base')?>',function(){window.open('<?=URLY?>view_columns.html')});
 			if(!d.atypearr)return;
 			get('addbtn_{rand}').disabled=(d.isadd!=true);
 			get('daobtn_{rand}').disabled=(d.isdaochu!=true);
@@ -148,14 +149,14 @@
 			js.initbtn(c);
 		},
 		setdownsodata:function(darr){
-			var ddata = [{name:'高级搜索',lx:0}],dsd,i;
+			var ddata = [{name:'<?=lang('高级搜索')?>',lx:0}],dsd,i;
 			if(darr)for(i=0;i<darr.length;i++){
 				dsd = darr[i];
 				dsd.lx=3;
 				ddata.push(dsd);
 			}
-			if(admintype==1)ddata.push({name:'自定义列显示',lx:2});
-			ddata.push({name:'打印',lx:1});
+			if(admintype==1)ddata.push({name:'<?=lang('自定义列显示')?>',lx:2});
+			ddata.push({name:'<?=lang('打印')?>',lx:1});
 			this.soudownobj.setData(ddata);
 		},
 		setcinfo:{},
@@ -176,18 +177,19 @@
 		},
 		daoru:function(){
 			window['managelist'+modenum+''] = a;
-			addtabs({num:'daoru'+modenum+'',url:'flow,input,daoru,modenum='+modenum+'',icons:'plus',name:'导入'+modename+''});
+			addtabs({num:'daoru'+modenum+'',url:'flow,input,daoru,modenum='+modenum+'',icons:'plus',name:'<?=lang('导入')?>'+modename+''});
 		},
 		initcolumns:function(bots){
-			var num = 'columns_'+modenum+'_'+pnum+'',d=[],d1,d2={},i,len=fieldsarr.length,bok,sa=[{name:'默认搜索',fields:'','inputtype':'dev'}];
+			var num = 'columns_'+modenum+'_'+pnum+'',d=[],d1,d2={},i,len=fieldsarr.length,ebo,bok,sa=[{name:'<?=lang('默认搜索')?>',fields:'','inputtype':'dev'}];
 			var nstr= fieldsselarr[num];if(!nstr)nstr='';
 			if(nstr)nstr=','+nstr+',';
 			if(nstr=='' && isflow>0){
-				var nes = chufarr.base_name;if(!nes)nes='申请人';
+				var nes = chufarr.base_name;if(!nes)nes='<?=lang('申请人')?>';
 				d.push({text:nes,dataIndex:'base_name',sortable:true});
-				nes = chufarr.base_deptname;if(!nes)nes='申请人部门';
+				nes = chufarr.base_deptname;if(!nes)nes='<?=lang('申请人部门')?>';
 				d.push({text:nes,dataIndex:'base_deptname',sortable:true});
 			}
+			var celleditor = 0;
 			for(i=0;i<len;i++){
 				d1 = fieldsarr[i];
 				bok= false;
@@ -197,11 +199,24 @@
 					if(nstr.indexOf(','+d1.fields+',')>=0)bok=true;
 				}
 				if(bok){
+					ebo = 0;
 					d2={text:d1.name,dataIndex:d1.fields};
 					if(d1.ispx=='1')d2.sortable=true;
 					if(d1.width)d2.width=d1.width;
 					if(d1.isalign=='1')d2.align='left';
 					if(d1.isalign=='2')d2.align='right';
+					if(d1.iseditlx=='1')ebo=1;
+					if(d1.iseditlx=='2' && admintype=='1')ebo=1;
+					if(d1.iseditlx=='3' && admintype=='1' && adminid=='1')ebo=1;
+					if(ebo==1){
+						d2.editor = true;
+						celleditor= 1;
+						d2.type   = d1.fieldstype;
+						if(d1.fieldstype=='select' || d1.fieldstype=='rockcombo'){
+							d2.type='select';
+							d2.store=this.editorstore(d1.store);
+						}
+					}
 					d.push(d2);
 				}
 				if(d1['issou']=='1'){
@@ -209,10 +224,14 @@
 					sa.push(d2);
 				}
 			}
-			if(isflow>0)d.push({text:'流程状态',dataIndex:'statustext'});
-			if(nstr=='' || nstr.indexOf(',caozuo,')>=0)d.push({text:'',dataIndex:'caozuo',callback:'opegs{rand}'});
+			if(isflow>0)d.push({text:'<?=lang('流程')?><?=lang('状态')?>',dataIndex:'statustext'});
+			if(nstr=='' || nstr.indexOf(',caozuo,')>=0){
+				d1 = {text:'',dataIndex:'caozuo',callback:'opegs{rand}'};
+				(this.optalign=='left')?d.unshift(d1):d.push(d1);
+			}
 			for(i=0;i<d.length;i++)if(this.setcinfo[d[i].dataIndex])d[i] = js.apply(d[i],this.setcinfo[d[i].dataIndex]);
 			d = this.oncolumns(d);
+			if(celleditor==1)a.setCans({celleditor:true});
 			bootparams.columns = d;
 			if(bots)a.setColumns(d);
 			d1 = this.fieldzarr;
@@ -226,6 +245,11 @@
 			js.setselectdata(get('fields_{rand}'),sa,'fields');
 			this.changefields();
 			return d;
+		},
+		editorstore:function(d){
+			var d1=[],i;
+			if(d)for(i=0;i<d.length;i++)d1.push([d[i].value,d[i].name]);
+			return d1;
 		},
 		changefields:function(){
 			var o1 = get('fields_{rand}');
@@ -251,7 +275,7 @@
 				$('#selkey_{rand}').show();
 				o2.value='1';
 				var o3 = get('selkey_{rand}');
-				$(o3).html('<option value="">-请选择-</option>');
+				$(o3).html('<option value="">-<?=lang('请选择')?>-</option>');
 				js.setselectdata(o3,xa.store,'value');
 			}else{
 				$('#keygj_{rand}').show();
@@ -277,10 +301,15 @@
 			}
 			window.open('?d=public&m=print&table='+rnd+'&modenum='+modenum+'&modename='+jm.base64encode(modename)+'');
 		},
-		getbtnstr:function(txt, click, ys, ots){
+		getbtnstr:function(txt, click, ys, ots,alx){
 			if(!ys)ys='default';
 			if(!ots)ots='';
-			return '<button class="btn btn-'+ys+'" id="btn'+click+'_{rand}" click="'+click+'" '+ots+' type="button">'+txt+'</button>';
+			var str='<button class="btn btn-'+ys+'" id="btn'+click+'_{rand}" click="'+click+'" '+ots+' type="button">'+txt+'</button>';
+			if(alx=='right')this.addrightbtn(str);
+			return str;
+		},
+		addrightbtn:function(str){
+			$('#tdright_{rand}').prepend(str+'&nbsp;&nbsp;');
 		},
 		setfieldslist:function(){
 			new highsearchclass({
@@ -304,7 +333,7 @@
 		fanye:true,modenum:modenum,listcreate:true,modename:modename,statuschange:false,tablename:jm.base64decode(listname),
 		url:c.storeurl(),storeafteraction:'storeaftershow',storebeforeaction:'storebeforeshow',optobj:c,syspnum:pnum,
 		params:{atype:atype},
-		columns:[{text:"字段",dataIndex:"face"},{
+		columns:[{text:"fields",dataIndex:"face"},{
 			text:'',dataIndex:'caozuo',callback:'opegs{rand}'
 		}],
 		itemdblclick:function(){

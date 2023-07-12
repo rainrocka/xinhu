@@ -11,7 +11,7 @@
 <link rel="shortcut icon" href="<?=$arr['face']?>" />
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/js.js"></script>
-<script type="text/javascript" src="js/jswx.js"></script>
+<script type="text/javascript" src="js/jswx.js?<?=time()?>"></script>
 <script type="text/javascript" src="js/base64-min.js"></script>
 <script type="text/javascript" src="js/jsmain.js"></script>
 <script type="text/javascript" src="webmain/we/ying/ying.js?<?=time()?>"></script>
@@ -30,15 +30,15 @@ body,html{background-color:#f1f1f1;overflow:hidden}
 .weui_navbar_item_disabled{color:#aaaaaa}
 
 .contline{padding-top:10px;color:#999999;font-size:14px;text-align:center;}
-.contlist{margin:15px;padding:8px 10px;position:relative; background:white}
-.contlist:active,.active{ background-color:#f1f1f1}
+.contlist{margin:15px;padding:8px 10px;position:relative; background:white;border-radius:5px;border:0.5px #dddddd solid}
+.contlist:active,.active{ background-color:#f5f5f5}
 .contlist .title{font-size:16px}
 .contlist .dt{font-size:12px;color:#aaaaaa;}
-.contlist .xq{color:<?=$maincolor?>;font-size:14px;padding-top:7px}
+.contlist .xq{color:<?=$maincolor?>;font-size:14px;padding-top:7px;border-top:0.5px #dddddd solid}
 .contlist .xq span{float:right}
 .contlist .cont{font-size:14px;padding:10px 0px}
 .contlist .imgs{height:130px;overflow:hidden;margin:5px 0px}
-.contlist .zt{font-size:10px;position:absolute;top:2px;right:1px;padding:1px 3px;background-color:red;color:white}
+.contlist .zt{font-size:10px;position:absolute;top:2px;right:2px;border-radius:3px;padding:1px 3px;background-color:red;color:white}
 .contlist .face{font-size:14px;padding:5px 0px;overflow:hidden;}
 .contlist .face img{border-radius:15px;height:24px;width:24px;margin-right:5px}
 .contlist .opt{font-size:10px;position:absolute;bottom:1px;right:1px;padding:1px 3px;color:#aaaaaa}
@@ -56,16 +56,22 @@ var agentlx=0,xhauthkey = '<?=$xhauthkey?>',maincolor='<?=$maincolor?>';
 function yingyonginit(){
 	yy.loadshow();
 }
+var xcy = {
+	resiezess:function(){
+		yy.resizehei();
+	}
+}
 function initbody(){
 	adminid = '<?=$da['adminid']?>';
 	admintoken = '<?=$xhrock->admintoken?>';
 	yy.init();
 	yingyonginit();
+	new touchclass({}).reglongmenu();
 }
 function initApp(){
 	js.setapptitle(json.name);
 	js.location=function(dz){
-		if(js.appwin('',dz))return;
+		if(js.appwin('.',dz))return;
 		location.href = dz;
 	}
 	var nowlist = 'yingyong_mode_'+json.num+'';
@@ -74,8 +80,11 @@ function initApp(){
 		name: nowlist
 	}, function(ret, err) {
 		if(ret){
-			var lx = ret.value.opttype;
-			if(lx=='reload')yy.reload();
+			if(ret.value){
+				var lx = ret.value.opttype;
+				if(lx=='reload')yy.reload();
+			}
+			if(ret.stype=='reload')yy.reload();
 		}
 	});
 }
@@ -84,7 +93,7 @@ function callPhone(o1){
 	if(appobj1('callPhone', o1)){
 		return false;
 	}else if(apicloud){
-		api.call({type:'tel_prompt',number:o1});
+		api.rockFun('callPhone', {phone:o1});
 		return false;
 	}else{
 		return true;
@@ -109,7 +118,7 @@ yy.onshowdata=function(da){
 </head>
 
 
-<body>
+<body style="user-select:none">
 <?php if($showheader==1){?>
 <div>
 	<div class="r-header" style="padding-top:<?=$cenghei?>px" >

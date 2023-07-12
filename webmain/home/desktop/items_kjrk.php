@@ -8,7 +8,7 @@ defined('HOST') or die ('not access');
 <script>
 homeobject.showicons=function(a){
 	if(a.length%2!=0)a.push({name:'none'});
-	a.push({name:'刷新统计中...',icons:'refresh',num:'refresh',color:'#888888'});
+	a.push({name:'<?=lang('刷新统计中')?>...',icons:'refresh',num:'refresh',color:'#888888'});
 	this.menuarr = a;
 	var o = $('#kuailistdonw'),s='<table width="100%"><tr>',a1,oi=0,s1t='';
 	for(var i=0; i<a.length-1;i++){
@@ -42,7 +42,7 @@ opentabsshowshwo=function(oi,o1){
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<div style="font-size:14px"><i class="icon-refresh"></i> <?=$itemnowname?>
-		<a style="float:right;TEXT-DECORATION:none" click="refresh" id="refresh_text">刷新</a>
+		<a style="float:right;TEXT-DECORATION:none" click="refresh" id="refresh_text"><?=lang('刷新')?></a>
 		</div>
 	</div>
 	<div id="kuailistdonw"></div>

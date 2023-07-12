@@ -12,6 +12,7 @@ class modeClassModel extends Model
 		$arr 	= $this->getall($where,'`id`,`num`,`name`,`table`,`type`,`isflow`,`status`','sort');
 		$typea = array();
 		foreach($arr as $k=>$rs){
+			if(LANG!='zh-CN')$rs['name'] = lang($rs['name'],'mode');
 			$arr[$k]['name'] = ''.$rs['id'].'.'.$rs['name'].'('.$rs['num'].')';
 			$typea[$rs['type']][] = $arr[$k];
 		}
@@ -33,6 +34,10 @@ class modeClassModel extends Model
 	{
 		$where	= m('admin')->getjoinstr('receid', $uid);
 		$arr 	= $this->getall("`status`=1 and `type`<>'系统' $sww $where",'`id`,`num`,`name`,`table`,`type`,`isflow`,`isscl`','`sort`');
+		if(LANG!='zh-CN')foreach($arr as $k=>$rs){
+			$arr[$k]['name'] = lang($rs['name'],'mode');
+			$arr[$k]['type'] = lang($rs['type'],'mode');
+		}
 		return $arr;
 	}
 	
@@ -42,6 +47,10 @@ class modeClassModel extends Model
 		if($whe!='')$where = $whe;
 		if($uid>0)$where = m('admin')->getjoinstr('receid', $uid);
 		$arr = $this->getall('status=1 and isflow>0 '.$where.'','`id`,`name`,`type`','sort');
+		if(LANG!='zh-CN')foreach($arr as $k=>$rs){
+			$arr[$k]['name'] = lang($rs['name'],'mode');
+			$arr[$k]['type'] = lang($rs['type'],'mode');
+		}
 		return $arr;
 	}
 	
@@ -78,14 +87,16 @@ class modeClassModel extends Model
 		$showzt	= false;
 
 		
-		$farr[] = array('name'=>arrvalue($chufarr, 'base_name', '申请人'),'fields'=>'base_name');
-		$farr[] = array('name'=>arrvalue($chufarr, 'base_deptname', '申请人部门'),'fields'=>'base_deptname');
-		$farr[] = array('name'=>arrvalue($chufarr, 'base_sericnum', '单号'),'fields'=>'sericnum');
-		$farrs 	= m('flow_element')->getall("`mid`='$modeid'",'`fields`,`name`,`fieldstype`,`ispx`,`isalign`,`iszb`,`islb`,`issou`,`data`,`width`','`iszb`,`sort`');
+		$farr[] = array('name'=>arrvalue($chufarr, 'base_name', lang('申请人')),'fields'=>'base_name');
+		$farr[] = array('name'=>arrvalue($chufarr, 'base_deptname', lang('申请人部门')),'fields'=>'base_deptname');
+		$farr[] = array('name'=>arrvalue($chufarr, 'base_sericnum', lang('单号')),'fields'=>'sericnum');
+		$farrs 	= m('flow_element')->getall("`mid`='$modeid'",'`fields`,`name`,`fieldstype`,`ispx`,`isalign`,`iszb`,`islb`,`issou`,`data`,`width`,`iseditlx`','`iszb`,`sort`');
 		$inpub  = c('input');
+		$inpub->flow = $flow;
 		$zbarr	= $zbnamea = array();
 		if(!isempt($mors['names']))$zbnamea = explode(',', $mors['names']);
 		foreach($farrs as $k=>$rs){
+			if(LANG!='zh-CN')$rs['name'] = $flow->lang($rs['name']);
 			if($glx==1 && $rs['issou']=='1' && ($rs['fieldstype']=='select' || $rs['fieldstype']=='rockcombo')){
 				$rs['store'] =$inpub->getdatastore($rs['fieldstype'],$inrs,$rs['data']);
 			}
@@ -112,7 +123,7 @@ class modeClassModel extends Model
 		//$isdaoru 	= m('flow_element')->rows("`mid`='$modeid' and `isdr`=1");
 		$drstrbtn	= '';
 		//if($isdaoru>0){
-			$drstrbtn	= "<span style=\"display:none\" id=\"daoruspan_{rand}\"><button class=\"btn btn-default\" click=\"daoru,1\" type=\"button\">导入</button>&nbsp;&nbsp;&nbsp;</span>";
+			$drstrbtn	= "<span style=\"display:none\" id=\"daoruspan_{rand}\"><button class=\"btn btn-default\" click=\"daoru,1\" type=\"button\"><?=lang('导入')?></button>&nbsp;&nbsp;&nbsp;</span>";
 		//}
 		
 		//读取流程模块的条件
@@ -123,19 +134,19 @@ class modeClassModel extends Model
 		if($lbztxs==2)$showzt = false;
 		if($showzt){
 			$ztarr	= $flow->getstatusarr();
-			$zthtml = '<td><select class="form-control" style="width:120px;border-left:0;border-radius:0;" id="selstatus_{rand}"><option value="">-全部状态-</option>';
+			$zthtml = '<td><select class="form-control" style="width:120px;border-left:0;border-radius:0;" id="selstatus_{rand}"><option value="">-<?=lang(\'全部\')?><?=lang(\'状态\')?>-</option>';
 			foreach($ztarr as $zt=>$ztv){
 				if($isflow==0 && $zt==23)continue;
-				$zthtml .= '<option style="color:'.arrvalue($ztv, 1).'" value="'.$zt.'">'.$ztv[0].'</option>';
+				$vals = str_replace('?','', $ztv[0]);
+				$zthtml .= '<option style="color:'.arrvalue($ztv, 1).'" value="'.$zt.'"><?=lang(\''.$vals.'\')?></option>';
 			}
 			$zthtml .= '</select></td>';
-			$zthtml	 = str_replace('?','', $zthtml);
 		}
 		$fselarr	= array();
 		$bear		= $this->db->getrows('[Q]option',"`num` like 'columns_".$num."_%'",'`num`,`value`');
 		foreach($bear as $k2=>$rs2)$fselarr[$rs2['num']]=$rs2['value'];
-		$placeholder= '关键字';
-		if($isflow>0)$placeholder= '关键字/申请人/单号';
+		$placeholder= '<?=lang(\'关键字\')?>';
+		if($isflow>0)$placeholder= '<?=lang(\'关键字\')?>/<?=lang(\'申请人\')?>/<?=lang(\'单号\')?>';
 		if($glx==1){
 			return array(
 				'isflow' => $isflow,
@@ -144,31 +155,31 @@ class modeClassModel extends Model
 				'fieldzarr' => $zbarr,
 				'fieldsselarr' => $fselarr,
 				'chufarr' => $chufarr,
-				'modename' => $name,
+				'modename' => $flow->lang($name),
 				'modetable'=> $this->rock->jm->encrypt($mors['table']),
-				'modenames' => $this->rock->repempt($mors['names']),
+				'modenames' => $flow->lang($this->rock->repempt($mors['names'])),
 			);
 		}
 $html= "".$hstart."
 <div>
 	<table width=\"100%\">
 	<tr>
-		<td style=\"padding-right:10px;\" id=\"tdleft_{rand}\" nowrap><button id=\"addbtn_{rand}\" class=\"btn btn-primary\" click=\"clickwin,0\" disabled type=\"button\"><i class=\"icon-plus\"></i> 新增</button></td>
+		<td style=\"padding-right:10px;\" id=\"tdleft_{rand}\" nowrap><button id=\"addbtn_{rand}\" class=\"btn btn-primary\" click=\"clickwin,0\" disabled type=\"button\"><i class=\"icon-plus\"></i> <?=lang('新增')?></button></td>
 		
 		<td><select class=\"form-control\" style=\"width:110px;border-top-right-radius:0;border-bottom-right-radius:0;padding:0 2px\" id=\"fields_{rand}\"></select></td>
-		<td><select class=\"form-control\" style=\"width:60px;border-radius:0px;border-left:0;padding:0 2px\" id=\"like_{rand}\"><option value=\"0\">包含</option><option value=\"1\">等于</option><option value=\"2\">大于等于</option><option value=\"3\">小于等于</option><option value=\"4\">不包含</option></select></td>
-		<td><select class=\"form-control\" style=\"width:130px;border-radius:0;border-left:0;display:none;padding:0 5px\" id=\"selkey_{rand}\"><option value=\"\">-请选择-</option></select><input class=\"form-control\" style=\"width:130px;border-radius:0;border-left:0;padding:0 5px\" id=\"keygj_{rand}\" placeholder=\"关键词\"><input class=\"form-control\" style=\"width:130px;border-radius:0;border-left:0;padding:0 5px;display:none;\" id=\"key_{rand}\" placeholder=\"".$placeholder."\">
+		<td><select class=\"form-control\" style=\"width:60px;border-radius:0px;border-left:0;padding:0 2px\" id=\"like_{rand}\"><option value=\"0\"><?=lang('包含')?></option><option value=\"1\"><?=lang('等于')?></option><option value=\"2\"><?=lang('大于')?><?=lang('等于')?></option><option value=\"3\"><?=lang('小于')?><?=lang('等于')?></option><option value=\"4\"><?=lang('不包含')?></option></select></td>
+		<td><select class=\"form-control\" style=\"width:130px;border-radius:0;border-left:0;display:none;padding:0 5px\" id=\"selkey_{rand}\"><option value=\"\">-<?=lang('请选择')?>-</option></select><input class=\"form-control\" style=\"width:130px;border-radius:0;border-left:0;padding:0 5px\" id=\"keygj_{rand}\" placeholder=\"<?=lang('关键字')?>\"><input class=\"form-control\" style=\"width:130px;border-radius:0;border-left:0;padding:0 5px;display:none;\" id=\"key_{rand}\" placeholder=\"".$placeholder."\">
 		</td>
 		$zthtml
 		<td>
 			<div style=\"white-space:nowrap\">
-			<button style=\"border-right:0;border-radius:0;border-left:0\" class=\"btn btn-default\" click=\"searchbtn\" type=\"button\">搜索</button><button class=\"btn btn-default\" id=\"downbtn_{rand}\" type=\"button\" style=\"padding-left:8px;padding-right:8px;border-top-left-radius:0;border-bottom-left-radius:0\"><i class=\"icon-angle-down\"></i></button> 
+			<button style=\"border-right:0;border-radius:0;border-left:0\" class=\"btn btn-default\" click=\"searchbtn\" type=\"button\"><?=lang('搜索')?></button><button class=\"btn btn-default\" id=\"downbtn_{rand}\" type=\"button\" style=\"padding-left:8px;padding-right:8px;border-top-left-radius:0;border-bottom-left-radius:0\"><i class=\"icon-angle-down\"></i></button> 
 			</div>
 		</td>
 		<td  width=\"90%\" style=\"padding-left:10px\">$whtml</td>
 	
 		<td align=\"right\" id=\"tdright_{rand}\" nowrap>
-			".$drstrbtn."<button class=\"btn btn-default\" style=\"display:none\" id=\"daobtn_{rand}\" disabled click=\"daochu\" type=\"button\">导出 <i class=\"icon-angle-down\"></i></button> 
+			".$drstrbtn."<button class=\"btn btn-default\" style=\"display:none\" id=\"daobtn_{rand}\" disabled click=\"daochu\" type=\"button\"><?=lang('导出')?> <i class=\"icon-angle-down\"></i></button> 
 		</td>
 	</tr>
 	</table>

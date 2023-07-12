@@ -17,4 +17,17 @@ class agent_custfinaClassModel extends agentModel
 		return $rows;
 	}
 	
+	public function gettotal()
+	{
+		$stotal	= $this->getwdtotal($this->adminid);
+		$titles	= '';
+		return array('stotal'=>$stotal,'titles'=> $titles);
+	}
+		
+	private function getwdtotal($uid)
+	{
+		$where	= '`uid`='.$uid.' and `type`=0 and `ispay`=0';
+		$stotal	= m('custfina')->rows($where);
+		return $stotal;
+	}	
 }

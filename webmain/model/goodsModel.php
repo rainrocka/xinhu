@@ -95,6 +95,10 @@ class goodsClassModel extends Model
 	public function getgoodsdata($lx=0)
 	{
 		$typeid	= $this->rock->get('selvalue');
+		$limit  = (int)$this->rock->get('limit', '10');
+		$page   = (int)$this->rock->get('page', '1');
+		$key    = $this->rock->get('key');
+		
 		$where 	= '1=1';
 		if(!isempt($typeid)){
 			$alltpeid = m('option')->getalldownid($typeid);
@@ -113,9 +117,17 @@ class goodsClassModel extends Model
 			}
 			$where.= ' and a.`id` in('.$aids.')';
 		}
+		
 		$where .= m('admin')->getcompanywhere(1,'a.');
-		$rowss  = $this->db->getall('select a.`id`,a.`name`,a.`xinghao`,a.`guige`,a.`stock`,a.`price`,a.`unit`,b.`name` as `typename` from `[Q]goods` a left join `[Q]option` b on a.`typeid`=b.`id` where '.$where.'');
-		$rows	= array();
+		if($key){
+			$key= $this->rock->jm->base64decode($key);
+			$where.= " and (a.`name` like '%$key%' or a.`num` like '%$key%' or a.`xinghao` like '%$key%' or a.`guige` like '%$key%')";
+		}
+		
+		$rowss  	= $this->db->getall('select SQL_CALC_FOUND_ROWS  a.`id`,a.`name`,a.`xinghao`,a.`num`,a.`guige`,a.`stock`,a.`price`,a.`unit`,b.`name` as `typename` from `[Q]goods` a left join `[Q]option` b on a.`typeid`=b.`id` where '.$where.' limit '.(($page-1)*$limit).','.$limit.'');
+		$totalCount = $this->db->found_rows();
+		
+		$rows		= array();
 		foreach($rowss as $k=>$rs){
 			$name 	= $rs['name'];
 			if(!isempt($rs['xinghao']))$name.='('.$rs['xinghao'].')';
@@ -126,10 +138,11 @@ class goodsClassModel extends Model
 			$baar	= array(
 				'name' 	=> $name,
 				'value' => $rs['id'],
+				'num'   => $rs['num'],
 				'price' => $rs['price'],
 				'unit' => $rs['unit'],
 				'stock' => $stock,
-				'subname' => $rs['typename'],
+				'subname' => $rs['num'].' '.$rs['typename'],
 			);
 			if(($lx==1 || $lx==3) && $stock<='0'){
 				$baar['disabled']= true;//领用没有库存了
@@ -141,7 +154,10 @@ class goodsClassModel extends Model
 		$selectdata = $this->getgoodstype(1);
 		return array(
 			'rows' => $rows,
-			'selectdata'=>$selectdata
+			'selectdata'=>$selectdata,
+			'totalCount'=>$totalCount,
+			'page'	=> $page,
+			'limit'	=> $limit,
 		);
 	}
 	

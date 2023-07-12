@@ -90,4 +90,28 @@ class menuClassAction extends Action
 		m('menu')->delete($id);
 		return returnsuccess();
 	}
+	
+	public function createmenuAjax()
+	{
+		$pid = (int)$this->get('menuid','0');
+		$where  =' and (`id`='.$pid.' or `pid`='.$pid.' or `pid` in(select `id` from `[Q]menu` where `pid`='.$pid.'))';
+		$rows 	= $this->db->getall('select *,(select count(1)from `[Q]menu` where `pid`=a.id '.$where.')stotal from `[Q]menu` a where 1=1 '.$where.' order by pid,`sort`');
+		$str = '';
+		$ors = m('menu')->getone($pid);
+		foreach($rows as $k=>$rs){
+			if($k>0)$str.=''.chr(10).'ROCKSPLIT'.chr(10).'';
+			$str.="INSERT INTO `[Q]menu` (`id`,`name`,`pid`,`sort`,`url`,`num`,`icons`,`type`,`ispir`) select '".$rs['id']."','".$rs['name']."','".$rs['pid']."','".$rs['sort']."',".$this->seveslst($rs['url']).",".$this->seveslst($rs['num']).",".$this->seveslst($rs['icons']).",'".$rs['type']."','".$rs['ispir']."' from `[Q]menu` WHERE `id`=1 and NOT EXISTS(SELECT 1 FROM `[Q]menu` where `id`='".$rs['id']."');";
+			//$str.=''.chr(10).'ROCKSPLIT'.chr(10).'';
+			//$str.="update `[Q]menu` set `name`='".$rs['name']."',`status`=1,`url`=".$this->seveslst($rs['url']).",`pid`='".$rs['pid']."',`sort`='".$rs['sort']."' where `id`='".$rs['id']."';";
+		}
+		$bh  = $ors['num'];
+		if(isempt($bh))$bh=$ors['id'];
+		$num = 'menu'.$bh.'';
+		$this->rock->createtxt('upload/data/'.$num.'.txt', $str);
+	}
+	public function seveslst($v)
+	{
+		if($v===null)return 'null';
+		return "'".$v."'";
+	}
 }

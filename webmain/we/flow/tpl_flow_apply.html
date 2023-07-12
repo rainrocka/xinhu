@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" href="webmain/css/rui.css">
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/js.js"></script>
+<script type="text/javascript" src="js/base64-min.js"></script>
 <style>
 
 </style>
@@ -22,6 +23,10 @@ function xuantype(o1){
 }
 function initApp(){
 	js.setapptitle();
+}
+function totuurl(url){
+	var bo = js.appwin('.',url);
+	if(!bo)js.location(url);
 }
 </script>
 </head>
@@ -58,7 +63,7 @@ $count1++;
 	foreach($rows as $k=>$rs){
 	$count++;
 	?>
-	<a class="weui_cell" href="<?=$rs['url']?>">
+	<a class="weui_cell" href="javascript:;" onclick="totuurl('<?=$rs['url']?>')">
 		<div class="weui_cell_bd weui_cell_primary">
 			<p><?=$rs['title']?></p>
 		</div>

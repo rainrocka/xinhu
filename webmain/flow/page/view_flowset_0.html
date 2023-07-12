@@ -1,0 +1,28 @@
+<div class="r-tabs" tabid="a" style="margin-left:34px">
+	<div index="0" class="r-tabs-item active">模块详情</div>
+	<div index="1"  custid="{id}" class="r-tabs-item">字段信息</div>
+</div>
+
+<!--第一个内容，固定默认的详情变量-->
+<div tabitem="0" tabid="a">
+$contview$
+</div>
+
+<div class="ys0" tabitem="1" tabid="a" style="display:none">字段信息</div>
+
+<script>
+var loadbo = [];
+js.ontabsclicks=function(ind,tid,o,ho){
+	if(ind>=1 && !loadbo[ind]){
+		var custid = o.attr('custid');
+		ho.html('<img src="images/mloading.gif">');
+		js.ajax(geturlact('getothernr'),{
+			'mkid':custid,
+			'ind':ind
+		},function(ret){
+			ho.html(ret);
+		});
+	}
+	loadbo[ind] = true;
+}
+</script>

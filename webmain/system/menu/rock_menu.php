@@ -5,7 +5,7 @@ $(document).ready(function(){
 		tablename:'menu',url:js.getajaxurl('data','{mode}','{dir}'),method:'get',loadtree:false,
 		tree:true,celleditor:!ISDEMO,bodyStyle:'height:'+(viewheight-70)+'px;overflow:auto',
 		columns:[{
-			text:'菜单名称',dataIndex:'name',align:'left',editor:true,renderstyle:function(v,d){
+			text:'名称',dataIndex:'name',align:'left',editor:true,renderstyle:function(v,d){
 				return 'min-width:220px';
 			}
 		},{
@@ -61,6 +61,7 @@ $(document).ready(function(){
 	var c = {
 		changed:function(){
 			a.setparams({pid:this.value},true);
+			if(get('editss_{rand}'))get('editss_{rand}').disabled = (this.value=='0')
 		},
 		del:function(){
 			a.del({url:js.getajaxurl('delmenu','{mode}','{dir}')});
@@ -75,30 +76,30 @@ $(document).ready(function(){
 		clickwin:function(o1,lx){
 			if(ISDEMO){js.msg('success','演示站点禁止操作');return;}
 			var h = $.bootsform({
-				title:'菜单',height:500,width:400,
+				title:lang('菜单'),height:500,width:400,
 				tablename:'menu',isedit:lx,
 				params:{int_filestype:'ispir,status,sort,pid,ishs'},
 				submitfields:'num,name,url,icons,ispir,status,sort,pid,ishs,color',
 				items:[{
-					labelText:'编号',name:'num',repEmpty:true
+					labelText:lang('编号'),name:'num',repEmpty:true
 				},{
-					labelText:'菜单名称',name:'name',required:true
+					labelText:lang('菜单')+lang('名称'),name:'name',required:true
 				},{
-					labelText:'URL地址',name:'url',repEmpty:true
+					labelText:'URL'+lang('地址')+'',name:'url',repEmpty:true
 				},{
-					labelText:'图标',name:'icons',repEmpty:true
+					labelText:lang('图标'),name:'icons',repEmpty:true
 				},{
-					labelText:'上级ＩＤ',name:'pid',required:true,value:'0',type:'number'
+					labelText:''+lang('上级')+'ＩＤ',name:'pid',required:true,value:'0',type:'number'
 				},{
-					name:'status',labelBox:'启用',type:'checkbox',checked:true
+					name:'status',labelBox:lang('启用'),type:'checkbox',checked:true
 				},{
 					name:'ispir',labelBox:'验证(未√就是任何人可使用菜单)',type:'checkbox',checked:true
 				},{
-					name:'ishs',labelBox:'显示在首页',type:'checkbox'
+					name:'ishs',labelBox:lang('显示在首页'),type:'checkbox'
 				},{
-					labelText:'颜色',name:'color',repEmpty:true
+					labelText:lang('颜色'),name:'color',repEmpty:true
 				},{
-					labelText:'序号',name:'sort',type:'number',value:'0'
+					labelText:lang('排序'),name:'sort',type:'number',value:'0'
 				}],
 				success:function(){
 					a.reload();
@@ -107,6 +108,12 @@ $(document).ready(function(){
 			if(lx==1)h.setValues(a.changedata);
 			h.getField('name').focus();
 			if(lx==2)h.setValue('pid', a.changedata.id);
+		},
+		createsql:function(){
+			js.loading('创建中...');
+			js.ajax(js.getajaxurl('createmenu','{mode}','{dir}'),{menuid:get('soupid_{rand}').value},function(){
+				js.msgok('创建成功');
+			});
 		}
 	};
 	js.initbtn(c);
@@ -121,10 +128,10 @@ $(document).ready(function(){
 	<td nowrap>
 		<button class="btn btn-primary" click="clickwin,0" type="button"><i class="icon-plus"></i> 新增顶级</button> &nbsp; 
 		<button class="btn btn-success" click="clickwin,2" id="down_{rand}" disabled type="button"><i class="icon-plus"></i> 新增下级</button>&nbsp; 
-		<button class="btn btn-default" click="reload" type="button">刷新</button>
+		<button class="btn btn-default" click="reload" type="button"><?=lang('刷新')?></button>
 	</td>
 
-	<td  style="padding-left:10px">
+	<td  style="padding-left:10px" nowrap>
 		<select class="form-control" style="width:150px" id="soupid_{rand}" >
 		<option value="0">-所有的菜单-</option>
 		</select>
@@ -135,12 +142,17 @@ $(document).ready(function(){
 				<button class="btn btn-default" click="search" type="button"><i class="icon-search"></i></button>
 			</span>
 		</div>-->
+		<?php 
+		if(getconfig('systype')=='dev')echo ' &nbsp; <button class="btn btn-default" id="editss_{rand}" click="createsql" disabled type="button">生成菜单文件</button>';
+		?>
 	</td>
 	
 	<td width="80%"></td>
 	<td align="right" nowrap>
-		<button class="btn btn-danger" id="del_{rand}" click="del" disabled type="button"><i class="icon-trash"></i> 删除</button> &nbsp; 
-		<button class="btn btn-info" id="edit_{rand}" click="clickwin,1" disabled type="button"><i class="icon-edit"></i> 编辑 </button>
+		<button class="btn btn-danger" id="del_{rand}" click="del" disabled type="button"><i class="icon-trash"></i> <?=lang('删除')?></button> &nbsp; 
+		<button class="btn btn-info" id="edit_{rand}" click="clickwin,1" disabled type="button"><i class="icon-edit"></i> <?=lang('编辑')?> </button>
+		
+		
 	</td>
 </tr>
 </table>

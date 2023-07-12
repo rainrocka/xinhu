@@ -204,7 +204,7 @@ var c={
 					return false;
 				}
 				if(isempt(val)){
-					if(form(fid))form(fid).focus();
+					if(form(fid) && flx!='hidden')form(fid).focus();
 					this.showtx(''+nas+'不能为空');
 					return false;
 				}

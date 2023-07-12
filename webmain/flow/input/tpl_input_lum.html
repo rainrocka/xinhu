@@ -152,7 +152,7 @@ if($showheader==1)echo '<div id="header_title" style="padding-top:'.$cenghei.'px
 				$stsp.= '<td class="lurim" nowrap>';
 				if($firstrs['checktype']=='change'){
 					$stsp.='<font color=red>*</font>';
-					$placeholder = '必须指定人员';
+					$placeholder = '必须指定人员'.arrvalue($firstrs,'explain').'';
 					$firstrs['isbt'] = 1;
 				}
 				$stsp.= ''.$firstrs['name'].':</td>';

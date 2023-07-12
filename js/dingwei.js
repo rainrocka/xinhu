@@ -72,7 +72,7 @@ js.dw = {
 			this.wait('原生app定位中...');
 			return;
 		}
-		if(api.startLocation){
+		if(window['api'] && api.startLocation){
 			js.msg();
 			if(api.systemType=='ios'){
 				this.wait(''+api.systemType+'APP定位中...');
@@ -103,7 +103,9 @@ js.dw = {
 								dtes.latitude = ret.location.latitude;
 							}
 							js.dw.baiduLocationSuc(dtes,err);
+							js.dw.bmLocation.stopLocation();
 						});
+						
 					}
 				}
 				return;

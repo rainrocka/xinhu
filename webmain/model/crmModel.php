@@ -9,19 +9,46 @@ class crmClassModel extends Model
 	//读取我的客户和共享给我的
 	public function getmycust($uid=0, $id=0)
 	{
+		$limit  = (int)$this->rock->get('limit', '10');
+		$page   = (int)$this->rock->get('page', '1');
+		$key    = $this->rock->get('key');
+		$where  = '';
+		if($key){
+			$key= $this->rock->jm->base64decode($key);
+			$where.= " and (`name` like '%$key%' or `unitname` like '%$key%')";
+		}
 		if(isempt($id))$id = 0;
 		if($uid==0)$uid=$this->adminid;
 		$s		= $this->rock->dbinstr('shateid', $uid);
-		$rows 	= $this->getrows("`status`=1 and ((`uid`='$uid') or (`id`=$id) or (".$s."))",'id as value,name,id,unitname as subname','`optdt` desc');
-		return $rows;
+		$rows 	= $this->getrows("`status`=1 and ((`uid`='$uid') or (`id`=$id) or (".$s.")) $where",'SQL_CALC_FOUND_ROWS id as value,name,id,unitname as subname','`optdt` desc',''.(($page-1)*$limit).','.$limit.'');
+		$totalCount = $this->db->found_rows();
+		return array(
+			'rows' 	=> $rows,
+			'totalCount' => $totalCount,
+			'limit' => $limit,
+			'page' 	=> $page,
+		);
 	}
 	
 	//读取所有客户
 	public function custdata()
 	{
+		$limit  = (int)$this->rock->get('limit', '10');
+		$page   = (int)$this->rock->get('page', '1');
+		$key    = $this->rock->get('key');
 		$where  = m('admin')->getcompanywhere(3);
-		$rows 	= $this->getrows("`status`=1 ".$where."",'id as value,name,id,unitname as subname','`optdt` desc');
-		return $rows;
+		if($key){
+			$key= $this->rock->jm->base64decode($key);
+			$where.= " and (`name` like '%$key%' or `unitname` like '%$key%')";
+		}
+		$rows 	= $this->getrows("`status`=1 ".$where."",'SQL_CALC_FOUND_ROWS id as value,name,id,unitname as subname','`optdt` desc',''.(($page-1)*$limit).','.$limit.'');
+		$totalCount = $this->db->found_rows();
+		return array(
+			'rows' 	=> $rows,
+			'totalCount' => $totalCount,
+			'limit' => $limit,
+			'page' 	=> $page,
+		);
 	}
 	
 	

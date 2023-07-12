@@ -90,7 +90,7 @@ class finaClassModel extends Model
 		$arr  = array();
 		foreach($rows as $k=>$rs){
 			$name = $rs['name'];
-			if(!isempt($rs['banknum']))$name.='(**'.substr($rs['banknum'],-4).')';
+			if(!isempt($rs['banknum']))$name.='(**'.mb_substr($rs['banknum'],-4).')';
 			$arr[] = array(
 				'value' => $rs['id'],
 				'name' => $name,

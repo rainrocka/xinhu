@@ -112,6 +112,7 @@ class flowClassAction extends Action
 			}
 		}
 		$rows['tables']= $tabs;
+		if($cans['where'])$rows['where'] = htmlspecialchars_decode($cans['where']);
 		return array(
 			'rows' => $rows
 		);
@@ -167,8 +168,9 @@ PRIMARY KEY (`id`),KEY `mid` (`mid`)
 				$addsts[]	= $tabsas;
 			}
 		}
-		
+		$noarray = array('menu','flow_set','flow_element','flow_menu','flow_bill','flow_extent','flow_where');
 		if(isempt($tab))return;
+		if(in_array($tab, $noarray))return;
 		if(!$alltabls)$alltabls 	= $this->db->getalltable();
 		if($isflow==0){
 			if(!in_array(''.PREFIX.''.$tab.'', $alltabls)){
@@ -1377,6 +1379,7 @@ class mode_'.$modenum.'ClassAction extends inputAction{
 		$file = '';
 		$hurs = $this->getfiles();
 		$hurs[] = ''.P.'/flow/page/rock_page_{bh}.php';
+		$hurs[] = ''.P.'/flow/page/rock_page_{bh}_script.php';
 		foreach($rows as $k=>$rs){
 			$ids.=','.$rs['id'].'';
 			$table.=','.$rs['table'].'';

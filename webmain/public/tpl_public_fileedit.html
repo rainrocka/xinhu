@@ -25,6 +25,15 @@ function initbody(){
 				var da = ret.data;
 				$('#msgview').html('跳转中...');
 				sessionStorage.setItem(kei,'trueabc');
+				if(apicloud && api.x5Ver && api.x5Ver>0){
+					api.rockFun('openWinnei',{
+						url:da.url,
+						progress:'true',
+						animtype:'show'
+					});
+					api.closeWin({animtype:'hide'});
+					return;
+				}
 				js.location(da.url);
 			}else{
 				$('#msgview').html('<font color=red>'+ret.msg+'</font>');

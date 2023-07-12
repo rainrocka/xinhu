@@ -32,13 +32,16 @@ $(document).ready(function(){
 	var openfrom = js.request('openfrom',js.getoption('openfrom','', true));
 	js.setoption('openfrom', openfrom, true);
 	
-	if(HOST=='127.0.0.1' || HOST=='localhost' || HOST.indexOf('192.168.0')>-1)window.addEventListener('error',function(e){
+	if(HOST=='127.0.0.1' || HOST=='localhost' || HOST.indexOf('192.168.')>-1)window.addEventListener('error',function(e){
 		var msg = '文件：'+e.filename+'\n行：'+e.lineno+'\n错误：<font color=red>'+e.message+'</font>';
 		js.alert(msg,'js错误');
 	});
+	if(navigator.userAgent.indexOf('XINHUOA')<0){
+		if(typeof(api)=='undefined')api={};
+	}
 	setTimeout(function(){
 		if(typeof(api)=='undefined'){
-			var api={};
+			api={};
 			api.systemType='androidnew';
 			api.deviceId='';
 		}
@@ -995,7 +998,11 @@ js.back=function(){
 	if(isapp){
 		plus.webview.currentWebview().close('auto');
 	}else if(apicloud){
-		api.historyBack({},function(ret){if(!ret.status)api.closeWin();});
+		if(api.historyBack){
+			api.historyBack({},function(ret){if(!ret.status)api.closeWin();});
+		}else{
+			api.closeWin();
+		}
 	}else{
 		history.back();
 	}
@@ -1149,7 +1156,7 @@ js.setapptitle=function(tit){
 	var svst = sessionStorage.getItem('apiwinname');
 	if(svst){
 		if(!tit)tit=document.title;
-		js.sendevent('title',svst,{title:tit})
+		//js.sendevent('title',svst,{title:tit})
 	}
 }
 js.fileoptWin=function(id){
@@ -1162,6 +1169,7 @@ js.fileoptWin=function(id){
 js.apiopenWin=function(url){
 	if(!apicloud)return false;
 	api.openWin({name:'url'+js.getrand(),url: url,bounces:false,softInputBarEnabled:false,slidBackEnabled:true,vScrollBarEnabled:false,hScrollBarEnabled:false,allowEdit:false,progress:{type:'',title:'', text:'',   color:''}});	
+	
 	return true;
 }
 js.appwin=function(na,dz){	
@@ -1170,8 +1178,13 @@ js.appwin=function(na,dz){
 	if(dz.substr(0,4)!='http')dz=NOWURL+dz;
 	var jg  = (dz.indexOf('?')==-1)?'?':'&';
 	if(!na)na='&nbsp;';
-	var bstr=jm.base64encode('{"name":"'+na+'","url":"openurl","dizhi":"'+dz+''+jg+'hideheader=true"}');
-	var url = ''+ourl+'?bstr='+bstr+'';
+	var dizhi 	= ''+dz+''+jg+'hideheader=true';
+	if(apicloud && api.openWindcloud){
+		api.openWindcloud({name:na,url:dz})
+		return true;
+	}
+	var bstr	=jm.base64encode('{"name":"'+na+'","url":"openurl","dizhi":"'+dizhi+'"}');
+	var url 	= ''+ourl+'?bstr='+bstr+'';
 	return this.apiopenWin(url);	
 }
 js.sendevent=function(typ,na,d){
@@ -1179,5 +1192,9 @@ js.sendevent=function(typ,na,d){
 	if(!d)d={};
 	d.opttype=typ;
 	if(!na)na='xinhuhome';
-	if(api.sendEvent)api.sendEvent({name: na,extra:d});
+	if(api.sendEvent)api.sendEvent({name: na,stype:typ,extra:d});
+}
+
+function lang(ky){
+	return ky;
 }

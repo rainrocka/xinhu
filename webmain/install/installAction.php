@@ -1,5 +1,5 @@
 <?php
-set_time_limit(90);
+set_time_limit(600);
 class installClassAction extends ActionNot{
 	
 	public function initAction()

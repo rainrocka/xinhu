@@ -209,6 +209,7 @@ class indexClassAction extends Action{
 			}else{
 				$rs['stotal']	= 0;
 			}
+			$rs['name'] = lang($rs['name'],'menu');
 			$rows[] = $rs;
 		}
 		return $rows;

@@ -163,6 +163,8 @@ a:link,a:visited{TEXT-DECORATION:none;color:var(--main-color)}
 
 
 
-.menulist{background-color:white}
+.menulist{background-color:white;user-select:none;border-radius:10px}
 .menulist div{padding:12px 0px;font-size:16px;text-align:center}
+.menulist div:first-child{border-radius:10px 10px 0px 0px}
+.menulist div:last-child{border-radius:0px 0px 10px 10px}
 .menulist div:active{ background-color:#f1f1f1}

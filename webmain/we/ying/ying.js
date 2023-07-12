@@ -400,25 +400,37 @@ var myScroll=false,yy={
 				s='<div class="contline">'+d.title+'</div>';
 			}else{
 				if(!d.statuscolor)d.statuscolor='';
+				
+				var bstr = new touchclass({
+					xuhao:oi,
+					onlongclick:function(){
+						yy.showmenu(this.xuhao);
+					},
+					onclick:function(){
+						yy.xiang(this.xuhao);
+					}
+				}).touchstring();
 				st='';
 				if(d.ishui==1)st='color:#aaaaaa;';
-				s='<div style="'+st+'" class="r-border contlist">';
+				s='<div style="'+st+'" class="contlist">';
+				s+='<div '+bstr+'>';
 				if(d.title){
 					if(d.face){
-						s+='<div onclick="yy.showmenu('+oi+')" class="face"><img src="'+d.face+'" align="absmiddle">'+d.title+'</div>';
+						s+='<div class="face"><img src="'+d.face+'" align="absmiddle">'+d.title+'</div>';
 					}else{
-						s+='<div onclick="yy.showmenu('+oi+')" class="tit">'+d.title+'</div>';
+						s+='<div class="tit">'+d.title+'</div>';
 					}
 				}
 				if(d.optdt)s+='<div class="dt">'+d.optdt+'</div>';
-				if(d.picurl)s+='<div onclick="yy.showmenu('+oi+')" class="imgs"><img src="'+d.picurl+'" width="100%"></div>';
-				if(d.cont)s+='<div  onclick="yy.showmenu('+oi+')" class="cont">'+d.cont.replace(/\n/g,'<br>')+'</div>';
+				if(d.picurl)s+='<div class="imgs"><img src="'+d.picurl+'" width="100%"></div>';
+				if(d.cont)s+='<div  class="cont">'+d.cont.replace(/\n/g,'<br>')+'</div>';
+				s+='</div>';
 				if(d.id && d.modenum && !d.noshowopt){
-					s+='<div class="xq r-border-t"><font onclick="yy.showmenu('+oi+')">操作<i class="icon-angle-down"></i></font><span onclick="yy.xiang('+oi+')">详情&gt;&gt;</span>';
+					s+='<div class="xq"><font onclick="yy.showmenu('+oi+')">操作<i class="icon-angle-down"></i></font><span onclick="yy.xiang('+oi+')">详情&gt;&gt;</span>';
 					s+='</div>';
 				}
 				if(d.xiangurl){
-					s+='<div class="xq r-border-t" onclick="yy.xiang('+oi+')"><font>详情&gt;&gt;</font></div>';
+					s+='<div class="xq" onclick="yy.xiang('+oi+')"><font>详情&gt;&gt;</font></div>';
 				}
 				if(d.statustext)s+='<div style="background-color:'+d.statuscolor+';opacity:0.7" class="zt">'+d.statustext+'</div>';
 				s+='</div>';

@@ -1,0 +1,31 @@
+新增||add
+更多||more
+我的申请|我的申請|My Apply
+刷新||Refresh
+刷新统计中|刷新統計中|RefreshTotaling
+编辑|編輯|edit
+删除|刪除|delete
+菜单|菜單|menu
+评论|評論|pinglun
+编号|編号|num
+状态|狀態|state
+申请人|申請人|Apply
+申请人部门|申請人部門|color
+单号|單号|level
+搜索||Search
+关键字|關鍵字|keyword
+提交人||Turn
+包含||contain
+等于|等瘀|equal to
+小于|小瘀|less than
+大于|大瘀|greater than
+请选择|請選擇|Please select
+不包含||not contain
+已审核|乙審核|
+待处理|待處理|
+不同意|不同逸|
+已作废|乙作廢|
+退回||back
+流程||Flow
+授权查看|授權查看|
+经我处理|經我處理|

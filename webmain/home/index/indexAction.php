@@ -11,6 +11,7 @@ class indexClassAction extends Action{
 			$where	= ' and `id` in('.$caids.')';
 		}
 		$mrows = m('menu')->getrows("`ishs`=1 and `status`=1 $where ", "`id`,`num`,`name`,`url`,`color`,`icons`",'`sort`');
+		if(LANG!='zh-CN')foreach($mrows as $k=>$rs)$mrows[$k]['name'] = lang($rs['name'],'menu');
 		return $mrows;
 	}
 	

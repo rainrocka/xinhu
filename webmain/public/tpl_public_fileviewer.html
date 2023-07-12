@@ -30,6 +30,27 @@
 	<script>
 	DEFAULT_URL = jm.base64decode('<?=$da['filepath']?>');
 	
+	
+	var openbool = false;
+	var url = location.href
+	var lse = url.lastIndexOf('/');
+	NOWURL  = url.substr(0, lse+1);
+	apiready=function(){
+		if(openbool || !api.rockFun)return;
+		var x5ver = api.x5Ver;
+		if(x5ver && x5ver>0){
+			var pdfurl = NOWURL+DEFAULT_URL;
+			api.rockFun('openPdf', {
+				fileurl:pdfurl,
+				filename:'<?=$da['filename']?>',
+				animtype:'show',
+				opentyle:'x5'
+			});
+			api.closeWin({animtype:'hide'});
+		}
+		openbool = true;
+	}
+	
 	/*
 	const hammertime = new Hammer(document);
 	hammertime.get('pinch').set({ enable: true });

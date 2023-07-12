@@ -629,7 +629,7 @@ class inputAction extends Action
 				}
 				foreach($courses as $k=>$rs1){
 					$na = $rs1['name'];
-					if(!$this->isempt($rs1['explain']))$na.= '<br><span style="font-size:12px">('.$rs1['explain'].')</span>';
+					//if(!$this->isempt($rs1['explain']))$na.= '<br><span style="font-size:12px">('.$rs1['explain'].')</span>';
 					$rs1['name'] = $na;
 					$rs1['k'] 	 = $k;
 					$rs1['isnow']= $rs1['id']==$nowcourseid;
@@ -829,22 +829,23 @@ class inputAction extends Action
 			$this->atypearr[] = array(
 				'id'	=> 0,
 				'num'	=> 'grant',
-				'name'  => ''.$this->flow->modename.'授权查看',
+				'name'  => ''.$this->flow->modename.''.lang('授权查看').'',
 			);
 		}else if($this->loadci==1 && $this->adminid>0){
 			$this->atypearr = m('where')->getmywhere($this->modeid, $this->adminid, $pnum);
+			if(LANG!='zh-CN' && $this->atypearr)foreach($this->atypearr as $k1=>$rs1)$this->atypearr[$k1]['name'] = $this->flow->lang($rs1['name']);
 			if(isempt($pnum)){
 				$mors = $this->flow->moders;
 				if((int)arrvalue($mors,'iscs','0')>0)$this->atypearr[] = array(
 					'id'	=> 0,
 					'num'	=> 'chaos',
-					'name'  => ''.$mors['name'].'抄送给我',
+					'name'  => ''.$mors['name'].''.lang('抄送给我').'',
 				);
 				if($mors['isflow']>0){
 					$this->atypearr[] = array(
 						'id'	=> 0,
 						'num'	=> 'mychuli',
-						'name'  => ''.$mors['name'].'经我处理',
+						'name'  => ''.$mors['name'].''.lang('经我处理').'',
 					);
 				}
 			}
@@ -903,6 +904,7 @@ class inputAction extends Action
 		$souarr 	= array();
 		$this->input= c('input');
 		$this->flow = $flow;
+		$this->input->flow = $flow;
 		foreach($flow->fieldsarra as $k=>$rs){
 			
 			if($rs['issou']==1){

@@ -53,4 +53,15 @@ class coginiClassAction extends Action
 		}
 		return '';
 	}
+	
+	
+	
+	public $publicfile = 'include/langlocal/langtxt/';
+	public function langcogAction()
+	{
+		
+		return '授权版可用';
+	}
+	
+	
 }

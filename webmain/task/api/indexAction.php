@@ -123,12 +123,14 @@ class indexClassAction extends apiAction
 		$hwtoken 	= $this->get('hwtoken');
 		$pushtoken 	= $this->get('pushtoken');
 		$appver 	= $this->get('appversion');
+		$web 		= $this->get('web');
 		$ispush  	= (int)$this->get('ispush','0');
 		if($appver)$pushtoken.='_'.$appver.'';
 		$uarr['ispush'] 	= $ispush;
 		$uarr['pushtoken'] 	= $pushtoken;
 		$uarr['moddt'] 		= $this->now;
 		if(!isempt($hwtoken))$uarr['ip'] = $hwtoken;
+		if(!isempt($web))$uarr['web'] 	 = $web;
 		m('login')->update($uarr, "`token`='$this->admintoken'");
 		if($ispush==1)m('reim')->sendpush($this->adminid, 'all', array(
 			'type' => 'onoffline',
