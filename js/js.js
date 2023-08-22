@@ -179,6 +179,7 @@ js.serverdt=function(atype){
 	return dt;
 }
 js.open=function(url,w,h,wina,can,wjcan){
+	if(apicloud){api.openWin({url:url});return;}
 	if(wina){try{var owina	= this.openarr[wina];owina.document.body;owina.focus();return owina;}catch(e){}}
 	if(!w)w=750;if(!h)h=500;
 	var l=(screen.width-w)*0.5,t=(screen.height-h)*0.5-50,rnd = parseInt(Math.random()*50);
@@ -1025,7 +1026,14 @@ js.filelxext = function(lx){
 	if(js.fileall.indexOf(','+lx+',')<0)lx='wz';
 	return lx;
 }
-js.datechange=function(o1,lx){
+js.datechange=function(o1,lx,isbo){
+	if(!$(o1).rockdatepicker && !isbo){
+		js.importcss('mode/plugin/css/jquery-rockdatepicker.css');
+		js.importjs('mode/plugin/jquery-rockdatepicker.js', function(){
+			js.datechange(o1,lx, true);
+		});
+		return;
+	}
 	if(!lx)lx='date';
 	$(o1).rockdatepicker({'view':lx,'initshow':true});
 	return false;
@@ -1036,7 +1044,7 @@ js.selectdate=function(o1,inp,lx){
 	return false;
 }
 js.importjs=function(url,fun){
-	var sid = jm.encrypt(url);
+	var sid = jm.base64encode(url);
 	if(!fun)fun=function(){};
 	if(get(sid)){fun();return;}
 	var scr = document.createElement('script');
@@ -1051,6 +1059,16 @@ js.importjs=function(url,fun){
 	}
 	document.getElementsByTagName('head')[0].appendChild(scr);
 	return false;	
+}
+
+js.importcss = function(url){
+	var sid  = jm.base64encode(url);
+	if(get(sid))return;
+	var scr  = document.createElement('link');
+	scr.href = url;
+	scr.id   = sid;
+	scr.rel  = 'stylesheet';
+	document.getElementsByTagName('head')[0].appendChild(scr);
 }
 
 js.replacecn=function(o1){

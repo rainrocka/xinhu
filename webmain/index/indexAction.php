@@ -63,6 +63,7 @@ class indexClassAction extends Action{
 		$this->smartydata['admintype']	= $isadmin;
 		$this->smartydata['my']			= $my;
 		$this->smartydata['afrom']		= $afrom;
+		$this->smartydata['tanwidth']   = $this->option->getval('tanwidth', '900x800');
 		$this->smartydata['face']		= $this->rock->repempt($my['face'], 'images/noface.png');
 		if(!isempt($homename))$this->title = $homename;
 		

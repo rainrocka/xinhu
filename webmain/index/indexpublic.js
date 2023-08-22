@@ -240,7 +240,7 @@ function optmenuclass(o1,num,id,obj,mname,oi, cola){
 		var bts = (d.issm==1)?'必填':'选填';
 		if(d.optnum!=null && d.optnum.indexOf('noup')>-1)uostr='';
 		if(!d.smcont)d.smcont='';
-		if(lx==1 || lx==9 || lx==10 || lx==13 || lx==15 || lx==16 || lx==17){
+		if(lx==1 || lx==9 || lx==10 || lx==13 || lx==15 || lx==16 || lx==17 || lx==19){
 			if(d.nup==1)uostr=''; //不需要上传文件
 			js.prompt(d.name,'请输入['+d.name+']说明('+bts+')：',function(index, text){
 				if(index=='yes'){
@@ -746,70 +746,3 @@ function pirnttablelist(d,na){
 	}
 	window.open('?d=public&m=print&table='+rnd+'&modename='+jm.base64encode(na)+'');
 }
-
-//重写js.tanbody
-/*
-if(homestyle==222){
-	js.winiframemax = 120;
-	js.tanbody=function(act,title,w,h,can1){
-		this.tanbodyindex++;
-		var can	= js.applyIf(can1,{html:'',msg:'',showfun:function(){},bodystyle:'',guanact:'',titlecls:'',btn:[]});
-		var l=(winWb()-w-50)*0.5,t=(winHb()-h-50)*0.5;
-		var s	= '';
-		var mid	= ''+act+'_main';
-		$('#'+mid+'').remove();
-		var heis='';
-		if(can.bodyheight)heis='height:'+can.bodyheight+';overflow:auto;';	
-		var s = '<div class="modal" id="'+mid+'" tabindex="-1" role="dialog" style="left:3px;top:'+t+'px" aria-labelledby="myModalLabel">';
-		s+='<div id="xpbg_bodydds" xpbody="'+act+'" class="modal-dialog" style="width:'+w+'px;margin:0px auto" role="document">';
-		s+=' 	<div class="modal-content">';
-		s+=' 		<div class="modal-header" >';
-		s+='			<button id="'+act+'_spancancel" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-		s+='			<h4 onmousedown="js.move(\''+mid+'\')" class="modal-title">'+title+'</h4>';
-		s+='		</div>';
-		s+='		<div class="modal-body" style="padding:0px;'+heis+';'+can.bodystyle+'" id="'+act+'_body">'+can.html+'</div>';
-		
-		s+='	<div id="'+act+'_bbar" class="modal-footer" align="right"><span id="msgview_'+act+'">'+can.msg+'</span>&nbsp;';
-		for(var i=0; i<can.btn.length; i++){
-			var a	= can.btn[i];
-			s+='<button class="btn btn-success" id="'+act+'_btn'+i+'" onclick="return false">';
-			if(!isempt(a.icons))s+='<i class="icon-'+a.icons+'"></i>&nbsp; ';
-			s+=''+a.text+'</button>&nbsp; ';
-		}
-		s+='	<button class="btn btn-default" id="'+act+'_cancel" onclick="return js.tanclose(\''+act+'\',\''+can.guanact+'\')">取消</button>';
-		s+='	</div>';
-
-		s+='  </div>';
-		s+=' </div>';
-		s+='</div>';
-		$('body').append(s);
-		
-		if(can.closed=='none'){
-			$('#'+act+'_bbar').remove();
-			$('#'+act+'_spancancel').remove();
-		}
-		if(can.bbar=='none')$('#'+act+'_bbar').remove();
-		this.modalobj = $('#'+mid+'').modal({'keyboard':false,'show':true,'backdrop':'static'});
-		this.modalobj.on('hidden.bs.modal',function(){
-			$('#'+mid+'').remove();
-		});
-		this.tanoffset(act);
-		can.showfun(act);
-	}
-
-	js.tanclose=function(act, guan){
-		$('#'+act+'_main').remove();
-		$($('.modal-backdrop')[0]).remove();
-		js.xpbody(act,'none');
-		return false;
-	}
-
-	js.tanoffset=function(act){
-		var mid=''+act+'_main';
-		var lh=$('#'+mid+'').find('div[xpbody]').height(),l,t;
-		t=(winHb()-lh-20)*0.5;
-		if(t<0)t=1;
-		$('#'+mid+'').css({'top':''+t+'px'});
-	}
-}
-*/

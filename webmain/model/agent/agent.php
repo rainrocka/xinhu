@@ -49,6 +49,7 @@ class agentModel extends Model
 		if($this->moders){
 			$this->modeid 	= $this->moders['id'];
 			$this->flow 	= m('flow')->initflow($num);
+			$this->flow->ismobile = 1;
 		}
 	}
 	

@@ -180,7 +180,7 @@ js.showmenu=function(d){
 	var h1=$(window).height(),h2=document.body.scrollHeight,s1;
 	if(h2>h1)h1=h2;
 	var col='',oix;
-	var s='<div align="center" id="menulistshow" style="background:rgba(0,0,0,0.6);height:'+h1+'px;width:100%;position:absolute;left:0px;top:0px;z-index:198;" >';
+	var s='<div align="center" id="menulistshow" style="background:rgba(0,0,0,0.6);height:'+h1+'px;width:100%;position:absolute;left:0px;top:0px;z-index:198;" oncontextmenu="return false">';
 	s+='<div id="menulistshow_s" style="width:'+d.width+'px;margin-top:'+d.top+';position:fixed;-webkit-overflow-scrolling:touch;" class="menulist">';
 	for(var i=0;i<a.length;i++){
 		oix = '0';
@@ -326,7 +326,7 @@ function touchclass(cans){
 		this.islongbool = false;
 		if(!this.initbool){
 			o1.addEventListener('click', function(){
-				me._onclick(this, event);
+				me.onclicks(this, event);
 			}, false);
 		}
 		this.obj = o1;
@@ -335,13 +335,30 @@ function touchclass(cans){
 		this.touchtime  = setTimeout('touchnowobj=false',1000);
 		return true;
 	}
-	this._onclick=function(o1, evt){
-		if(!this.islongbool)this.onclick(o1, evt);
+	this.ismobile=function(){
+		var llq = navigator.userAgent;
+		llq 	= llq.toLowerCase();
+		var sarr= ['micromessenger','android','mobile','iphone'],bo=false,i;
+		for(i=0;i<sarr.length;i++){
+			if(llq.indexOf(sarr[i])>-1){
+				bo=true;
+				break;
+			}
+		}
+		return bo;
+	}
+	this.onclicks=function(o1, evt){
+		var lx = evt.target.nodeName.toLowerCase();
+		if(!this.islongbool && lx!='a')this.onclick(o1, evt);
 	}
 	this.touchstring=function(){
 		var rnd = 'a'+js.getrand();
 		touchnowoba[rnd] = this;
 		var str = ' ontouchstart="return touchnowoba.'+rnd+'.touchstart(this,event)"';
+		if(!this.ismobile()){
+			str = ' onmouseover="touchnowoba.'+rnd+'.touchstart(this,event)"';
+			str+= ' oncontextmenu="touchnowoba.'+rnd+'.onlongclick();return false;"';
+		}
 		return str;
 	}
 	this.reglongmenu=function(){

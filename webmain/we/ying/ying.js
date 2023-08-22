@@ -321,7 +321,7 @@ var myScroll=false,yy={
 			}
 			return;
 		}
-		if(lx==1 || lx==9 || lx==10 || lx==13 || lx==15 || lx==16 || lx==17 || lx==4){
+		if(lx==1 || lx==9 || lx==10 || lx==13 || lx==15 || lx==16 || lx==17 || lx==19 || lx==4){
 			var bts = (d.issm==1)?'必填':'选填';
 			var str1= '请输入['+d.name+']说明('+bts+')：';
 			if(lx==4)str1='<div align="left" id="showmenusss" style="padding:10px">加载中...</div>'+str1+'';
@@ -400,7 +400,6 @@ var myScroll=false,yy={
 				s='<div class="contline">'+d.title+'</div>';
 			}else{
 				if(!d.statuscolor)d.statuscolor='';
-				
 				var bstr = new touchclass({
 					xuhao:oi,
 					onlongclick:function(){

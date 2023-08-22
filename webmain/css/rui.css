@@ -168,3 +168,7 @@ a:link,a:visited{TEXT-DECORATION:none;color:var(--main-color)}
 .menulist div:first-child{border-radius:10px 10px 0px 0px}
 .menulist div:last-child{border-radius:0px 0px 10px 10px}
 .menulist div:active{ background-color:#f1f1f1}
+
+.webbtn{color:#ffffff;opacity:1; background-color:#336699;background-color:var(--main-color); padding:5px 10px; border:none; cursor:pointer;font-size:14px;border-radius:5px;white-space:nowrap;text-overflow:ellipsis;}
+.webbtn:hover,.webbtn:active{box-shadow:0px 0px 5px rgba(0,0,0,0.3);opacity:0.8}
+.input:focus{box-shadow:0px 0px 5px rgba(0,0,0,0.3); border:1px #0887CC solid;border:1px var(--main-color) solid; color:#000000}

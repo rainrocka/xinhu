@@ -76,9 +76,9 @@ a.btn{padding:5px 8px}
 .tdinput{padding:8px 5px}
 .inborder{border:1px #cccccc solid;}
 
-a.webbtn:link,a.webbtn:visited,.webbtn{color:#ffffff;opacity:0.8; background-color:var(--main-color); padding:8px 10px; border:none; cursor:pointer;font-size:14px}
+a.webbtn:link,a.webbtn:visited,.webbtn{color:#ffffff;opacity:1; background-color:var(--main-color); padding:8px 10px; border:none; cursor:pointer;font-size:14px}
 .webbtn:disabled{background-color:#aaaaaa; color:#eeeeee}
-.webbtn:hover{box-shadow:0px 0px 5px rgba(0,0,0,0.3);opacity:1}
+.webbtn:hover{box-shadow:0px 0px 5px rgba(0,0,0,0.3);opacity:0.8}
 .radius5{border-radius:5px;}
 
 .upload_items{border:1px #cccccc solid;height:60px;overflow:hidden;float:left;margin-top:5px;margin-bottom:5px;margin-right:10px;cursor:pointer;position:relative}
