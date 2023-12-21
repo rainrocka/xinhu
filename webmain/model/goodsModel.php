@@ -260,4 +260,95 @@ class goodsClassModel extends Model
 			return $varr;
 		}
 	}
+	
+	/**
+	*	直接操作出入库
+	*/
+	public function chukuopts($mid, $mknum)
+	{
+		$isru = m('option')->getval('wpautostock');
+		if($isru!='1')return;
+		$barr = $this->chukuopt($mid);
+		if(!$barr['success'])m('log')->addlogs('直接出入库', $mknum.'('.$mid.'):'.$barr['msg'], 2);
+	}
+	public function chukuopt($mid, $depotid=0)
+	{
+		$mrs 	= m('goodm')->getone("`id`='$mid' and `status`=1");
+		if(!$mrs)return returnerror('该单据还未审核完成，不能出入库操作');
+		$comid	= $mrs['comid'];
+		
+		if($depotid==0){
+			$where = '1=1';
+			if(ISMORECOM){
+				$where = 'comid='.$comid.'';
+			}
+			$grs = m('godepot')->getone($where);
+			if(!$grs)return returnerror('没有创建仓库');
+			$depotid = $grs['id'];
+		}
+		
+		$mtype = (int)$mrs['type']; //3就是调拨
+		$typv = (int)$mrs['type'];
+		
+		$typa = explode(',', '1,0,1,0,0,0');
+		$kina = explode(',', '0,0,1,3,1,4');
+		
+		if(!isset($typa[$typv]) || !isset($kina[$typv]))return returnerror('为设置出入库类型');
+		$type = $typa[$typv];
+		$kind = $kina[$typv];
+		
+		
+		//if($mtype==3 && $depotid==$mrs['custid'])return returnerror('调拨出入库仓库不能相同');
+		
+		$ndbs			= m('goodn');
+		
+		//读取已入库数量
+		$arwos = $ndbs->getall('`mid`='.$mid.' and `couns`<`count`');
+		
+		if(!$arwos)return returnerror('子表没用可出入库得');
+		
+		$arr['applydt'] = $this->rock->date;
+		$arr['type'] 	= $type;
+		$arr['kind'] 	= $kind;
+		$arr['depotid'] = $depotid;
+		$arr['explain'] = '';
+		$arr['uid'] 	= $this->adminid;
+		$arr['optid'] 	= $this->adminid;
+		$arr['optdt'] 	= $this->rock->now;
+		$arr['comid'] 	= $comid;
+		$arr['optname'] = $this->adminname;
+		$arr['status'] 	= 1;
+		$arr['mid'] 	= $mid;
+		
+		$aid = '0';
+		
+		foreach($arwos as $k1=>$rs1){
+			$count = floatval($rs1['count']) - floatval($rs1['couns']);
+			if($count<=0)continue;
+			$arr['type'] 	= $type;
+			$arr['depotid'] = $depotid;
+			$arr['aid'] 	= $rs1['aid'];
+			$arr['count'] 	= $count;
+			if($type==1)$arr['count'] = 0 - $arr['count'];//出库为负数
+			
+			$ussid = $this->db->record('[Q]goodss', $arr);
+			
+			if($ussid){
+				$ndbs->update('`couns`=`count`', $rs1['id']);
+			}
+			
+			if($mtype==3){
+				$arr['depotid'] = $mrs['custid']; //仓库
+				$arr['type'] 	= 1; //出库
+				$arr['count']	= 0 - $count;
+				$this->db->record('[Q]goodss', $arr);
+			}
+			
+			$aid.=','.$rs1['aid'].'';
+		}
+		
+		if($aid!='0')$this->setstock($aid);
+		$this->upstatem($mid);
+		return returnsuccess();
+	}
 }

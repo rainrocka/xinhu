@@ -40,7 +40,7 @@ bootparams.beforeload=function(){
 }
 
 c.initpage=function(){
-	$('#tdleft_{rand}').after('<td style="padding-right:10px"><select style="width:150px;"  class="form-control" id="modeid_{rand}" ><option value="0">请选择菜单</option></select></td>');
+	$('#tdleft_{rand}').after('<td style="padding-right:10px"><select style="width:200px;"  class="form-control" id="modeid_{rand}" ><option value="0">管理下级菜单请这里选择</option></select></td>');
 	$('#modeid_{rand}').change(function(){
 		a.setparams({pid:this.value},true);
 	});

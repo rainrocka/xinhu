@@ -7,7 +7,7 @@ class mode_finhkdClassAction extends inputAction{
 		$uid 	= $arr['uid'];
 		$money  = floatval($arr['money']);
 		$to 	= m('fina')->totaljie($uid, $id);
-		if($money > $to)return '还款金额超过需还金额';
+		if($money > floatval($to))return '还款金额超过需还金额';
 		
 		$rows['type'] = '3';//一定要是3，不能去掉
 		return array(
@@ -24,7 +24,7 @@ class mode_finhkdClassAction extends inputAction{
 	{
 		$mid 	= (int)$this->get('mid');
 		$moenky	= m('fina')->totaljie($this->adminid, $mid);
-		return ''.$moenky.'元';
+		return ''.$this->rock->number($moenky).'元';
 	}
 	
 	public function getlastAjax()

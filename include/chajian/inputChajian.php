@@ -367,7 +367,7 @@ class inputChajian extends Chajian
 		if(!$fopt && ($type=='rockcombo' || $type=='checkboxall' || $type=='radio')){
 			$_ars = explode(',', $datanum);
 			$fopt = $this->option->getselectdata($_ars[0], isset($_ars[2]));
-			$fvad = 'name';
+			$fvad = 'nameo';
 			if(isset($_ars[1])&&($_ars[1]=='value'||$_ars[1]=='id'||$_ars[1]=='num'))$fvad=$_ars[1];
 			
 			if($fopt){

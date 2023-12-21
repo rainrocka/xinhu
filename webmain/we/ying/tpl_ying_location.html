@@ -263,12 +263,16 @@ function paizhao(){
 				destinationType: 'base64',quality:80,
 				targetWidth:1000,targetHeight:1000
 			}, function(ret, err) {
-				if (ret) {
+				if (ret && ret.base64Data) {
 					imagecont= ret.base64Data;
+					if(imagecont.indexOf('data:')!=0)imagecont='data:image/jpg;base64,'+imagecont;
 					$('#paizhaoimg').parent().show();
 					get('paizhaoimg').src = imagecont;
 					get('pzbtnicons').className='icon-remove';
 					ispzs = true;
+				}else{
+					apicloud=false;
+					js.wx.alert('请用相机拍照再去选对应图片');
 				}
 			});
 		}else{

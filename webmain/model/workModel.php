@@ -11,4 +11,18 @@ class workClassModel extends Model
 		
 		return $to;
 	}
+	
+	//更新对应项目进度
+	public function updateproject($id)
+	{
+		$id    = (int)$id;
+		if($id==0)return;
+		$zshu  = $this->rows('`projectid`='.$id.' and `status`<>5');
+		$wcshu = $this->rows('`projectid`='.$id.' and `status`=1');
+		$blix  = '0';
+		if($zshu>0){
+			$blix = ($wcshu/$zshu) *100;
+		}
+		m('project')->update('progress='.$blix.'', $id);
+	}
 }

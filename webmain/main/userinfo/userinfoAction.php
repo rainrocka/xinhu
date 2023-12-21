@@ -93,8 +93,9 @@ class userinfoClassAction extends Action
 		$atatea = explode(',', '试用期,正式,实习生,兼职,临时工,离职');
 		$atrows = $this->option->getmnum('userstate');
 		foreach($atrows as $k1=>$rs1)if(!isempt($rs1['value']))$atatea[$rs1['value']] = $rs1['name'];
-		
+		$total = 0;
 		foreach($rows as $k=>$rs){
+			$total ++;
 			$year = '';
 			if(!$this->isempt($rs['workdate'])) $year = substr($rs['workdate'],0,4);
 			$rows[$k]['year'] = $year;
@@ -121,7 +122,7 @@ class userinfoClassAction extends Action
 		}
 		
 		$arr 	= array();
-		$total 	= $this->db->count;
+		//$total 	= $this->db->count;
 		foreach($rows as $k=>$rs){
 			$val = $rs[$type];
 			if($this->isempt($val))$val = '其他';
@@ -140,7 +141,7 @@ class userinfoClassAction extends Action
 
 		return array(
 			'rows' => $a,
-			'totalCound' => count($a)
+			'totalCount' => count($a)
 		);
 	}
 	

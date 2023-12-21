@@ -6,6 +6,7 @@ class mysqliClass extends mysql{
 	protected function connect()
 	{
 		$this->errormsg	= '';
+		if(!class_exists('mysqli'))exit('操作数据库的php的扩展mysqli不存在');
 		$this->conn = @new mysqli($this->db_host,$this->db_user, $this->db_pass, $this->db_base);
 		if (mysqli_connect_errno()) {
 			$this->conn 	= null;

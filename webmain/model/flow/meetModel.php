@@ -280,6 +280,7 @@ class flow_meetClassModel extends flowModel
 	{
 		$rows 	= $this->getall("`state` in(0,1) and `type`=0 and `startdt` like '".$this->rock->date."%' and `status`=1");
 		$time	= time();
+		$tplnum	= m('option')->getval('meetsmstpltx', 'meettodo');
 		foreach($rows as $k=>$rs){
 			$this->adminmodel->setcompanyid($rs['comid']); //设置对应单位id
 			$zt 	= $rs['state'];
@@ -304,7 +305,7 @@ class flow_meetClassModel extends flowModel
 						$this->meettodos($rs, '您好，会议即将在'.$ssj.'分钟后的'.$dts[1].'开始，请准时参加。');//快到时间通知
 					
 						//短信通知
-						if($ssj<6)$this->sendsms($rs, 'meettodo', array(
+						if($ssj<6)$this->sendsms($rs, $tplnum, array(
 							'fenz' 		=> ''.$ssj.'',
 							'title' 	=> $rs['title'],
 							'time' 		=> $dts[1],

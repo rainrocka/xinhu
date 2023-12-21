@@ -5,21 +5,15 @@ class flow_caigouClassModel extends flowModel
 	
 	
 	private $goodsobj;
-	
+
 	public function initModel()
 	{
 		$this->goodsobj = m('goods');
 	}
 	
-	//审核完成处理,要通知仓库管理员出入库
+	//审核完成处理,是否直接出入库
 	protected function flowcheckfinsh($zt){
-		/*
-		m('goodss')->update('status='.$zt.'',"`mid`='$this->id'");
-		$aid  = '0';
-		$rows = m('goodss')->getall("`mid`='$this->id'",'aid');
-		foreach($rows as $k=>$rs)$aid.=','.$rs['aid'].'';
-		m('goods')->setstock($aid);
-		*/
+		if($zt==1)m('goods')->chukuopts($this->id, $this->modename);
 	}
 	
 	//作废或删除时

@@ -71,6 +71,12 @@ class mode_finpiaoClassAction extends inputAction{
 		if($hjrows['moneyzong']==0)$hjrows['moneyzong']='';
 		
 		$rows[] = $hjrows;
+		foreach($rows as $k=>$rs){
+			if($rs['moneyshou'])$rows[$k]['moneyshou'] = $this->rock->number($rs['moneyshou']);
+			if($rs['moneykai'])$rows[$k]['moneykai'] = $this->rock->number($rs['moneykai']);
+			if($rs['moneyzong'])$rows[$k]['moneyzong'] = $this->rock->number($rs['moneyzong']);
+		}
+		
 		$barr = array(
 			'rows' => $rows,
 			'dt1'  => $dt1,

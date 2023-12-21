@@ -44,9 +44,10 @@ class gerenClassAction extends Action
 		$dt1	= $this->post('dt1');
 		$dt2	= $this->post('dt2');
 		$where	 = 'and optid='.$this->adminid.'';
-		if($atype=='all'){
+		if($atype=='all' && $this->adminid == 1){
 			$where='';
 			if($this->adminid>1)$where=m('admin')->getcompanywhere(3);
+			
 		}
 		if($key!=''){
 			$where.=" and (`optname` like '%$key%' or `filename` like '%$key%' or `mtype`='$key')";

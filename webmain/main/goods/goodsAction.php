@@ -315,13 +315,16 @@ class goodsClassAction extends Action
 		$dgs 	= m('goods');
 		$typeb = array('0'		,'1'	  ,'2'		,'3', '4','5'); 
 		$typea = array('领用单' ,'采购单' ,'销售单'	,'调拨单', '归还单','退货单'); 
+		$biana = array('goodly' ,'caigou' ,'custxiao','diaobo', 'goodgh','tuihuo'); 
 		$chux  = array('0','2');
 		if($rows)foreach($rows as $k=>&$rs){
-			$rs['typev'] = $rs['type'];
-			$rs['type']  = arrvalue($typea, $rs['type']);
+			$rs['mknum']  = arrvalue($biana, $rs['type']);
+			$rs['typev']  = $rs['type'];
+			$rs['type']   = arrvalue($typea, $rs['type']);
 			$lx = 0; //入
 			if(in_array($rs['typev'],$chux))$lx=1;
 			$rs['state']  = $dgs->crkstate($rs['state'], $lx);
+			
 		}
 		return array(
 			'rows' 		=> $rows

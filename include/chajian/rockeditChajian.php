@@ -78,13 +78,16 @@ class rockeditChajian extends Chajian{
 			$onlynum	= md5(''.$this->rock->jm->getRandkey().date('YmdHis').'file'.$id.'');
 			m('file')->update("`onlynum`='$onlynum'", $id);
 		}
+		$stype		= '0';//0wps,1onlyoffice
 		$urs 		= m('admin')->getone($this->adminid);
 		$barr 		= $this->getdata('file','change', array(
 			'filenum' 	=> $onlynum,
 			'optid'		=> $this->adminid,
+			'stype'		=> $stype,
 			'optname'	=> $this->rock->jm->base64encode($this->adminname),
 			'face'		=> $this->rock->jm->base64encode(m('admin')->getface($urs['face'])),
 		));
+		//$this->rock->debugs($barr,'rockedit');
 		if(!$barr['success'])return $barr;
 		$data 		= $barr['data'];
 		$type 		= $data['type'];
@@ -113,6 +116,7 @@ class rockeditChajian extends Chajian{
 			$url.= '&optid='.$this->adminid.'';
 			$url.= '&gokey='.$gokey.'';
 			$url.= '&otype='.$otype.'';
+			$url.= '&stype='.$stype.'';
 			if($otype==0){
 				$callurl = $this->rock->getouturl().'api.php?m=upload&a=upfilevb&fileid='.$id.'&adminid='.$this->adminid.'&token='.$admintoken.'';
 				$url.='&callurl='.$this->rock->jm->base64encode($callurl).'';

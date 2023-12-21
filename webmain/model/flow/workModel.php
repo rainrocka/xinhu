@@ -3,6 +3,7 @@ class flow_workClassModel extends flowModel
 {
 	private $absfile = false;
 	private $statearr;
+	private $updatexm= false;
 
 	public function initModel()
 	{
@@ -107,7 +108,11 @@ class flow_workClassModel extends flowModel
 		$zt  = 0;
 		if(!isempt($this->rs['distid']))$zt = 3;//待执行的状态值
 		$this->updatestatus($zt);
-		
+		if($this->updatexm)m('work')->updateproject($this->rs['projectid']);
+	}
+	
+	protected function flowcheckfinsh($zt){
+		if($this->updatexm)m('work')->updateproject($this->rs['projectid']);
 	}
 	
 	protected function flowaddlog($a)

@@ -476,6 +476,7 @@ class uploadClassAction extends apiAction
 	{
 		$data = array();
 		$fenlei = $this->jm->base64decode($this->get('fenlei'));
+		$fenlei = $this->rock->xssrepstr($this->rock->iconvsql($fenlei));
 		$where 	= m('admin')->getjoinstr('a.`receid`', $this->adminid, 1);
 		$sql 	= 'select a.`name`,a.`wtype`,b.`filepath`,b.`id` from `[Q]wordxie` a left join `[Q]file` b on a.`fileid`=b.`id` where a.`fenlei`=\''.$fenlei.'\' and a.`isgk`=1 and ('.$where.')';
 		$rows 	= $this->db->getall($sql);

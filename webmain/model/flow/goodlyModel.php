@@ -8,14 +8,9 @@ class flow_goodlyClassModel extends flowModel
 		$this->goodsobj = m('goods');
 	}
 	
-	//审核完成处理
+	//审核完成处理,是否直接出入库
 	protected function flowcheckfinsh($zt){
-		/*
-		m('goodss')->update('status='.$zt.'',"`mid`='$this->id'");
-		$aid  = '0';
-		$rows = m('goodss')->getall("`mid`='$this->id'",'aid');
-		foreach($rows as $k=>$rs)$aid.=','.$rs['aid'].'';
-		m('goods')->setstock($aid);*/
+		if($zt==1)m('goods')->chukuopts($this->id, $this->modename);
 	}
 
 	//作废或删除时
@@ -37,7 +32,7 @@ class flow_goodlyClassModel extends flowModel
 				if(!isempt($one['xinghao']))$name.='('.$one['xinghao'].')';
 				if($lx==1){
 					$rows[$k]['aid'] 	= $name;
-					$rows[$k]['count'] 	= 0-$rs['count']; //负数显示为正数
+					//$rows[$k]['count'] 	= 0-$rs['count']; //负数显示为正数
 					if(isset($rs['lygh'])){
 						$rows[$k]['lygh']=arrvalue($lygya, $rs['lygh']);
 						

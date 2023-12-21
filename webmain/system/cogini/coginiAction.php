@@ -16,6 +16,7 @@ class coginiClassAction extends Action
 		if(getconfig('systype')=='demo')return returnerror('演示禁止操作');
 		$path = trim($this->post('path'));
 		if(!$path || !file_exists($path))return returnerror('无权限设置，请找到对应文件修改'.$path.'');
+		if(substr($path, -4)!='.ini')return returnerror('无效');
 		$cont = @file_get_contents($path);
 		if(!$cont)return returnerror('无权限获取'.$path.'内容');
 		$str  = '';

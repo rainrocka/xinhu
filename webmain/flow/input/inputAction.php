@@ -312,6 +312,7 @@ class inputAction extends Action
 		$iszb		= $xu+1;
 		$farr		= m('flow_element')->getrows("`mid`='$modeid' and `islu`=1 and `iszb`=$iszb",'`name`,`fields`,`isbt`,`fieldstype`,`savewhere`,`dev`,`data`,`attr`','`sort`');
 		$sort 		= 0;
+		$zlen		= count($farr);
 		for($i=0; $i<$oi; $i++){
 			$sid  = (int)$this->post('sid'.$xu.'_'.$i.'');
 			$bos  = true;
@@ -320,13 +321,13 @@ class inputAction extends Action
 			foreach($farr as $k=>$rs){
 				$fid= $rs['fields'];
 				$flx= $rs['fieldstype'];
-				if(substr($fid,0,5)=='temp_')continue;
 				$na = ''.$fid.''.$xu.'_'.$i.'';
-				if(!isset($_POST[$na]))$bos=false;
+				//if(!isset($_POST[$na]))$bos=false;
+				$val= $this->post($na);
+				if(isempt($val))$wkz++;//空字段
+				if(substr($fid,0,5)=='temp_')continue;
 				if($bos){
-					$val= $this->post($na);
 					if($rs['isbt']==1 && isempt($val))$bos=false;
-					if(isempt($val))$wkz++;
 				}
 				if($bos){
 					$msy = $this->attrcheck($val,$rs['attr'], $this->checkobj);
@@ -348,7 +349,7 @@ class inputAction extends Action
 				if(!$bos)break;
 			}
 			if(!$bos)continue;
-			//if($wkz==$k+1)continue;
+			if($wkz==$zlen)continue;//全部都是空
 			$uaarr['sort'] 	= $sort;
 			$sort++;
 			$arr[] = $uaarr;

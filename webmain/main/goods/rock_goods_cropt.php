@@ -27,7 +27,10 @@ $(document).ready(function(){
 				var v='<a href="javascript:;" onclick="rukuope{rand}('+d.id+','+d.typev+')">去操作</a>';
 				return v;
 			}
-		}]
+		}],
+		itemdblclick:function(d){
+			if(d.mknum)openxiangs(d.type,d.mknum,d.id);
+		}
 	});
 	var c = {
 		search:function(){

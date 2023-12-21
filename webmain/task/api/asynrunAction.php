@@ -63,12 +63,13 @@ class asynrunClassAction extends apiAction
 		return m('flow')->initflow('hrsalary', $id)->todouser();
 	}
 	
-	//下载微信发送的图片到服务器
+	//下载微信发送的图片到服务器(弃用)
 	public function downwxpicAction()
 	{
-		$picurl = $this->rock->jm->uncrypt($this->get('picurl'));
-		$msgid  = $this->get('msgid');
-		return m('reim')->downwximg($picurl, $msgid);
+		//$picurl = $this->rock->jm->uncrypt($this->get('picurl'));
+		//$msgid  = $this->get('msgid');
+		//return m('reim')->downwximg($picurl, $msgid);
+		return 'noturl';
 	}
 	
 	//下载微信上媒体文件

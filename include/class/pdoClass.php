@@ -6,6 +6,7 @@ class pdoClass extends mysql{
 	protected function connect()
 	{
 		$this->errormsg	= '';
+		if(!class_exists('PDO'))exit('操作数据库的php的扩展PDO不存在');
 		try {
 			$this->conn = @new PDO('mysql:host='.$this->db_host.';dbname='.$this->db_base.'', $this->db_user, $this->db_pass);
 			$this->conn->query("SET NAMES 'utf8'");
