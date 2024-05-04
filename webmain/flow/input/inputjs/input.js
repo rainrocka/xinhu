@@ -221,8 +221,8 @@ var c={
 		}
 		
 		if(sdtname && edename && d.startdt && d.enddt){
-			if(d.startdt>=d.enddt){
-				this.showtx(''+sdtname+'必须大于'+edename+'', 'enddt');
+			if(d.startdt>d.enddt){
+				this.showtx(''+edename+'必须大于等于'+sdtname+'', 'enddt');
 				return false;
 			}
 		}

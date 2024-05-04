@@ -47,8 +47,9 @@ $(document).ready(function(){
 					get('autherkey_{rand}').readOnly=true;
 					get('autherkey_{rand}').value=da.aukey;
 					$('#auther_enddt{rand}').html(jm.uncrypt(da.enddt));
-					var str = jm.uncrypt(da.yuming);
-					if((','+str+',').indexOf(','+HOST+',')<0)str+='<font style="font-size:12px" color="red">(与当前'+HOST+'域名不符合)</font>';
+					var str = jm.uncrypt(da.yuming),yms = str;
+					if(yms=='*.')str+='(无限制域名)';
+					if((','+yms+',').indexOf(','+HOST+',')<0 && yms!='*.')str+='<font style="font-size:12px" color="red">(与当前'+HOST+'域名不符合)</font>';
 					$('#auther_yuming{rand}').html(str);
 					$('#savebtn{rand}').hide();
 					$('#savewen{rand}').hide();

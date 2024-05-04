@@ -9,6 +9,7 @@ $(document).ready(function(){
 				get('wxgzhappid_{rand}').value=a.appid;
 				get('wxgzhsecret_{rand}').value=a.secret;
 				get('wxgzhtplmess_{rand}').value=a.tplmess;
+				get('wxgzhcenterurl_{rand}').value=a.centerurl;
 
 			});
 		},
@@ -17,6 +18,7 @@ $(document).ready(function(){
 			d.appid = get('wxgzhappid_{rand}').value;
 			d.secret = get('wxgzhsecret_{rand}').value;
 			d.tplmess = get('wxgzhtplmess_{rand}').value;
+			d.centerurl = get('wxgzhcenterurl_{rand}').value;
 			js.msg('wait','保存中...');
 			js.ajax(js.getajaxurl('setsave','{mode}','{dir}'), d, function(s){
 				js.msg('success','保存成功');
@@ -58,6 +60,14 @@ $(document).ready(function(){
 			<td class="tdinput">
 			<textarea id="wxgzhsecret_{rand}" style="height:60px" class="form-control"></textarea>
 			<font color="#888888">可以使用公众号的订阅号/服务号都可以，到公众号后台【开发→基本配置】下获取,<a href="<?=URLY?>view_wxgzh.html"  target="_blank">[帮助]</a></font>
+			</td>
+		</tr>
+		
+		<tr>
+			<td  align="right" width="180">网页授权地址：</td>
+			<td class="tdinput">
+			<input id="wxgzhcenterurl_{rand}" placeholder="这个预留用不用去设置" class="form-control">
+			<font color="#888888">这个是为了授权中转用的，http开头地址必须可用打开。</font>
 			</td>
 		</tr>
 	

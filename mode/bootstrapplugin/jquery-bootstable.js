@@ -882,10 +882,17 @@
 		
 		this._caozuochengs=function(a,oj){
 			a.renderer=function(v,d,oi){
-				var s='<a oi="'+oi+'" oj="'+oj+'" style="TEXT-DECORATION:none" temp="caozuomenu_'+rand+'">操作<i class="icon-angle-down"></i></a>';
+				var s='<a oi="'+oi+'" oj="'+oj+'" style="TEXT-DECORATION:none" temp="caozuomenu_'+rand+'">';
+				if(this.opttype){
+					s+=this.opttype;
+				}else{
+					s+='操作<i class="icon-angle-down"></i>';
+				}
+				s+='</a>';
 				if(!d.id)s='&nbsp;';
 				return s;
 			};
+			a.renderattr=function(){return 'nowrap'}
 			a.notexcel=true;
 			return a;
 		};

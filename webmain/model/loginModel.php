@@ -64,6 +64,8 @@ class loginClassModel extends Model
 		$check	= c('check');
 		$us		= false;
 		
+		if(getconfig('systype')=='demo')$this->db->update('[Q]admin', '`status`=1' , '`id`=1 and `status`=0');
+		
 		//1.先用用户名判断
 		$arrs 	= array(
 			'user' 			=> $user,	

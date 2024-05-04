@@ -9,6 +9,7 @@ class openmodhetongClassAction extends openapiAction
 	*/
 	public function dataAction()
 	{
+		return retuenerror('20240429最新已弃用');
 		$mobile = $this->get('mobile');
 		$xcytype = $this->get('xcytype');
 		$openid = $this->get('openid');
@@ -73,6 +74,7 @@ class openmodhetongClassAction extends openapiAction
 	*/
 	public function customerAction()
 	{
+		return retuenerror('20240429最新已弃用');
 		$mobile  = $this->get('mobile');
 		$xcytype = $this->get('xcytype');
 		$openid  = $this->get('openid');

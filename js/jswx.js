@@ -338,7 +338,7 @@ function touchclass(cans){
 	this.ismobile=function(){
 		var llq = navigator.userAgent;
 		llq 	= llq.toLowerCase();
-		var sarr= ['micromessenger','android','mobile','iphone'],bo=false,i;
+		var sarr= ['android','mobile','iphone'],bo=false,i;
 		for(i=0;i<sarr.length;i++){
 			if(llq.indexOf(sarr[i])>-1){
 				bo=true;

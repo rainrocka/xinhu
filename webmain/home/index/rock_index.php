@@ -69,8 +69,8 @@ $(document).ready(function(){
 			$('#refresh_text').html(this.bd2('5Yi35paw57uf6K6h5LitLi4u'));
 			js.ajaxbool =false;
 			js.ajax(url,{},function(da){
-				c.itots(da);
-			},'get,json');
+				c.itots(js.decode(da));
+			},'get');
 			homeobject.refresh=function(){c.refresh();};
 		},
 		init:function(){

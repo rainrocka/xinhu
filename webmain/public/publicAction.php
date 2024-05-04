@@ -68,6 +68,11 @@ class publicClassAction extends ActionNot{
 		$this->smartydata['filepath'] = $this->jm->base64encode($filepath);
 		$this->smartydata['filepaths']= $filepath;
 		$this->smartydata['filename'] = $frs['filename'];
+		
+		$str = 'mode/pdfjs2/viewer.html';
+		//exit($this->rock->HTTPweb);
+		if(!$this->displayfile && file_exists($str) && !contain($this->rock->web,'MSIE') && !contain($this->rock->HTTPweb,'Chrome/5'))$this->displayfile = $str;
+		
 		$fobj->addlogs($id,0);//记录预览记录
 	}
 	

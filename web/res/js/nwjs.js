@@ -94,6 +94,10 @@ var nwjs={
 		if(!this.execcmd)this.execcmd= require('child_process').exec;
 		this.execcmd(cmd);
 	},
+	openfile:function(path){
+		var ss = this.getpath()+'/'+path;
+		this.runcmd(ss);
+	},
 	openurl:function(url){
 		this.runcmd(''+this.getpath()+'/images/start.bat '+url+'');
 	},
@@ -117,6 +121,9 @@ var nwjs={
 		oi = (oi==1)?0:1;
 		if(!bo)this.jumptime=setTimeout('nwjs.jumpicon('+oi+')',500);
 		if(bo)this.changeicon(this.wdshu);
+	},
+	reload:function(){
+		this.win.reloadIgnoringCache();
 	},
 	jumpclear:function(){
 		this.jumpicon(0,true);

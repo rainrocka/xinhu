@@ -9,6 +9,7 @@ class wxgzhClassAction extends Action
 		$this->option->setval('wxgzh_appid@'.$pid.'', $this->post('appid'));
 		$this->option->setval('wxgzh_secret@'.$pid.'', $this->post('secret'));
 		$this->option->setval('wxgzh_tplmess@'.$pid.'', $this->post('tplmess'));
+		$this->option->setval('wxgzh_centerurl@'.$pid.'', $this->post('centerurl'));
 		$this->backmsg();
 	}
 	
@@ -18,6 +19,7 @@ class wxgzhClassAction extends Action
 		$arr['appid']		= $this->option->getval('wxgzh_appid');
 		$arr['secret']		= $this->option->getval('wxgzh_secret');
 		$arr['tplmess']		= $this->option->getval('wxgzh_tplmess');
+		$arr['centerurl']		= $this->option->getval('wxgzh_centerurl');
 		echo json_encode($arr);
 	}
 	

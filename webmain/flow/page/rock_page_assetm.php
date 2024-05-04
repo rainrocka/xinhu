@@ -20,14 +20,14 @@ $(document).ready(function(){
 //[自定义区域start]
 
 if(pnum=='all'){
-	bootparams.checked=true;
+	bootparams.checked=true; //开启复选框
 	bootparams.autoLoad=false;
 
-	var shtm = '<table width="100%"><tr valign="top"><td><div style="border:1px #cccccc solid;width:220px"><div id="optionview_{rand}" style="height:400px;overflow:auto;"></div></div></td><td width="8" nowrap><div style="width:8px;overflow:hidden"></div></td><td width="95%"><div id="viewassetm_{rand}"></div></td></tr></table>';
-	$('#viewassetm_{rand}').after(shtm).remove();
-	c.stable = 'assetm';
+	var shtm = '<table width="100%"><tr valign="top"><td><div style="border:1px #cccccc solid;width:220px"><div id="optionview_{rand}" style="height:400px;overflow:auto;"></div></div></td><td width="8" nowrap><div style="width:8px;overflow:hidden"></div></td><td width="95%"><div id="view'+modenum+'_{rand}"></div></td></tr></table>';
+	$('#view'+modenum+'_{rand}').after(shtm).remove();
+	c.stable = 'assetm'; //模块的主表
 	c.optionview = 'optionview_{rand}';
-	c.optionnum = 'assetstype';
+	c.optionnum = 'assetstype'; //对应分类下数据选项编号
 	c.title = '资产分类';
 	c.rand = '{rand}';
 
@@ -63,22 +63,22 @@ if(pnum=='all'){
 <div>
 	<table width="100%">
 	<tr>
-		<td style="padding-right:10px;" id="tdleft_{rand}" nowrap><button id="addbtn_{rand}" class="btn btn-primary" click="clickwin,0" disabled type="button"><i class="icon-plus"></i> 新增</button></td>
+		<td style="padding-right:10px;" id="tdleft_{rand}" nowrap><button id="addbtn_{rand}" class="btn btn-primary" click="clickwin,0" disabled type="button"><i class="icon-plus"></i> <?=lang('新增')?></button></td>
 		
 		<td><select class="form-control" style="width:110px;border-top-right-radius:0;border-bottom-right-radius:0;padding:0 2px" id="fields_{rand}"></select></td>
-		<td><select class="form-control" style="width:60px;border-radius:0px;border-left:0;padding:0 2px" id="like_{rand}"><option value="0">包含</option><option value="1">等于</option><option value="2">大于等于</option><option value="3">小于等于</option><option value="4">不包含</option></select></td>
-		<td><select class="form-control" style="width:130px;border-radius:0;border-left:0;display:none;padding:0 5px" id="selkey_{rand}"><option value="">-请选择-</option></select><input class="form-control" style="width:130px;border-radius:0;border-left:0;padding:0 5px" id="keygj_{rand}" placeholder="关键词"><input class="form-control" style="width:130px;border-radius:0;border-left:0;padding:0 5px;display:none;" id="key_{rand}" placeholder="关键字">
+		<td><select class="form-control" style="width:60px;border-radius:0px;border-left:0;padding:0 2px" id="like_{rand}"><option value="0"><?=lang('包含')?></option><option value="1"><?=lang('等于')?></option><option value="2"><?=lang('大于')?><?=lang('等于')?></option><option value="3"><?=lang('小于')?><?=lang('等于')?></option><option value="4"><?=lang('不包含')?></option></select></td>
+		<td><select class="form-control" style="width:130px;border-radius:0;border-left:0;display:none;padding:0 5px" id="selkey_{rand}"><option value="">-<?=lang('请选择')?>-</option></select><input class="form-control" style="width:130px;border-radius:0;border-left:0;padding:0 5px" id="keygj_{rand}" placeholder="<?=lang('关键字')?>"><input class="form-control" style="width:130px;border-radius:0;border-left:0;padding:0 5px;display:none;" id="key_{rand}" placeholder="<?=lang('关键字')?>">
 		</td>
 		
 		<td>
 			<div style="white-space:nowrap">
-			<button style="border-right:0;border-radius:0;border-left:0" class="btn btn-default" click="searchbtn" type="button">搜索</button><button class="btn btn-default" id="downbtn_{rand}" type="button" style="padding-left:8px;padding-right:8px;border-top-left-radius:0;border-bottom-left-radius:0"><i class="icon-angle-down"></i></button> 
+			<button style="border-right:0;border-radius:0;border-left:0" class="btn btn-default" click="searchbtn" type="button"><?=lang('搜索')?></button><button class="btn btn-default" id="downbtn_{rand}" type="button" style="padding-left:8px;padding-right:8px;border-top-left-radius:0;border-bottom-left-radius:0"><i class="icon-angle-down"></i></button> 
 			</div>
 		</td>
 		<td  width="90%" style="padding-left:10px"><div id="changatype{rand}" class="btn-group"></div></td>
 	
 		<td align="right" id="tdright_{rand}" nowrap>
-			<span style="display:none" id="daoruspan_{rand}"><button class="btn btn-default" click="daoru,1" type="button">导入</button>&nbsp;&nbsp;&nbsp;</span><button class="btn btn-default" style="display:none" id="daobtn_{rand}" disabled click="daochu" type="button">导出 <i class="icon-angle-down"></i></button> 
+			<span style="display:none" id="daoruspan_{rand}"><button class="btn btn-default" click="daoru,1" type="button"><?=lang('导入')?></button>&nbsp;&nbsp;&nbsp;</span><button class="btn btn-default" style="display:none" id="daobtn_{rand}" disabled click="daochu" type="button"><?=lang('导出')?> <i class="icon-angle-down"></i></button> 
 		</td>
 	</tr>
 	</table>

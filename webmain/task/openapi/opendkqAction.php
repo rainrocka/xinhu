@@ -14,6 +14,20 @@ class opendkqClassAction extends openapiAction
 		$this->showreturn('成功导入'.$carr['oi'].'条数据');
 	}
 	
+	//自动添加考勤机2024-04-25添加
+	private function addkqjs($sn)
+	{
+		$uarr = array(
+			'pinpai'=> '1',
+			'num'=> $sn,
+			'name'=> $sn,
+			'comid' => '1',
+			'optdt' => $this->now
+		);
+		$uarr['id'] = m('kqjsn')->insert($uarr);
+		return $uarr;
+	}
+	
 	//
 	private function senddata($type)
 	{
@@ -45,6 +59,10 @@ class opendkqClassAction extends openapiAction
 				$sn	  = arrvalue($rs, 'sn');
 				if(!$sn)continue;
 				$snrs = arrvalue($snarr, $sn);
+				if(!$snrs){
+					$snrs = $this->addkqjs($sn);
+					$snarr[$sn] = $snrs;
+				}
 				if(!$snrs)continue;
 				$snid = $snrs['id'];
 				$explain  = '使用['.$snrs['name'].']打卡';

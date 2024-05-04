@@ -256,6 +256,7 @@ class loginClassAction extends apiAction
 	*/
 	public function yzxcyAction()
 	{
+		return retuenerror('20240429最新已弃用');
 		$openid = $this->get('openid');
 		$mobile = $this->get('mobile');
 		if(!$openid || !$mobile)return returnerror('err');

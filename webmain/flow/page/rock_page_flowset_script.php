@@ -1,6 +1,7 @@
 //<script>
 
 c.optalign = 'left';
+c.opttype = '<button type="button" class="btn btn-default" style="padding:3px 5px;font-size:12px">操作</button>';
 bootparams.statuschange = true;
 bootparams.checked = true;
 var editarr = ['pctx','status','emtx','mctx','wxtx','ddtx','istxset','ispl','islu','isup','ishz'];

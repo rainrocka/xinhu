@@ -1,6 +1,7 @@
 //<script>
 
 c.optalign = 'left';
+c.opttype = '<button type="button" class="btn btn-default" style="padding:3px 5px;font-size:12px">操作</button>';
 var editarr = ['islu','isbt','iszs','islb','ispx','issou','isonly','isdr','istj'],mkid=0,mknum=modenum;
 for(var i=0;i<editarr.length;i++)c.setcolumns(editarr[i],{type:'checkbox'});
 bootparams.fanye = false;

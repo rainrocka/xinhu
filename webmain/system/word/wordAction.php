@@ -120,7 +120,7 @@ class wordClassAction extends Action
 	
 	public function delwordAjax()
 	{
-		$fid	= $this->post('id','0');
+		$fid	= (int)$this->post('id','0');
 		m('word')->delete("`fileid`='$fid'");
 		m('file')->delfile($fid);
 		backmsg();
@@ -129,8 +129,8 @@ class wordClassAction extends Action
 	//移动
 	public function movefileAjax()
 	{
-		$fid	= $this->post('fid','0');
-		$tid	= $this->post('tid','0');
+		$fid	= c('check')->onlynumber($this->post('fid','0'));
+		$tid	= (int)$this->post('tid','0');
 		m('word')->update("`typeid`='$tid'","`fileid` in ($fid)");
 	}
 }

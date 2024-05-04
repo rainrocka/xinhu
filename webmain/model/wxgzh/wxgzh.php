@@ -17,6 +17,8 @@ class wxgzhModel extends Model
 
 	
 	public $appid 		= '';
+	public $corpid 		= '';
+	public $centerurl 	= '';
 	public $optionpid 	= '-4';
 	public $backarr 	= array();
 	protected $secret 	= '';
@@ -48,8 +50,20 @@ class wxgzhModel extends Model
 		if($this->appid!='')return $this->appid;
 		$this->appid 	= $this->option->getval('wxgzh_appid');
 		$this->secret	= $this->option->getval('wxgzh_secret');
+		$this->centerurl	= $this->option->getval('wxgzh_centerurl');
 		$this->corpid	= $this->option->getval('weixinqy_corpid');
 		return $this->appid;
+	}
+	
+	public function gcenterurl()
+	{
+		$url = $this->centerurl;
+		if($url=='')return '';
+		if(substr($url,0,4)=='http'){
+			if(substr($url, -1)!='/')$url.='/';
+			return $url;
+		}
+		return '';
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 //<script>	
 	var c = {
 		optalign:'',
+		opttype:'',
 		reload:function(){
 			a.reload();
 		},
@@ -136,7 +137,8 @@
 			if(d.modeid)modeid = d.modeid;
 			if(modeid>101 && d.loadci==1 && (!d.atypearr || d.atypearr.length==0))js.confirm('<?=lang('notcolumns','base')?>',function(){window.open('<?=URLY?>view_columns.html')});
 			if(!d.atypearr)return;
-			get('addbtn_{rand}').disabled=(d.isadd!=true);
+			var addobj = get('addbtn_{rand}');
+			addobj.disabled=(d.isadd!=true);
 			get('daobtn_{rand}').disabled=(d.isdaochu!=true);
 			if(d.isdaochu)$('#daobtn_{rand}').show();
 			if(d.isdaoru)$('#daoruspan_{rand}').show();
@@ -147,6 +149,13 @@
 			$('#changatype{rand}').html(str);
 			$('#changatype{rand}_'+atype+'').addClass('active');
 			js.initbtn(c);
+			if(d.isadd){
+				addobj.title = '<?=lang('右键可新窗口打开新增')?>';
+				$(addobj).on('contextmenu', function(e) {
+					e.preventDefault();
+					js.open('?a=lu&m=input&d=flow&num='+modenum+'&callback=opegs{rand}',950,500);
+				});
+			}
 		},
 		setdownsodata:function(darr){
 			var ddata = [{name:'<?=lang('高级搜索')?>',lx:0}],dsd,i;
@@ -226,7 +235,7 @@
 			}
 			if(isflow>0)d.push({text:'<?=lang('流程')?><?=lang('状态')?>',dataIndex:'statustext'});
 			if(nstr=='' || nstr.indexOf(',caozuo,')>=0){
-				d1 = {text:'',dataIndex:'caozuo',callback:'opegs{rand}'};
+				d1 = {text:'',opttype:this.opttype,dataIndex:'caozuo',callback:'opegs{rand}'};
 				(this.optalign=='left')?d.unshift(d1):d.push(d1);
 			}
 			for(i=0;i<d.length;i++)if(this.setcinfo[d[i].dataIndex])d[i] = js.apply(d[i],this.setcinfo[d[i].dataIndex]);

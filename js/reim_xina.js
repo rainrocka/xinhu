@@ -1106,7 +1106,11 @@ var reim={
 		var lx=d.lx;
 		if(lx=='sx'){
 			js.loading('刷新中...');
-			location.reload();
+			if(nwjsgui){
+				nwjs.reload();
+			}else{
+				location.reload();
+			}
 		}
 		if(lx=='exit'){
 			this.exitlogin();
@@ -1237,8 +1241,12 @@ var reim={
 
 		if(nwjsgui){
 			var ips = nwjs.getipmac();
+			var d = nw.process.versions;
+			var json = nw.App.manifest;
+			s+='<div style="padding:10px 0px;border-top:1px #eeeeee solid">开机启动：<button type="button" class="cursor" onclick="reim.kaijistart(0)">启动</button>&nbsp;<button type="button" class="cursor" onclick="reim.kaijistart(1)">删除</button>&nbsp;<button type="button" class="cursor" onclick="reim.kaijistart(2)">快捷方式</button></div>';
 			s+='<div style="padding:10px 0px;border-top:1px #eeeeee solid">我局域网IP：'+ips.ip+'</div>';
 			s+='<div style="padding:10px 0px;border-top:1px #eeeeee solid">我的MAC地址：'+ips.mac+'</div>';
+			s+='<div style="padding:10px 0px;border-top:1px #eeeeee solid">此客户端版本：V'+json.version+'，内核nwjs-'+d.nw+'</div>';
 		}
 		
 		s+='	<div style="padding:10px 0px;border-top:1px #eeeeee solid">网络IP：'+this.myip+'</div>';
@@ -1246,6 +1254,12 @@ var reim={
 		s+='</div></div>';
 		this.addtabs(num,s);
 		get('changesoundid').value=notifyobj.sound;
+	},
+	kaijistart:function(lx){
+		var dz = '加入开机启动.vbs';
+		if(lx==1)dz = '删除开机启动.vbs';
+		if(lx==2)dz = '创建桌面快捷方式.vbs';
+		nwjs.openfile(dz);
 	},
 	//内部服务处理
 	serverdata:function(a){
