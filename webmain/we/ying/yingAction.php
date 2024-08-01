@@ -170,7 +170,7 @@ class yingClassAction extends ActionNot{
 			$kqors = m('kqdw')->getrows("id in($dwids) and `id`<>".$kqrs['id']."");
 		}
 		$this->assign('kqors', $kqors);
-		$this->smartydata['qqmapkey']	= getconfig('qqmapkey','55QBZ-JGYLO-BALWX-SZE4H-5SV5K-JCFV7');
+		$this->smartydata['qqmapkey']	= c('mapqq')->getkey();
 	}
 	
 	/**
@@ -195,6 +195,6 @@ class yingClassAction extends ActionNot{
 			$kqors = m('kqdw')->getrows("id in($dwids) and `id`<>".$kqrs['id']."");
 		}
 		$this->assign('kqors', $kqors);
-		$this->smartydata['qqmapkey']	= getconfig('qqmapkey','55QBZ-JGYLO-BALWX-SZE4H-5SV5K-JCFV7');
+		$this->smartydata['qqmapkey']	= c('mapqq')->getkey();
 	}
 }

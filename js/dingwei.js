@@ -30,10 +30,12 @@ js.dw = {
 	ondwcall:function(){},
 	ondwstart:function(){},
 	ondwerr:function(){},
+	successbo:false,
 	ondwwait:function(){return false},
 	
 	start:function(){
 		if(this.dwbool)return;
+		this.successbo = false;
 		this.dwbool = true;
 		this.chaoshi();
 		this.ondwstart(js.jssdkstate);
@@ -158,10 +160,9 @@ js.dw = {
 	
 	baiduLocationSuc:function(ret,err){
 		if(ret.status && ret.latitude){
-			this.wait('定位成功，获取位置信息...');
+			this.wait('百度定位成功，获取位置信息...');
 			if(!ret.accuracy)ret.accuracy = 200;
-			var center 		= new qq.maps.LatLng(ret.latitude,ret.longitude);
-			this.translate(center, ret.accuracy, 3);
+			this.translate(ret.latitude, ret.longitude, ret.accuracy, 3);
 		}else{
 			this.dwshibai('定位失败，检查是否给APP开定位权限');
 		}
@@ -200,83 +201,137 @@ js.dw = {
 			break;
 		}
 		if(NOWURL.substr(0,5)!='https')msg+='必须使用https访问';
-		js.msg('msg', msg);
-		js.dw.ondwerr(msg);
+		js.dw.timeerrbo = setTimeout(function(){
+			if(!js.dw.successbo){
+				js.msg('msg', msg);
+				js.dw.ondwerr(msg);	
+			}else{
+				js.msg();
+			}
+		},1000);
 	},
 	
 	showPosition:function(position){
+		js.dw.successbo = true;
+		clearTimeout(js.dw.timeerrbo);
+		js.msg();
 		var res 		= position.coords;
 		var latitude 	= res.latitude;
 		var longitude 	= res.longitude;
 		var accuracy 	= parseFloat(res.accuracy);
-		var center 		= new qq.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
-		js.dw.translate(center, accuracy, 1);
+		js.dw.translate(latitude,longitude, accuracy, 1);
 	},
 	
 	//坐标转化type1原始
-	translate:function(center, accuracy, type){
-		qq.maps.convertor.translate(center,type,function(res){
-			var latitude 	= res[0].lat;
-			var longitude 	= res[0].lng;
-			if(latitude==0 || latitude==0){
-				js.dw.dwshibai('无法获取位置信息失败');
-			}else{
-				js.dw.dwsuccess({
-					latitude:latitude,
-					longitude:longitude,
-					accuracy:accuracy
-				});
+	translate:function(lat, lng,juli, type){
+		$.ajax({
+			url:'api.php?m=kaoqin&a=translate',
+			data:{
+				lat:lat,
+				lng:lng,
+				type:type
+			},
+			dataType:'json',
+			success:function(ret){
+				if(ret.status==0){
+					js.dw.dwsuccess({
+						latitude:ret.locations[0].lat,
+						longitude:ret.locations[0].lng,
+						accuracy:juli
+					});
+				}else{
+					js.dw.dwshibai('无法转化坐标('+lat+','+lng+'),'+type+'<br>'+ret.status+','+ret.message+'');
+				}
+			},
+			error:function(){
+				js.dw.dwshibai('无法转化坐标'+type+'');
 			}
-		});	
+		});
 	},
 	
-	//搜索位置
+	//搜索位置,2024-07-19改
 	geocoder:function(lat,lng, jid){
-		if(!this.geocoderObj)this.geocoderObj 	= new qq.maps.Geocoder();
-		var center 	= new qq.maps.LatLng(lat, lng);
-		this.geocoderObj.getAddress(center);
-		this.geocoderObj.setComplete(function(result){
-			var address = result.detail.address;
-			var dzarr 	= result.detail.addressComponents;
-			//address 	= ''+dzarr.province+''+dzarr.city+''+dzarr.district+''+dzarr.street+'';
-			//if(dzarr.streetnumber)address+=dzarr.streetnumber;
-			
-			//范围内地址
-			var near = result.detail.nearPois,dist = 500,naddress,addressinfo;
-			for(var i=0;i<near.length;i++){
-				if(near[i].dist<dist){
-					dist 	 = near[i].dist;
-					naddress = ''+near[i].name+'('+near[i].address+')';
+		var errcan  = {
+			latitude:lat,
+			longitude:lng,
+			accuracy:jid,
+			address:'未知位置',
+			addressinfo:'定位成功未知位置',
+			detail:'未知位置'
+		}
+		$.ajax({
+			url:'api.php?m=kaoqin&a=gcoder',
+			data:{
+				lat:lat,
+				lng:lng,
+			},
+			dataType:'json',
+			success:function(ret){
+				if(ret.status==0 && ret.result){
+					var result = ret.result,addressinfo;
+					var address= result.formatted_addresses.recommend;
+					if(!address)address = result.address;
+					addressinfo = ''+address;
+					if(jid>0)addressinfo+='(精确'+js.float(jid,1)+'米)';
+					js.msg();
+					errcan.address = address;
+					errcan.addressinfo = addressinfo;
+					errcan.detail = result;
+					js.dw.ondwcall(errcan);
+				}else{
+					if(ret.message)js.msg('msg', ret.status+':'+ret.message);
+					js.dw.ondwcall(errcan);
 				}
+			},
+			error:function(){
+				js.dw.ondwcall(errcan);
 			}
-			if(dist<500)address = naddress;
-			addressinfo = ''+address;
-			if(jid>0)addressinfo+='(精确'+jid+'米)';
-			js.msg();
-			js.dw.ondwcall({
-				latitude:lat,
-				longitude:lng,
-				accuracy:jid,
-				address:address,
-				addressinfo:addressinfo,
-				detail:result.detail,
-				center:center
-			});
 		});
-		
-		this.geocoderObj.setError(function() {
-			//var msg = '无法获取位置';js.msg('msg', msg);js.dw.ondwerr(msg);
-			js.msg();
-			js.dw.ondwcall({
-				latitude:lat,
-				longitude:lng,
-				accuracy:jid,
-				address:'未知位置',
-				addressinfo:'定位成功未知位置',
-				detail:'未知位置',
-				center:center
+	},
+	
+	//计算距离,old
+	matrix:function(lat,lng, kqarr, funs){
+		var fromstr = ''+lat+','+lng+'',tostr='';
+		for(var i=0;i<kqarr.length;i++){
+			if(i>0)tostr+=';';
+			tostr +=''+kqarr[i].location_x+','+kqarr[i].location_y+'';
+		}
+		if(fromstr && tostr){
+			$.ajax({
+				url:'api.php?m=kaoqin&a=matrix',
+				data:{
+					fromstr:fromstr,
+					tostr:tostr,
+				},
+				dataType:'json',
+				success:function(ret){
+					if(ret.status==0){
+						var rows = ret.result.rows[0].elements;
+						for(var j=0;j<rows.length;j++)kqarr[j].kqjuli = rows[j].distance;
+						funs(kqarr);
+					}else{
+						alert('计算距离('+ret.status+'):'+ret.message);
+						funs(kqarr);
+					}
+				},
+				error:function(e){
+					alert('接口出错无法计算距离');
+					funs(kqarr);
+				}
 			});
-		});
+		}else{
+			funs(kqarr);
+		}
+	},
+	//计算距离
+	julisuan:function(lat,lng, kqarr, funs){
+		var startPoint = new TMap.LatLng(lat, lng);
+		for(var i=0;i<kqarr.length;i++){
+			var path = [startPoint , new TMap.LatLng(parseFloat(kqarr[i].location_x), parseFloat(kqarr[i].location_y))];
+			var distance = TMap.geometry.computeDistance(path);
+			kqarr[i].kqjuli = parseFloat(distance);
+		}
+		funs(kqarr);
 	}
 };
 

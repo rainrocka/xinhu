@@ -14,6 +14,8 @@ body, button, input, select, textarea {
 
 </style>
 <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=<?=$da['qqmapkey']?>"></script>
+<script src="js/jquery.js"></script>
+<script src="js/base64-min.js"></script>
 <script>
 
 var callback = '<?=$callback?>'; //回调函数
@@ -59,22 +61,41 @@ function qudong(){
 }
 var citylocation = false;
 function dingwei(){
-    if(!citylocation)citylocation = new qq.maps.CityService({
-        complete : function(result){
-            map.setCenter(result.detail.latLng);
-        }
-    });
-	var quhao = prompt('请输入城市区号如：0592');
-	if(isNaN(quhao)){
-		if(quhao)citylocation.searchLocalCity();
-	}else{
-		if(quhao)citylocation.searchCityByAreaCode(quhao);
+	var key = prompt('请输入格式(地址 城市)如：鼓浪屿 厦门');
+	if(key){
+		$.ajax({
+			url:'api.php?m=kaoqin&a=suggestion',
+			data:{key:jm.base64encode(key)},
+			dataType:'json',
+			success:function(ret){
+				if(ret.status==0){
+					var res = ret.data[0];
+					var center = new qq.maps.LatLng(res.location.lat,res.location.lng);
+					map.setCenter(center);
+					marker.setPosition(center);
+					showinfoWin(res.title+'<br>'+res.address);
+				}else{
+					alert(ret.message);
+				}
+			}
+		});
 	}
+}
+var infoWin = false;
+function showinfoWin(msg){
+	if(!infoWin){
+		infoWin = new qq.maps.InfoWindow({
+			map: map
+		});
+		infoWin.open();
+	}
+    infoWin.setContent(msg);
+    infoWin.setPosition(map.getCenter());
 }
 </script>
 </head>
 <body onload="init()">
-<div style="position:absolute;top:0px;left:40%;z-index:99;padding:5px 20px; background-color:white"><button style="background:#1389D3;color:white;border:none;padding:5px 8px;cursor:pointer" onclick="qudong()">确定</button>&nbsp;点地图确定位置，<a href="javascript:;" onclick="dingwei()">[定位]</a></div>
+<div style="position:absolute;top:0px;left:40%;z-index:99;padding:5px 20px; background-color:white"><button style="background:#1389D3;color:white;border:none;padding:5px 8px;cursor:pointer" onclick="qudong()">确定</button>&nbsp;点地图确定位置，<a href="javascript:;" onclick="dingwei()">[定位搜索]</a></div>
 <div style="width:100%;height:100%" id="container"></div>
 </body>
 </html>

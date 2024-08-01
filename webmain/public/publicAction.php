@@ -1,6 +1,8 @@
 <?php 
 class publicClassAction extends ActionNot{
 	
+	private $officedocx;
+	
 	public function initAction()
 	{
 		$this->mweblogin(0, false);

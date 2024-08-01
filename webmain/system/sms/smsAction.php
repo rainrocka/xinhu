@@ -1,6 +1,8 @@
 <?php
 class smsClassAction extends Action
 {
+	private $smsobj;
+	
 	public function initAction()
 	{
 		$this->smsobj = c('xinhuapi');

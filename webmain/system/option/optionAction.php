@@ -1,6 +1,8 @@
 <?php
 class optionClassAction extends Action
 {
+	private $pid;
+	
 	public function getlistAjax()
 	{
 		$num	= $this->request('num');

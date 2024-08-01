@@ -1,6 +1,8 @@
 <?php
 class flowClassAction extends Action
 {
+	private $modeid,$moders,$isflow;
+	
 	public function loaddataAjax()
 	{
 		$id		= (int)$this->get('id');
@@ -94,16 +96,23 @@ class flowClassAction extends Action
 		$num = strtolower($cans['num']);
 		$cobj= c('check');
 		if(!$cobj->iszgen($tab))return '表名格式不对';
+		$bobg = preg_replace("/[a-zA-Z0-9_]/",'', $tab);
+		if($bobg)return '表名禁用:'.$bobg.'';
 		if($cobj->isnumber($num))return '编号不能为数字';
 		if(strlen($num)<4)return '编号至少要4位';
 		if($cobj->isincn($num))return '编号不能包含中文';
 		if(contain($num,'-'))return '编号不能有-';
+		
+		$bobg = preg_replace("/[a-zA-Z0-9_]/",'', $num);
+		if($bobg)return '模块编号禁用:'.$bobg.'';
 		
 		if($cans['isflow']>0 && isempt($cans['sericnum'])) return '有流程必须有写编号规则，请参考其他模块填写';
 		$rows['num']= $this->rock->xssrepstr($num); 
 		$rows['name']= $name;
 		if(!isempt($tabs)){
 			if($cobj->isincn($tabs))return '多行子表名不能包含中文';
+			$bobg = preg_replace("/[a-zA-Z0-9_,]/",'', $tabs);
+			if($bobg)return '子表名禁用:'.$bobg.'';
 			$tabsa 		= explode(',', $tabs);
 			$namea 		= explode(',', $names);
 			foreach($tabsa as $k1=>$tabsas){

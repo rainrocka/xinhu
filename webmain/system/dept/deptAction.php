@@ -1,6 +1,8 @@
 <?php
 class deptClassAction extends Action
 {
+	private $allid,$rows;
+	
 	public function defaultAction()
 	{
 		

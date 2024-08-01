@@ -2358,7 +2358,7 @@ reim.outgroup={
 	myid:0,
 	istxs:'',
 	apiurl:'aHR0cDovL2FwaS5yb2Nrb2EuY29tLw::', //如果不想使用清空这个地址就可以
-	apiurls:'aHR0cHM6Ly94Y3kucm9ja29hLmNvbS8:', //https使用
+	apiurls:'aHR0cHM6Ly9maWxlLnJvY2tvYS5jb20veGN5Lw::', //https使用
 	//apiurl:'aHR0cDovLzE5Mi4xNjguMS4yL2FwcC9yb2NrYXBpLw::',
 	geturl:function(fx){
 		if(NOWURL.substr(0,5)=='https')this.apiurl = this.apiurls;

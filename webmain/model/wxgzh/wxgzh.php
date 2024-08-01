@@ -24,6 +24,8 @@ class wxgzhModel extends Model
 	protected $secret 	= '';
 	public function initWxgzh(){}
 	
+	public $option;
+	
 	public function initModel()
 	{
 		$this->backarr	= array('errcode'=>-1, 'msg'=>'sorry,error');

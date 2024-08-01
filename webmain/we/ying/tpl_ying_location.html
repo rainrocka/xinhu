@@ -12,14 +12,18 @@
 <script type="text/javascript" src="js/jswx.js"></script>
 <script type="text/javascript" src="js/base64-min.js"></script>
 <script type="text/javascript" src="web/res/js/jquery-rockupload.js"></script>
-<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&libraries=convertor,geometry&key=<?=$da['qqmapkey']?>"></script>
-<script type="text/javascript" src="js/dingwei.js"></script>
+<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=<?=$da['qqmapkey']?>"></script>
+<script charset="utf-8" src="https://map.qq.com/api/gljs?v=1.exp&key=<?=$da['qqmapkey']?>&libraries=geometry"></script>
+<script type="text/javascript" src="js/dingwei.js?<?=time()?>"></script>
 <style>
-<?php 
-$maincolor = getconfig('apptheme','#1389D3');
-$maincolora= c('image')->colorTorgb($maincolor);
-$maincolors= ''.$maincolora[0].','.$maincolora[1].','.$maincolora[2].'';
-echo 'body{--main-color:'.$maincolor.'}';
+<?php
+$colobj    = c('image');
+if(method_exists($colobj,'colorTorgb')){
+	$maincolor = getconfig('apptheme','#1389D3');
+	$maincolora= $colobj->colorTorgb($maincolor);
+	$maincolors= ''.$maincolora[0].','.$maincolora[1].','.$maincolora[2].'';
+	echo 'body{--main-color:'.$maincolor.'}';
+}
 ?>
 </style>
 <script>
@@ -82,24 +86,25 @@ js.dw.ondwcall = function(res){
 	latitude 	= res.latitude;
 	longitude 	= res.longitude;
 	accuracy 	= res.accuracy;
-	var center 	= res.center;
+	var center 	= new qq.maps.LatLng(latitude, longitude);
 	addbo	 	= true;
 	scale	 	= map.getZoom();
 	js.setoption('latlongedu',''+latitude+','+longitude+','+scale+'');
-	map.setCenter(res.center);
+	map.setCenter(center);
 	label		= res.address;
 	showinfo(center ,accuracy, '定位成功<br>地址：'+res.addressinfo+'');
 	
-	var i,kqrsa,enddt,juli;
-	for(i=0;i<kqallrs.length;i++){
-		kqrsa = kqallrs[i];
-		enddt = new qq.maps.LatLng(parseFloat(kqrsa.location_x), parseFloat(kqrsa.location_y));
-		juli  = parseInt(qq.maps.geometry.spherical.computeDistanceBetween(center, enddt));
-		if(juli<0)juli = 0-juli;
-		if(kqrsa['iswgd']=='1')juli=0; //无固定位置的
-		kqallrs[i]['kqjuli'] = juli;
-		kqjuli = juli;
-	}
+	this.julisuan(latitude,longitude, kqallrs, function(narr){
+		kqallrs = narr;
+		for(var i=0;i<narr.length;i++){
+			var juli = narr[i].kqjuli;
+			if(juli<0)juli = 0-juli;
+			if(narr[i]['iswgd']=='1')juli=0; //无固定位置的
+			kqallrs[i]['kqjuli'] = juli;
+			kqjuli = juli;
+		}
+	});
+	
 	nowtimetime = js.now('time');
 }
 

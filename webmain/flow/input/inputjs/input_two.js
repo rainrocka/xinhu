@@ -315,9 +315,9 @@ var inputtwo={
 	//2020-09-02新增地图上选择位置
 	selectmap:function(sna,snall,fna,iszb){
 		var hei = winHb()-150;
-		var url = 'https://map.qq.com/api/js?v=2.exp&libraries=convertor,geometry&key=55QBZ-JGYLO-BALWX-SZE4H-5SV5K-JCFV7&callback=c.showmap';
+		var url = 'https://map.qq.com/api/js?v=2.exp&key=55QBZ-JGYLO-BALWX-SZE4H-5SV5K-JCFV7&callback=c.showmap';
 		js.tanbody('selectmap','选择['+fna+']',winWb()-((ismobile==1)?5:80),hei,{
-			html:'<div style="padding:5px"><input onkeyup="if(event.keyCode==13)c.selectmapsou(this)" type="text" placeholder="输入城市区号来定位如：0592" class="inputs"></div><div id="selectmap" style="height:'+(hei-20)+'px;overflow:hidden"></div>',
+			html:'<div style="padding:5px"><input onkeyup="if(event.keyCode==13)c.selectmapsou(this)" type="text" placeholder="请输入格式(地址 城市)如：鼓浪屿 厦门" class="inputs"></div><div id="selectmap" style="height:'+(hei-20)+'px;overflow:hidden"></div>',
 			btn:[{text:'确定'}]
 		});
 		this.selectmapdata={sna:sna,snall:snall};
@@ -327,6 +327,9 @@ var inputtwo={
 		$('#selectmap_btn0').click(function(){
 			c.selectmapque();
 			js.tanclose('selectmap');
+		});
+		$('#selectmap_btn1').click(function(){
+			c.selectmapdinwei();
 		});
 	},
 	selectmapclear:function(sna,snall){
@@ -353,13 +356,19 @@ var inputtwo={
 	},
 	selectmapsou:function(o1){
 		var val = o1.value;
-		if(!val || isNaN(val))return;
-		if(!this.citylocation)this.citylocation = new qq.maps.CityService({
-			complete : function(result){
-				map.setCenter(result.detail.latLng);
+		if(!val)return;
+		js.msg('wait','搜索中...');
+		js.ajax('api.php?m=kaoqin&a=suggestion',{key:jm.base64encode(val)},function(ret){
+			js.msg();
+			if(ret.status==0){
+				var res = ret.data[0];
+				var center = new qq.maps.LatLng(res.location.lat,res.location.lng);
+				map.setCenter(center);
+				marker.setPosition(center);
+			}else{
+				js.msg('msg',ret.message);
 			}
-		});
-		this.citylocation.searchCityByAreaCode(val);
+		},'get,json');
 	},
 	selectmapque:function(){
 		var as = marker.getPosition();
@@ -374,12 +383,21 @@ var inputtwo={
 	},
 	//搜索位置
 	geocoder:function(lat,lng, jid){
-		if(!this.geocoderObj){
-			this.geocoderObj 	= new qq.maps.Geocoder();
-			this.geocoderObj.setComplete(function(result){
+		js.ajax('api.php?m=kaoqin&a=gcoder',{lat:lat,lng:lng},function(ret){
+			js.msg();
+			if(ret.status==0){
+				var result = ret.result;
+				var address= result.formatted_addresses.recommend;
 				var d1 = c.selectmapdata;
-				d1.address = result.detail.address;
-				d1.addressinfo = result.detail.addressComponents;
+				d1.address = address;
+				var info = result.address_component;
+				d1.addressinfo = {
+					province:info.province,
+					city:info.city,
+					town:info.district,
+					streetNumber:info.street_number,
+					street:info.street
+				};
 				js.msg();
 				var sna = d1.sna;
 				if(form(sna))form(sna).value=d1.address+'|'+d1.lat+','+d1.lng+'';
@@ -389,13 +407,10 @@ var inputtwo={
 					form(sna).value=d1.address;
 				}
 				c.onselectmap(sna,d1);
-			});
-			this.geocoderObj.setError(function() {
-				js.msg('msg','搜索地址失败');
-			});
-		}
-		var center 	= new qq.maps.LatLng(lat, lng);
-		this.geocoderObj.getAddress(center);
+			}else{
+				js.msg('msg',ret.message);
+			}
+		},'get,json');
 	},
 	xuanfile:function(fid,lx,fname,o1){
 		if(!fname)fname='';

@@ -293,3 +293,13 @@ function lang($str,$lx='')
 	if(!$nstr)$nstr = $str;
 	return $nstr;
 }
+
+/**
+*	为空替换为''
+*/
+function repempt($str,$dev='')
+{
+	$s	= $str;
+	if($s===null)$s=$dev;
+	return $s;
+}

@@ -401,6 +401,7 @@ class adminClassModel extends Model
 	
 	public function getface($face, $mr='')
 	{
+		if($face==null)$face='';
 		if($mr=='')$mr 	= 'images/noface.png';
 		if(substr($face,0,4)!='http' && !$this->isempt($face))$face = URL.''.$face.'';
 		$face 			= $this->rock->repempt($face, $mr);

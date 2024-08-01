@@ -4,7 +4,7 @@ class installClassAction extends ActionNot{
 	
 	public function initAction()
 	{
-		if(getconfig('systype')=='demo')exit('');
+		if(getconfig('systype')=='demo' || getconfig('install'))exit('');
 	}
 	
 	public function defaultAction()
@@ -43,6 +43,11 @@ class installClassAction extends ActionNot{
 		$this->rmdirs($dir);
 	}
 	
+	private function isbasecz($db, $base){
+		$dbrows = $db->getall("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$base'");
+		return $dbrows;
+	}
+	
 	public function saveAjax()
 	{
 		$dbtype 	= $this->post('dbtype');
@@ -77,19 +82,21 @@ class installClassAction extends ActionNot{
 		$msg = $db1->errormsg;
 		if(!$this->isempt($msg))exit('数据库用户名/密码有误:'.$msg.'');
 		
+		if(!$this->isbasecz($db1, $base)){
+			if($user=='root'){
+				$db1->query("CREATE DATABASE `$base` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci");
+				if(!$this->isbasecz($db1, $base))exit('无法创建数据库:'.$base.'，请自己手动创建');
+			}else{
+				exit('数据库'.$base.'不存在，因为非root帐号，请自己手动创建');
+			}
+		}
 		
 		//2
 		$db 		= import($dbtype);
 		$db->changeattr($host, $user, $pass, $base);
 		$db->connectdb();
 		$msg = $db->errormsg;
-		if(!$this->isempt($msg)){
-			$db1->query("CREATE DATABASE `$base` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci");
-		}
-		
-		$db->connectdb();
-		$msg = $db->errormsg;
-		if(!$this->isempt($msg))exit('无法创建数据库:'.$msg.'');
+		if(!$this->isempt($msg))exit('数据库错误:'.$msg.'');
 		
 		
 		$dburl 	= ROOT_PATH.'/'.PROJECT.'/install/rockxinhu.sql';

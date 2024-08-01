@@ -1,6 +1,7 @@
 <?php
 class tableClassAction extends Action
 {
+	private $nowtablename;
 	public function initAction()
 	{
 		if($this->getsession('isadmin')!='1')backmsg('别乱来');

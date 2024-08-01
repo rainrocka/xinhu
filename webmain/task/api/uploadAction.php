@@ -19,6 +19,10 @@ class uploadClassAction extends apiAction
 			$updir=str_replace('{Year}',date('Y'), $updir);
 			$updir=str_replace(array('{','}'),'', $updir);
 			$updir=str_replace(',','|', $updir);
+			
+			$bobg = preg_replace("/[a-zA-Z0-9_]/",'', $updir);
+			$bobg = str_replace(array('-','|'),'', $bobg);
+			if($bobg)exit('stop:'.$bobg.'');
 		}
 		$upimg->initupfile($uptypes, ''.UPDIR.'|'.$updir.'', $maxsize);
 		$upses	= $upimg->up('file');
@@ -323,6 +327,7 @@ class uploadClassAction extends apiAction
 			if(substr($filepath,0,4)!='http' && isempt($filepathout) && !file_exists($filepath))return returnerror('文件不存在了1');
 			if(c('upfile')->isimg($fileext)){
 				$data['url'] = m('admin')->getface($filepath);
+				if(!isempt($filepathout))$data['url'] = $filepathout;
 			}
 			//下载
 			if($type==1){

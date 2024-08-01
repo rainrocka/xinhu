@@ -51,4 +51,26 @@ class kaoqinClassAction extends apiAction
 		
 		$this->showreturn($barr);
 	}
+	
+
+	
+	/**
+	*	腾讯地图地址解析api.php?m=kaoqin&a=gcoder
+	*/
+	public function gcoderAction()
+	{
+		return c('mapqq')->gcoder($this->get('lat'), $this->get('lng'));
+	}
+	
+	//地址转化
+	public function translateAction()
+	{
+		return c('mapqq')->translate($this->get('lat'), $this->get('lng'),(int)$this->get('type'));
+	}
+	
+	//搜索
+	public function suggestionAction()
+	{
+		return c('mapqq')->suggestion($this->get('key'));
+	}
 }

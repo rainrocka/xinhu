@@ -43,7 +43,7 @@ class mode_knowtraimClassAction extends inputAction{
 	protected function saveafter($table, $arr, $id, $addbo){
 		$receid	= $arr['receid'];
 		$ustrs 	= m('admin')->gjoin($arr['receid'],'ud');
-		$ustrsa	= explode(',', $ustrs);
+		$ustrsa	= explode(',', repempt($ustrs));
 		$dbs 	= m('knowtrais');
 		$mrs	= m('knowtraim')->getone($id);
 		$ids 	= '0';
@@ -225,9 +225,9 @@ class mode_knowtraimClassAction extends inputAction{
 		
 		$tkids = $ors['tkids'];
 		$dyids = $ors['dyids'];
-		$dyidsa= explode(',', $dyids);
-		$tkidsa= explode(',', $tkids);
-		$dyjgsa= explode(',', $ors['dyjgs']);
+		$dyidsa= explode(',', repempt($dyids));
+		$tkidsa= explode(',', repempt($tkids));
+		$dyjgsa= explode(',', repempt($ors['dyjgs']));
 		$danva =  $jgarr = array();
 		
 		$zfenshu = floatval($mrs['zfenshu']); //总分
@@ -292,7 +292,7 @@ class mode_knowtraimClassAction extends inputAction{
 	//标识可重新考试
 	public function biaoshiAjax()
 	{
-		$fid = $this->post('fid','0');
+		$fid = c('check')->onlynumber($this->post('fid','0'));
 		m('knowtrais')->update(array(
 			'kssdt' => '',
 			'ksedt' => '',

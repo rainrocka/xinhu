@@ -673,7 +673,7 @@
 			if(key)key = key.toLowerCase();
 			if(key!='')for(i=0;i<len;i++){
 				d1 = a[i];
-				if(d1.name.indexOf(key)>-1 || d1.name.toLowerCase().indexOf(key)>-1 || d1.value==key || (d1.subname && d1.subname.indexOf(key)>-1)){
+				if(d1.name)if(d1.name.indexOf(key)>-1 || d1.name.toLowerCase().indexOf(key)>-1 || d1.value==key || (d1.subname && d1.subname.indexOf(key)>-1)){
 					d.push(d1);
 					oi++;
 					if(oi>20)break;//最多显示搜索

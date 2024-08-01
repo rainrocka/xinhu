@@ -131,8 +131,8 @@ class mode_userClassAction extends inputAction{
 	public function editsuperAjax()
 	{
 		$sna	= $this->post('sna');
-		$sid	= $this->post('sid');
-		$xid	= $this->post('xid');
+		$sid	= c('check')->onlynumber($this->post('sid'));
+		$xid	= c('check')->onlynumber($this->post('xid'));
 		m('admin')->update(array(
 			'superid' => $sid,
 			'superman' => $sna,

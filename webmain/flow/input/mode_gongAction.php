@@ -23,8 +23,8 @@ class mode_gongClassAction extends inputAction{
 	//提交投票
 	public function submittoupiaoAjax()
 	{
-		$mid 		= $this->get('mid');
-		$sid 		= $this->get('sid');
+		$mid 		= (int)$this->get('mid');
+		$sid 		= c('check')->onlynumber($this->get('sid'));
 		$modenum 	= $this->get('modenum');
 		
 		$this->flow	= m('flow')->initflow($modenum);

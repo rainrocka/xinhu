@@ -11,14 +11,17 @@
 <script type="text/javascript" src="js/js.js"></script>
 <script type="text/javascript" src="js/jswx.js"></script>
 <script type="text/javascript" src="js/base64-min.js"></script>
-<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&libraries=convertor,geometry&key=<?=$da['qqmapkey']?>"></script>
-<script type="text/javascript" src="js/dingwei.js"></script>
+<script charset="utf-8" src="https://map.qq.com/api/gljs?v=1.exp&key=<?=$da['qqmapkey']?>&libraries=geometry"></script>
+<script type="text/javascript" src="js/dingwei.js?<?=time()?>"></script>
 <style>
-<?php 
-$maincolor = getconfig('apptheme','#1389D3');
-$maincolora= c('image')->colorTorgb($maincolor);
-$maincolors= ''.$maincolora[0].','.$maincolora[1].','.$maincolora[2].'';
-echo 'body{--main-color:'.$maincolor.'}';
+<?php
+$colobj    = c('image');
+if(method_exists($colobj,'colorTorgb')){
+	$maincolor = getconfig('apptheme','#1389D3');
+	$maincolora= $colobj->colorTorgb($maincolor);
+	$maincolors= ''.$maincolora[0].','.$maincolora[1].','.$maincolora[2].'';
+	echo 'body{--main-color:'.$maincolor.'}';
+}
 ?>
 .weui_tabbar_icon{text-align:center;color:#888888;font-size:20px;}
 .weui_tabbar_item{padding-top:2px;margin-bottom:5px;position:relative}
@@ -91,19 +94,19 @@ function showkqrswz(){
 			}
 		}
 	}
-	if(s=='')s='没设置考勤位置';
 	if(s!='')s=s.substr(1);
+	if(s=='')s='<font color=red>没设置考勤位置</font>';
 	$('#weizhi').html(s);
 }
 
 js.dw.ondwwait=function(msg){
-	latitude = '';
+	//latitude = '';
 	$('#dwshow').html('<img src="images/loadings.gif" height="14px" align="absmiddle"> '+msg+'');
 	return true;
 }
 
 js.dw.ondwerr=function(msg){
-	latitude = '';
+	//latitude = '';
 	$('#dwshow').html(''+msg+',<a href="javascript:;" onclick="js.dw.start()">[在定位]</a>');
 }
 
@@ -113,28 +116,26 @@ js.dw.ondwcall = function(res){
 	longitude 	= res.longitude;
 	accuracy 	= res.accuracy;
 	label		= res.address;
-	var center	= res.center;
+	
 	$('#dwshow').html(''+res.addressinfo+',<a href="javascript:;" onclick="js.dw.start()">[更新]</a>');
-	var i,kqrsa,enddt,juli;
-	
 	addbo		= true;//可以添加记录
-	for(i=0;i<kqallrs.length;i++){
-		kqrsa = kqallrs[i];
-		enddt = new qq.maps.LatLng(parseFloat(kqrsa.location_x), parseFloat(kqrsa.location_y));
-		juli  = parseInt(qq.maps.geometry.spherical.computeDistanceBetween(center, enddt));
-		if(juli<0)juli = 0-juli;
-		if(kqrsa['iswgd']=='1')juli=0; //无固定位置的
-		kqallrs[i]['kqjuli'] = juli;
-		kqjuli = juli;
-	}
-	
-	if(!isfenwein()){
-		$('#dkbtnto').addClass('btnwai');
-		$('#dkbtn').html('外出定位');
-	}else{
-		$('#dkbtnto').removeClass('btnwai');
-		$('#dkbtn').html('第'+dakaci+'次打卡');
-	}
+	this.julisuan(latitude,longitude, kqallrs, function(narr){
+		kqallrs = narr;
+		for(var i=0;i<narr.length;i++){
+			var juli = narr[i].kqjuli;
+			if(juli<0)juli = 0-juli;
+			if(narr[i]['iswgd']=='1')juli=0; //无固定位置的
+			kqallrs[i]['kqjuli'] = juli;
+			kqjuli = juli;
+		}
+		if(!isfenwein()){
+			$('#dkbtnto').addClass('btnwai');
+			$('#dkbtn').html('外出定位');
+		}else{
+			$('#dkbtnto').removeClass('btnwai');
+			$('#dkbtn').html('第'+dakaci+'次打卡');
+		}
+	});
 	nowtimetime = js.now('time');
 }
 

@@ -21,7 +21,7 @@
 			<div id="step1" style="padding:20px;line-height:35px;font-size:16px;display:">
 				<b>安装使用前必读：</b><br>
 				<p>我们网站：<?=URLY?></p>
-				<p>产品名称：信呼</p>
+				<p>产品名称：信呼OA</p>
 				
 				<p>源码仅供学习开发使用，禁止原封不动出售。</p>
 				<p style="color:red">版权来自：信呼开发团队，二次开发请标识来自《信呼》。</p>
@@ -32,7 +32,7 @@
 				<div align="center" style="text-align:center;padding-top:15px"><input class="webbtn" onclick="nextabc()" disabled id="zhidbtns" value="我知道了" style="border-radius:5px" type="button"> &nbsp;<a target="_blank" href="<?=URLY?>view_anzz.html" class="blue" ></a></div>
 			</div>
 			<div id="step2" style="display:none">
-			<form name="myform">
+			<form name="myform" autocomplete="off">
 			<table width="100%">
 				<tr><td  colspan="2" height="40" align="center"><font color=#888888>数据库采用是<font color=red>mysql</font>，请先配置好本地</font></td></tr>
 				
@@ -145,7 +145,7 @@ function restimes(sj){
 	o.disabled=true;
 	setTimeout('restimes('+(sj-1)+')',1000);
 }
-restimes(10);
+restimes(3);
 </script>
 
 </body>
